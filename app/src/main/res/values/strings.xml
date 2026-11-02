@@ -1,3 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DealFInder_PC</string>
+
+    <!-- General -->
+    <string name="app_name">DealFinder PC</string>
+    <string name="accion_volver">VOLVER</string>
+    <string name="accion_guardar">GUARDAR</string>
+    <string name="periodo_etiqueta">Periodo</string>
+    <string name="periodo_mensual">MENSUAL</string>
+    <string name="periodo_anual">ANUAL</string>
+    <string name="repetir_cada_mes">Repetir cada mes</string>
+    <string name="campo_correo">Correo electrónico</string>
+    <string name="campo_contrasena">Contraseña</string>
+
+    <!-- Barra de navegación inferior -->
+    <string name="nav_ofertas">Ofertas</string>
+    <string name="nav_lista">Lista</string>
+    <string name="nav_presupuesto">Presupuesto</string>
+    <string name="nav_perfil">Perfil</string>
+
+    <!-- Login -->
+    <string name="login_lema">Insert coin to start</string>
+    <string name="login_mantener_sesion">Mantener sesión iniciada</string>
+    <string name="login_recuperar">¿Game over? Recupera tu contraseña</string>
+    <string name="login_iniciar_sesion">INICIAR SESIÓN</string>
+    <string name="login_crear_cuenta">CREAR CUENTA</string>
+
+    <!-- Registro -->
+    <string name="registro_titulo">CREAR CUENTA</string>
+    <string name="registro_lema">Player 2 ready</string>
+    <string name="registro_hint_usuario">Nombre de usuario</string>
+    <string name="registro_hint_repetir_contrasena">Repite la contraseña</string>
+    <string name="registro_registrarme">REGISTRARME</string>
+    <string name="registro_ya_tengo_cuenta">YA TENGO CUENTA</string>
+
+    <!-- Recuperar contraseña -->
+    <string name="recuperar_titulo">RECUPERAR CONTRASEÑA</string>
+    <string name="recuperar_descripcion">Te enviaremos un enlace a tu correo para crear una nueva.</string>
+    <string name="recuperar_enviar">ENVIAR ENLACE</string>
+    <string name="recuperar_volver_login">VOLVER AL LOGIN</string>
+
+    <!-- Ofertas -->
+    <string name="ofertas_titulo">OFERTAS</string>
+    <string name="ofertas_precios_en">Precios en %1$s</string>
+    <string name="ofertas_buscar">Buscar entre todos los juegos</string>
+    <string name="ofertas_filtros">FILTROS</string>
+    <string name="ofertas_resumen_inicial">Todas las ofertas · mejor oferta primero</string>
+    <string name="ofertas_fuente_meta">%1$s · Meta %2$d</string>
+    <string name="ofertas_fuente_minimo">%1$s · mínimo %2$s</string>
+    <string name="ofertas_gratis">GRATIS</string>
+    <string name="oferta_descuento">-%1$d%%</string>
+
+    <!-- Filtros -->
+    <string name="filtros_titulo">FILTROS</string>
+    <string name="filtros_limpiar">LIMPIAR</string>
+    <string name="filtros_ordenar_por">Ordenar por</string>
+    <string name="orden_mejor_oferta">MEJOR OFERTA</string>
+    <string name="orden_menor_precio">MENOR PRECIO</string>
+    <string name="orden_mayor_precio">MAYOR PRECIO</string>
+    <string name="orden_recientes">RECIENTES</string>
+    <string name="orden_mayor_descuento">MAYOR DESCUENTO</string>
+    <string name="filtros_tiendas">Tiendas</string>
+    <string name="filtros_precio_maximo">Precio máximo (%1$s)</string>
+    <string name="filtros_aplicar">APLICAR FILTROS</string>
+
+    <!-- Detalle de juego -->
+    <string name="detalle_minimo_historico">Mínimo histórico · %1$s</string>
+    <string name="detalle_precio_normal">Precio normal</string>
+    <string name="detalle_mejor_descuento">-%1$d%% MEJOR</string>
+    <string name="detalle_agregar_lista">+ LISTA DE DESEOS</string>
+
+    <!-- Lista de deseos -->
+    <string name="lista_titulo">LISTA DE DESEOS</string>
+    <plurals name="lista_resumen">
+        <item quantity="one">%1$d juego · aprox. %2$s</item>
+        <item quantity="other">%1$d juegos · aprox. %2$s</item>
+    </plurals>
+    <string name="lista_comprado">COMPRADO</string>
+    <string name="lista_nota">Al marcar comprado, el precio se descuenta del presupuesto.</string>
+
+    <!-- Presupuesto -->
+    <string name="presupuesto_titulo">PRESUPUESTO</string>
+    <string name="presupuesto_gastado_libre">Gastado · Libre %1$s</string>
+    <string name="presupuesto_editar">EDITAR</string>
+    <string name="presupuesto_de">/ %1$s</string>
+    <string name="presupuesto_gasto_por_mes">Gasto por mes</string>
+    <string name="presupuesto_compras_recientes">Compras recientes</string>
+
+    <!-- Presupuesto vacío -->
+    <string name="presupuesto_vacio_titulo">Aún no tienes presupuesto</string>
+    <string name="presupuesto_vacio_descripcion">Fija cuánto quieres gastar este mes y la app descontará cada compra.</string>
+    <string name="presupuesto_establecer">ESTABLECER PRESUPUESTO</string>
+    <string name="presupuesto_sin_datos">Sin datos todavía</string>
+
+    <!-- Establecer presupuesto -->
+    <string name="ajuste_titulo">TU PRESUPUESTO</string>
+    <string name="ajuste_importe">Importe para juegos (%1$s)</string>
+    <string name="ajuste_nota">Cada juego que marques como comprado se descuenta de este importe. Podrás cambiarlo cuando quieras.</string>
+    <string name="ajuste_guardar">GUARDAR PRESUPUESTO</string>
+
+    <!-- Editar presupuesto -->
+    <string name="editar_titulo">EDITAR PRESUPUESTO</string>
+    <string name="editar_importe_actual">Importe actual (%1$s)</string>
+    <string name="editar_aviso_gastado">Ya has gastado %1$s este mes, así que el nuevo importe debe ser mayor.</string>
+    <string name="editar_guardar_cambios">GUARDAR CAMBIOS</string>
+    <string name="editar_eliminar">ELIMINAR PRESUPUESTO</string>
+
+    <!-- Perfil -->
+    <string name="perfil_titulo">PERFIL</string>
+    <string name="perfil_correo_contrasena">Correo y contraseña</string>
+    <string name="perfil_presupuesto_mensual">Presupuesto mensual</string>
+    <string name="perfil_moneda">Moneda</string>
+    <string name="perfil_tiendas_favoritas">Tiendas favoritas</string>
+    <string name="perfil_avisos_ofertas">Avisos de ofertas</string>
+    <string name="perfil_avisos_on">ON</string>
+    <string name="perfil_cerrar_sesion">CERRAR SESIÓN</string>
+
+    <!-- Mi cuenta -->
+    <string name="cuenta_titulo">MI CUENTA</string>
+    <string name="cuenta_guardar_correo">GUARDAR CORREO</string>
+    <string name="cuenta_cambiar_contrasena">Cambiar contraseña</string>
+    <string name="cuenta_hint_actual">Contraseña actual</string>
+    <string name="cuenta_hint_nueva">Nueva contraseña</string>
+    <string name="cuenta_hint_repetir">Repite la nueva contraseña</string>
+    <string name="cuenta_boton_cambiar_contrasena">CAMBIAR CONTRASEÑA</string>
+
+    <!-- Moneda -->
+    <string name="moneda_titulo">MONEDA</string>
+    <string name="moneda_descripcion">Elige en qué moneda ver los precios y tu presupuesto.</string>
+    <string name="moneda_usd">Dólar estadounidense</string>
+    <string name="moneda_eur">Euro</string>
+    <string name="moneda_gbp">Libra esterlina</string>
+    <string name="moneda_mxn">Peso mexicano</string>
+    <string name="moneda_ars">Peso argentino</string>
+    <string name="moneda_nota">Los precios originales están en USD y se convierten al cambio del día.</string>
+
+    <!-- Tiendas favoritas -->
+    <string name="tiendas_titulo">TIENDAS FAVORITAS</string>
+    <string name="tiendas_descripcion">Marca las tiendas que usas. Las ofertas se filtrarán por ellas.</string>
+    <string name="tiendas_guardar">GUARDAR TIENDAS</string>
+
 </resources>
