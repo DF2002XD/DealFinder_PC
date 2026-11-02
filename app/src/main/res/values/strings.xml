@@ -9,8 +9,6 @@
     <string name="periodo_mensual">MENSUAL</string>
     <string name="periodo_anual">ANUAL</string>
     <string name="repetir_cada_mes">Repetir cada mes</string>
-    <string name="campo_correo">Correo electrónico</string>
-    <string name="campo_contrasena">Contraseña</string>
 
     <!-- Barra de navegación inferior -->
     <string name="nav_ofertas">Ofertas</string>
@@ -28,8 +26,6 @@
     <!-- Registro -->
     <string name="registro_titulo">CREAR CUENTA</string>
     <string name="registro_lema">Player 2 ready</string>
-    <string name="registro_hint_usuario">Nombre de usuario</string>
-    <string name="registro_hint_repetir_contrasena">Repite la contraseña</string>
     <string name="registro_registrarme">REGISTRARME</string>
     <string name="registro_ya_tengo_cuenta">YA TENGO CUENTA</string>
 
@@ -42,7 +38,6 @@
     <!-- Ofertas -->
     <string name="ofertas_titulo">OFERTAS</string>
     <string name="ofertas_precios_en">Precios en %1$s</string>
-    <string name="ofertas_buscar">Buscar entre todos los juegos</string>
     <string name="ofertas_filtros">FILTROS</string>
     <string name="ofertas_resumen_inicial">Todas las ofertas · mejor oferta primero</string>
     <string name="ofertas_fuente_meta">%1$s · Meta %2$d</string>
@@ -60,7 +55,6 @@
     <string name="orden_recientes">RECIENTES</string>
     <string name="orden_mayor_descuento">MAYOR DESCUENTO</string>
     <string name="filtros_tiendas">Tiendas</string>
-    <string name="filtros_precio_maximo">Precio máximo (%1$s)</string>
     <string name="filtros_aplicar">APLICAR FILTROS</string>
 
     <!-- Detalle de juego -->
@@ -94,13 +88,11 @@
 
     <!-- Establecer presupuesto -->
     <string name="ajuste_titulo">TU PRESUPUESTO</string>
-    <string name="ajuste_importe">Importe para juegos (%1$s)</string>
     <string name="ajuste_nota">Cada juego que marques como comprado se descuenta de este importe. Podrás cambiarlo cuando quieras.</string>
     <string name="ajuste_guardar">GUARDAR PRESUPUESTO</string>
 
     <!-- Editar presupuesto -->
     <string name="editar_titulo">EDITAR PRESUPUESTO</string>
-    <string name="editar_importe_actual">Importe actual (%1$s)</string>
     <string name="editar_aviso_gastado">Ya has gastado %1$s este mes, así que el nuevo importe debe ser mayor.</string>
     <string name="editar_guardar_cambios">GUARDAR CAMBIOS</string>
     <string name="editar_eliminar">ELIMINAR PRESUPUESTO</string>
@@ -119,9 +111,6 @@
     <string name="cuenta_titulo">MI CUENTA</string>
     <string name="cuenta_guardar_correo">GUARDAR CORREO</string>
     <string name="cuenta_cambiar_contrasena">Cambiar contraseña</string>
-    <string name="cuenta_hint_actual">Contraseña actual</string>
-    <string name="cuenta_hint_nueva">Nueva contraseña</string>
-    <string name="cuenta_hint_repetir">Repite la nueva contraseña</string>
     <string name="cuenta_boton_cambiar_contrasena">CAMBIAR CONTRASEÑA</string>
 
     <!-- Moneda -->
@@ -138,5 +127,34 @@
     <string name="tiendas_titulo">TIENDAS FAVORITAS</string>
     <string name="tiendas_descripcion">Marca las tiendas que usas. Las ofertas se filtrarán por ellas.</string>
     <string name="tiendas_guardar">GUARDAR TIENDAS</string>
+
+    <!-- Campos de texto (hints, etiquetas y errores) -->
+    <!-- Login, Registro, Recuperar contraseña y Mi cuenta -->
+    <string name="campo_correo">Correo electrónico</string>
+    <!-- Login y Registro -->
+    <string name="campo_contrasena">Contraseña</string>
+    <!-- Registro -->
+    <string name="registro_hint_usuario">Nombre de usuario</string>
+    <string name="registro_hint_repetir_contrasena">Repite la contraseña</string>
+    <!-- Mi cuenta -->
+    <string name="cuenta_hint_actual">Contraseña actual</string>
+    <string name="cuenta_hint_nueva">Nueva contraseña</string>
+    <string name="cuenta_hint_repetir">Repite la nueva contraseña</string>
+    <!-- Ofertas (búsqueda) -->
+    <string name="ofertas_buscar">Buscar entre todos los juegos</string>
+    <string name="ofertas_buscar_descripcion">Buscar videojuegos</string>
+    <!-- Filtros, Establecer presupuesto y Editar presupuesto (importes) -->
+    <string name="filtros_precio_maximo">Precio máximo (%1$s)</string>
+    <string name="ajuste_importe">Importe para juegos (%1$s)</string>
+    <string name="editar_importe_actual">Importe actual (%1$s)</string>
+    <!-- Sugeridos: no salen en los diseños, pero los campos los necesitan -->
+    <string name="campo_mostrar_contrasena">Mostrar contraseña</string>
+    <string name="campo_ocultar_contrasena">Ocultar contraseña</string>
+    <string name="error_campo_obligatorio">Este campo es obligatorio</string>
+    <string name="error_correo_invalido">Introduce un correo válido</string>
+    <string name="error_contrasena_corta">La contraseña debe tener al menos %1$d caracteres</string>
+    <string name="error_contrasenas_no_coinciden">Las contraseñas no coinciden</string>
+    <string name="error_importe_invalido">Introduce un importe válido</string>
+    <string name="error_importe_menor_gastado">El importe debe ser mayor que lo ya gastado (%1$s)</string>
 
 </resources>
