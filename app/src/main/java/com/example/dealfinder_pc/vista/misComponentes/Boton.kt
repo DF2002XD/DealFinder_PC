@@ -21,12 +21,25 @@ import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
 import com.example.dealfinder_pc.ui.theme.extraColors
 
+
+/**
+ * Botón personalizado con un estilo "retro" que incluye un efecto de sombra dura (hard shadow) y bordes rectos.
+ * Permite alternar entre un estilo principal (isPrimary = true) y uno secundario (isPrimary = false), 
+ * aplicando los colores definidos en el tema de la aplicación.
+ *
+ * @param nombre ID del recurso de string (R.string...) que se mostrará como texto dentro del botón.
+ * @param onClick Callback que se ejecuta cuando el usuario pulsa el botón.
+ * @param modifier Modificador opcional para personalizar el diseño, tamaño o posición del componente (por defecto tiene un ancho de 300dp y alto de 50dp).
+ * @param enabled Indica si el botón está habilitado o deshabilitado para recibir clics. Si es `false`, cambia su opacidad.
+ * @param isPrimary Si es `true`, usa el color primario del tema (amarillo retro). Si es `false`, usa el color secundario/contenedor (morado retro).
+ */
 @Composable
 fun Boton(
     nombre: Int,
     onClick: () -> Unit,
-    enabled: Boolean,
-    isPrimary: Boolean
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isPrimary: Boolean = true
 ) {
     // isPrimary usa el amarillo retro (primary), de lo contrario el morado retro (primaryContainer)
     val containerColor =
@@ -39,7 +52,7 @@ fun Boton(
 
     Button(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .width(300.dp)
             .height(50.dp)
             .drawBehind {

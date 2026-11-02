@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -26,6 +27,18 @@ import com.example.dealfinder_pc.R
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.ui.theme.bodyFontFamily
 
+
+/**
+ * Campo de texto personalizado para introducir contraseñas.
+ * Incluye un icono al final (trailing icon) que permite alternar la visibilidad
+ * del texto entre oculto (asteriscos) y visible.
+ *
+ * @param valor El texto actual que se muestra en el campo.
+ * @param onValorCambiado Callback que se ejecuta cuando el usuario escribe o borra texto.
+ * @param modifier Modificador opcional para personalizar el diseño del componente.
+ * @param placeholder ID del recurso de string para mostrar como sugerencia cuando el campo esté vacío.
+ * @param esError Indica si el campo debe mostrarse en estado de error (por ejemplo, con bordes rojos).
+ */
 @Composable
 fun CampoContrasenha(
     valor: String,
@@ -42,8 +55,9 @@ fun CampoContrasenha(
         onValueChange = onValorCambiado,
         modifier = modifier
             .fillMaxWidth()
-            .border(2.dp, MaterialTheme.colorScheme.secondary),
+            .border(2.dp, MaterialTheme.colorScheme.secondary, RectangleShape),
         isError = esError,
+        shape = RectangleShape,
         textStyle = androidx.compose.ui.text.TextStyle(
             fontFamily = bodyFontFamily,
             color = MaterialTheme.colorScheme.onSurface
@@ -71,13 +85,23 @@ fun CampoContrasenha(
                 if (esVisible) painterResource(id = R.drawable.outline_visibility_24) else painterResource(
                     id = R.drawable.outline_visibility_off_24
                 )
-            val descripcion = if (esVisible) "Ocultar contraseña" else "Mostrar contraseña"
+            val descripcionRes = if (esVisible) R.string.campo_ocultar_contrasena else R.string.campo_mostrar_contrasena
             IconButton(onClick = { esVisible = !esVisible }) {
-                Icon(painter = icono, contentDescription = descripcion)
+                Icon(painter = icono, contentDescription = stringResource(id = descripcionRes))
             }
         })
 }
 
+/**
+ * Campo de texto para contraseñas que siempre muestra su contenido de forma visible.
+ * Mantiene la configuración del teclado adaptada para contraseñas.
+ *
+ * @param valor El texto actual que se muestra en el campo.
+ * @param onValorCambiado Callback que se ejecuta cuando el usuario escribe o borra texto.
+ * @param modifier Modificador opcional para personalizar el diseño del componente.
+ * @param placeholder ID del recurso de string para mostrar como sugerencia cuando el campo esté vacío.
+ * @param esError Indica si el campo debe mostrarse en estado de error.
+ */
 @Composable
 fun CampoContrasenhaSiempreVisible(
     valor: String,
@@ -91,8 +115,9 @@ fun CampoContrasenhaSiempreVisible(
         onValueChange = onValorCambiado,
         modifier = modifier
             .fillMaxWidth()
-            .border(2.dp, MaterialTheme.colorScheme.secondary),
+            .border(2.dp, MaterialTheme.colorScheme.secondary, RectangleShape),
         isError = esError,
+        shape = RectangleShape,
         textStyle = androidx.compose.ui.text.TextStyle(
             fontFamily = bodyFontFamily,
             color = MaterialTheme.colorScheme.onSurface
@@ -118,26 +143,154 @@ fun CampoContrasenhaSiempreVisible(
     )
 }
 
+/**
+ * Campo de texto genérico y estandarizado para la aplicación.
+ *
+ * @param valor El texto actual que se muestra en el campo.
+ * @param onValorCambiado Callback que se ejecuta cuando el usuario escribe o borra texto.
+ * @param modifier Modificador opcional para personalizar el diseño del componente.
+ * @param placeholder ID del recurso de string para mostrar como sugerencia cuando el campo esté vacío.
+ * @param esError Indica si el campo debe mostrarse en estado de error.
+ */
 @Composable
 fun CampoTexto(
-
+    valor: String,
+    onValorCambiado: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: Int? = null,
+    esError: Boolean = false
 ) {
-
+    TextField(
+        value = valor,
+        onValueChange = onValorCambiado,
+        modifier = modifier
+            .fillMaxWidth()
+            .border(2.dp, MaterialTheme.colorScheme.secondary, RectangleShape),
+        isError = esError,
+        shape = RectangleShape,
+        textStyle = androidx.compose.ui.text.TextStyle(
+            fontFamily = bodyFontFamily,
+            color = MaterialTheme.colorScheme.onSurface
+        ),
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+            focusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
+        placeholder = {
+            if (placeholder != null) {
+                Text(
+                    text = stringResource(id = placeholder),
+                    fontFamily = bodyFontFamily
+                )
+            }
+        }
+    )
 }
 
+/**
+ * Campo de texto optimizado para la introducción de correos electrónicos.
+ * Muestra automáticamente un teclado con facilidades para escribir direcciones (como el símbolo '@').
+ *
+ * @param valor El texto actual que se muestra en el campo.
+ * @param onValorCambiado Callback que se ejecuta cuando el usuario escribe o borra texto.
+ * @param modifier Modificador opcional para personalizar el diseño del componente.
+ * @param placeholder ID del recurso de string para mostrar como sugerencia cuando el campo esté vacío.
+ * @param esError Indica si el campo debe mostrarse en estado de error.
+ */
 @Composable
 fun CampoCorreo(
-
+    valor: String,
+    onValorCambiado: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: Int? = null,
+    esError: Boolean = false
 ) {
-
+    TextField(
+        value = valor,
+        onValueChange = onValorCambiado,
+        modifier = modifier
+            .fillMaxWidth()
+            .border(2.dp, MaterialTheme.colorScheme.secondary, RectangleShape),
+        isError = esError,
+        shape = RectangleShape,
+        textStyle = androidx.compose.ui.text.TextStyle(
+            fontFamily = bodyFontFamily,
+            color = MaterialTheme.colorScheme.onSurface
+        ),
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+            focusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
+        placeholder = {
+            if (placeholder != null) {
+                Text(
+                    text = stringResource(id = placeholder),
+                    fontFamily = bodyFontFamily
+                )
+            }
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+    )
 }
 
+/**
+ * Campo de texto diseñado para introducir valores numéricos decimales (como dinero o cantidades).
+ * Despliega un teclado numérico con soporte para punto/coma decimal.
+ *
+ * @param valor El texto actual que se muestra en el campo.
+ * @param onValorCambiado Callback que se ejecuta cuando el usuario escribe o borra texto.
+ * @param modifier Modificador opcional para personalizar el diseño del componente.
+ * @param placeholder ID del recurso de string para mostrar como sugerencia cuando el campo esté vacío.
+ * @param esError Indica si el campo debe mostrarse en estado de error.
+ */
 @Composable
 fun CampoImporte(
-
+    valor: String,
+    onValorCambiado: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: Int? = null,
+    esError: Boolean = false
 ) {
-
+    TextField(
+        value = valor,
+        onValueChange = onValorCambiado,
+        modifier = modifier
+            .fillMaxWidth()
+            .border(2.dp, MaterialTheme.colorScheme.secondary, RectangleShape),
+        isError = esError,
+        shape = RectangleShape,
+        textStyle = androidx.compose.ui.text.TextStyle(
+            fontFamily = bodyFontFamily,
+            color = MaterialTheme.colorScheme.onSurface
+        ),
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+            focusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
+        placeholder = {
+            if (placeholder != null) {
+                Text(
+                    text = stringResource(id = placeholder),
+                    fontFamily = bodyFontFamily
+                )
+            }
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+    )
 }
+
 
 @Preview
 @Composable
@@ -158,6 +311,39 @@ fun CampoContrasenhaSiempreVisiblePreview() {
         CampoContrasenhaSiempreVisible(
             valor = "",
             placeholder = R.string.campo_contrasena,
+            onValorCambiado = {})
+    }
+}
+
+@Preview
+@Composable
+fun CampoTextoPreview() {
+    DealFinder_PCTheme {
+        CampoTexto(
+            valor = "",
+            placeholder = R.string.registro_hint_usuario,
+            onValorCambiado = {})
+    }
+}
+
+@Preview
+@Composable
+fun CampoCorreoPreview() {
+    DealFinder_PCTheme {
+        CampoCorreo(
+            valor = "",
+            placeholder = R.string.campo_correo,
+            onValorCambiado = {})
+    }
+}
+
+@Preview
+@Composable
+fun CampoImportePreview() {
+    DealFinder_PCTheme {
+        CampoImporte(
+            valor = "",
+            placeholder = R.string.editar_importe_actual,
             onValorCambiado = {})
     }
 }
