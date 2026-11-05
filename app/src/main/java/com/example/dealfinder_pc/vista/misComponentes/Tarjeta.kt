@@ -54,7 +54,8 @@ fun TarjetaOferta(
     descuento: String,
     inicialesImagen: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    colorImagen: Color = MaterialTheme.colorScheme.secondary
 ) {
     val retroGreen = MaterialTheme.extraColors.success
     val retroOnGreen = MaterialTheme.extraColors.onSuccess
@@ -74,7 +75,7 @@ fun TarjetaOferta(
             modifier = Modifier
                 .size(72.dp)
                 .border(2.dp, borderColor, RectangleShape)
-                .background(MaterialTheme.colorScheme.secondary),
+                .background(colorImagen),
             contentAlignment = Alignment.Center
         ) {
             Text(
