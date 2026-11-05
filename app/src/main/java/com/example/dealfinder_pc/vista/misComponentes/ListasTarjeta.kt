@@ -124,7 +124,7 @@ fun ListaDeseosPreview() {
             Column(modifier = Modifier.padding(16.dp)) {
                 TituloPantalla(textoRes = R.string.lista_titulo)
                 Spacer(modifier = Modifier.height(12.dp))
-                TextoTotalDeseos(texto = "3 juegos · aprox. $52.44")
+                TextoResumen(texto = "3 juegos · aprox. $52.44")
             }
 
             ListaDeseos(

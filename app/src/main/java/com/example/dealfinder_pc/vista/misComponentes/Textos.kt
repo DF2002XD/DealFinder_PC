@@ -39,7 +39,7 @@ fun TituloPantalla(
  * @param modifier Modificador opcional para ajustar diseño o posición.
  */
 @Composable
-fun TextoTotalDeseos(
+fun TextoResumen(
     texto: String,
     modifier: Modifier = Modifier
 ) {
