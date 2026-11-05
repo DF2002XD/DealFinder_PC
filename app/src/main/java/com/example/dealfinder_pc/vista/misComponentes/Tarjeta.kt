@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -163,6 +167,7 @@ fun TarjetaDeseo(
     textoBoton: String,
     onClick: () -> Unit,
     onBotonClick: () -> Unit,
+    onEliminarClick: () -> Unit, // NUEVO: Callback para la papelera
     modifier: Modifier = Modifier,
     colorImagen: Color = MaterialTheme.colorScheme.secondary
 ) {
@@ -194,7 +199,7 @@ fun TarjetaDeseo(
             Text(
                 text = inicialesImagen,
                 fontFamily = displayFontFamily,
-                color = MaterialTheme.colorScheme.onPrimary, // Todos los on-colors (onPrimary, onSecondary, onSuccess) mapean al color oscuro retro
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = 20.sp
             )
         }
@@ -261,6 +266,20 @@ fun TarjetaDeseo(
                 }
             }
         }
+
+        // Papelera en la derecha
+        IconButton(
+            onClick = onEliminarClick,
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .size(40.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Delete,
+                contentDescription = "Eliminar de deseos",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant // Gris sutil
+            )
+        }
     }
 }
 
@@ -274,7 +293,8 @@ fun TarjetaDeseoPreview() {
             inicialesImagen = "SP",
             textoBoton = "Comprado",
             onClick = {},
-            onBotonClick = {}
+            onBotonClick = {},
+            onEliminarClick = {}
         )
     }
 }

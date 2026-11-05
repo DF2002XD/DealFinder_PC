@@ -66,6 +66,7 @@ fun ListaDeseos(
     juegosEnDeseos: List<DeseoUIState>,
     onDeseoClick: (String) -> Unit,
     onBotonComprarClick: (String) -> Unit,
+    onEliminarClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -82,7 +83,8 @@ fun ListaDeseos(
                 textoBoton = deseo.textoBoton,
                 colorImagen = deseo.colorEtiqueta,
                 onClick = { onDeseoClick(deseo.id) },
-                onBotonClick = { onBotonComprarClick(deseo.id) }
+                onBotonClick = { onBotonComprarClick(deseo.id) },
+                onEliminarClick = { onEliminarClick(deseo.id) }
             )
         }
     }
@@ -131,6 +133,7 @@ fun ListaDeseosPreview() {
                 juegosEnDeseos = deseosMock,
                 onDeseoClick = {},
                 onBotonComprarClick = {},
+                onEliminarClick = {},
                 modifier = Modifier.weight(1f) // Ocupa el centro
             )
 
