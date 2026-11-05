@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -44,7 +46,7 @@ import com.example.dealfinder_pc.ui.theme.extraColors
  * @param modifier Modificador opcional para personalizar el diseño del contenedor (como padding exterior o tamaño).
  */
 @Composable
-fun TarjetaHorizontal(
+fun TarjetaOferta(
     titulo: String,
     tienda: String,
     precioOriginal: String,
@@ -152,11 +154,135 @@ fun TarjetaHorizontal(
     }
 }
 
+@Composable
+fun TarjetaDeseo(
+    titulo: String,
+    precio: String,
+    inicialesImagen: String,
+    textoBoton: String,
+    onClick: () -> Unit,
+    onBotonClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    colorImagen: Color = MaterialTheme.colorScheme.secondary
+) {
+    val retroGreen = MaterialTheme.extraColors.success
+    val borderColor = MaterialTheme.colorScheme.onSurface
+    val cardBackground = MaterialTheme.colorScheme.surfaceContainerLowest
+    val buttonBackground = MaterialTheme.colorScheme.primary
+    val buttonTextColor = MaterialTheme.colorScheme.onPrimary
+    val shadowColor = MaterialTheme.extraColors.hardShadow
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .border(2.dp, borderColor, RectangleShape)
+            .background(cardBackground)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Imagen placeholder
+        Box(
+            modifier = Modifier
+                .width(90.dp)
+                .height(120.dp)
+                .border(2.dp, borderColor, RectangleShape)
+                .background(colorImagen),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = inicialesImagen,
+                fontFamily = displayFontFamily,
+                color = MaterialTheme.colorScheme.onPrimary, // Todos los on-colors (onPrimary, onSecondary, onSuccess) mapean al color oscuro retro
+                fontSize = 20.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        // Detalles (Título, Precio, Botón)
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .height(120.dp) // Misma altura que la imagen para alinear superior e inferiormente
+        ) {
+            Text(
+                text = titulo,
+                fontFamily = displayFontFamily,
+                fontSize = 20.sp, // Título principal grande
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.height(14.dp)) // Aumentado bastante la separación con el precio
+
+            Text(
+                text = precio,
+                fontFamily = displayFontFamily,
+                fontSize = 16.sp, // Precio visiblemente más pequeño que el título
+                color = retroGreen
+            )
+
+            Spacer(modifier = Modifier.weight(1f)) // Deja un buen hueco pero equilibrado
+
+            // Botón con sombra dura
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 4.dp, bottom = 4.dp) // Espacio para la sombra
+            ) {
+                // Sombra dura
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .offset(x = 4.dp, y = 4.dp)
+                        .background(shadowColor)
+                )
+                
+                // Botón principal
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(2.dp, borderColor, RectangleShape)
+                        .background(buttonBackground)
+                        .clickable { onBotonClick() }
+                        .padding(vertical = 8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = textoBoton.uppercase(),
+                        fontFamily = displayFontFamily,
+                        color = buttonTextColor,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Preview
 @Composable
-fun TarjetaHorizontalPreview() {
+fun TarjetaDeseoPreview() {
     DealFinder_PCTheme {
-        TarjetaHorizontal(
+        TarjetaDeseo(
+            titulo = "Silver Pines",
+            precio = "$22.26",
+            inicialesImagen = "SP",
+            textoBoton = "Comprado",
+            onClick = {},
+            onBotonClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TarjetaOfertaPreview() {
+    DealFinder_PCTheme {
+        TarjetaOferta(
             titulo = "Silver Pines",
             tienda = "Steam",
             precioOriginal = "$35.90",
