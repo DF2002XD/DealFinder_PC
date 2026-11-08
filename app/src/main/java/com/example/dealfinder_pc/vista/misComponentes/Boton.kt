@@ -1,6 +1,8 @@
 package com.example.dealfinder_pc.vista.misComponentes
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -136,8 +138,35 @@ fun BotonVolverLimpiar(
 }
 
 @Composable
+fun BotonOpciones(
+    texto: String, // Cambiado a String
+    seleccionado: Boolean,
+    onClick: () -> Unit
+) {
+    val backgroundColor = if (seleccionado) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceContainerLowest
+    val textColor = if (seleccionado) Color.Black else MaterialTheme.colorScheme.onSurface
+    val borderColor = if (seleccionado) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
+
+    Box(
+        modifier = Modifier
+            .clickable { onClick() }
+            .border(2.dp, borderColor, RectangleShape)
+            .background(backgroundColor)
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = texto.uppercase(),
+            fontFamily = displayFontFamily,
+            color = textColor,
+            fontSize = 10.sp
+        )
+    }
+}
+
+@Composable
 fun BotonCheckbox(
-    texto: String,
+    textoRes: Int,
     marcado: Boolean,
     onMarcadoChange: (Boolean) -> Unit
 ) {
@@ -156,7 +185,7 @@ fun BotonCheckbox(
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
-            text = texto,
+            text = stringResource(id = textoRes),
             fontFamily = bodyFontFamily,
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 18.sp
@@ -202,10 +231,22 @@ fun BotonVolverLimpiarPreview(){
 
 @Preview
 @Composable
+fun BotonOpcionesPreview(){
+    DealFinder_PCTheme {
+        BotonOpciones(
+            texto = "STEAM",
+            seleccionado = false,
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
 fun BotonCheckboxPreview(){
     DealFinder_PCTheme {
         BotonCheckbox(
-            texto = "Prueba",
+            textoRes = R.string.login_crear_cuenta,
             marcado = false,
             onMarcadoChange = {}
         )
