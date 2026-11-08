@@ -5,7 +5,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.ui.theme.bodyFontFamily
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
 
@@ -30,6 +32,19 @@ fun TituloPantalla(
     )
 }
 
+@Composable
+fun TextoEncabezado(
+    textoRes: Int,
+    modifier: Modifier = Modifier
+){
+    Text(
+        text = stringResource(id = textoRes),
+        fontFamily = displayFontFamily,
+        color = MaterialTheme.colorScheme.onSurface,
+        fontSize = 14.sp,
+        modifier = modifier
+    )
+}
 
 /**
  * Texto utilizado para mostrar resúmenes numéricos o importes totales (como el total en la lista de deseos).
@@ -73,4 +88,34 @@ fun TextoNota(
         lineHeight = 20.sp,
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+fun  TituloPantallaPreview(){
+    DealFinder_PCTheme {
+        TituloPantalla(
+            textoRes = com.example.dealfinder_pc.R.string.filtros_titulo
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TextoEncabezadoPreview(){
+    DealFinder_PCTheme {
+        TextoEncabezado(
+            textoRes = com.example.dealfinder_pc.R.string.filtros_titulo
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TextoResumenPreview(){
+    DealFinder_PCTheme {
+        TextoResumen(
+            texto = "Prueba"
+        )
+    }
 }

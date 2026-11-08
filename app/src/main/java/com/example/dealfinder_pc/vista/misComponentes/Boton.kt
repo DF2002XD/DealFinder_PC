@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dealfinder_pc.R
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
+import com.example.dealfinder_pc.ui.theme.bodyFontFamily
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
 import com.example.dealfinder_pc.ui.theme.extraColors
 
@@ -132,6 +135,35 @@ fun BotonVolverLimpiar(
     }
 }
 
+@Composable
+fun BotonCheckbox(
+    texto: String,
+    marcado: Boolean,
+    onMarcadoChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onMarcadoChange(!marcado) }
+            .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = marcado,
+            onCheckedChange = null // Lo maneja el Row
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = texto,
+            fontFamily = bodyFontFamily,
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 18.sp
+        )
+    }
+}
+
 @Preview
 @Composable
 fun BotonPreview() {
@@ -164,6 +196,18 @@ fun BotonVolverLimpiarPreview(){
             onClick = {},
             isPrimary = false,
             mostrarIconoVolver = true
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BotonCheckboxPreview(){
+    DealFinder_PCTheme {
+        BotonCheckbox(
+            texto = "Prueba",
+            marcado = false,
+            onMarcadoChange = {}
         )
     }
 }
