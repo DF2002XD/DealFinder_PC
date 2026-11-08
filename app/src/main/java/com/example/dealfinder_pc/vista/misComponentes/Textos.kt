@@ -90,6 +90,24 @@ fun TextoNota(
     )
 }
 
+/**
+ * Etiqueta para poner encima de los campos de formulario o para textos pequeños.
+ * Usa la letra pixelada pequeña en gris.
+ */
+@Composable
+fun TextoEtiqueta(
+    texto: String, // String dinámico para poder admitir formatos como el de la moneda
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = texto,
+        fontFamily = displayFontFamily,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        fontSize = 12.sp,
+        modifier = modifier
+    )
+}
+
 @Preview
 @Composable
 fun  TituloPantallaPreview(){
@@ -115,5 +133,21 @@ fun TextoEncabezadoPreview(){
 fun TextoResumenPreview(){
     DealFinder_PCTheme {
         TextoResumen(textoRes = com.example.dealfinder_pc.R.plurals.lista_resumen)
+    }
+}
+
+@Preview
+@Composable
+fun TextoNotaPReview(){
+    DealFinder_PCTheme {
+        TextoNota(textoRes = com.example.dealfinder_pc.R.plurals.lista_resumen)
+    }
+}
+
+@Preview
+@Composable
+fun TextoEtiquetaPreview(){
+    DealFinder_PCTheme {
+        TextoEtiqueta(texto = "Precio máximo (USD)")
     }
 }
