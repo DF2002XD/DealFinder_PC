@@ -1,13 +1,23 @@
 package com.example.dealfinder_pc.vista.misComponentes
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -80,11 +90,58 @@ fun Boton(
     }
 }
 
+@Composable
+fun BotonVolverLimpiar(
+    texto: String,
+    onClick: () -> Unit,
+    isPrimary: Boolean,
+    mostrarIconoVolver: Boolean = false
+) {
+    val containerColor =
+        if (isPrimary) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerLowest
+    val contentColor =
+        if (isPrimary) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+    val borderColor =
+        if (isPrimary) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+
+    Row(
+        modifier = Modifier
+            .clickable { onClick() }
+            .border(2.dp, borderColor, RectangleShape)
+            .background(containerColor)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (mostrarIconoVolver) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                contentDescription = null,
+                tint = contentColor,
+                modifier = Modifier
+                    .height(16.dp)
+                    .width(16.dp)
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+        }
+        Text(
+            text = texto,
+            fontFamily = displayFontFamily,
+            color = contentColor,
+            fontSize = 12.sp
+        )
+    }
+}
+
 @Preview
 @Composable
 fun BotonPreview() {
     DealFinder_PCTheme {
-        Boton(nombre = R.string.login_iniciar_sesion, onClick = {}, enabled = true, isPrimary = true)
+        Boton(
+            nombre = R.string.login_iniciar_sesion,
+            onClick = {},
+            enabled = true,
+            isPrimary = true
+        )
     }
 
 }
@@ -96,4 +153,17 @@ fun BotonPreview1() {
         Boton(nombre = R.string.login_crear_cuenta, onClick = {}, enabled = true, isPrimary = false)
     }
 
+}
+
+@Preview
+@Composable
+fun BotonVolverLimpiarPreview(){
+    DealFinder_PCTheme {
+        BotonVolverLimpiar(
+            texto = "Volver",
+            onClick = {},
+            isPrimary = false,
+            mostrarIconoVolver = true
+        )
+    }
 }

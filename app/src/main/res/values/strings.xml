@@ -55,6 +55,8 @@
     <string name="orden_recientes">RECIENTES</string>
     <string name="orden_mayor_descuento">MAYOR DESCUENTO</string>
     <string name="filtros_tiendas">Tiendas</string>
+    <string name="filtros_solo_gratis">Solo gratis</string>
+    <string name="filtros_solo_oferta">Solo en oferta</string>
     <string name="filtros_aplicar">APLICAR FILTROS</string>
 
     <!-- Detalle de juego -->
