@@ -50,16 +50,16 @@ fun TextoEncabezado(
  * Texto utilizado para mostrar resúmenes numéricos o importes totales (como el total en la lista de deseos).
  * Usa la fuente estándar del cuerpo (bodyFontFamily).
  *
- * @param texto Cadena de texto directa a mostrar (ej. "3 juegos · aprox. $52.44").
+ * @param textoRes Cadena de texto directa a mostrar (ej. "3 juegos · aprox. $52.44").
  * @param modifier Modificador opcional para ajustar diseño o posición.
  */
 @Composable
 fun TextoResumen(
-    texto: String,
+    textoRes: Int,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = texto,
+        text = stringResource(id = textoRes),
         fontFamily = bodyFontFamily,
         color = MaterialTheme.colorScheme.onSurface,
         fontSize = 24.sp,
@@ -114,8 +114,6 @@ fun TextoEncabezadoPreview(){
 @Composable
 fun TextoResumenPreview(){
     DealFinder_PCTheme {
-        TextoResumen(
-            texto = "Prueba"
-        )
+        TextoResumen(textoRes = com.example.dealfinder_pc.R.plurals.lista_resumen)
     }
 }
