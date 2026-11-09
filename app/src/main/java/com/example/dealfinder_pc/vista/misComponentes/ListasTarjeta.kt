@@ -69,9 +69,8 @@ fun ListaDeseos(
     onEliminarClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(), // Usa el modifier principal sin forzar el weight
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -126,15 +125,16 @@ fun ListaDeseosPreview() {
             Column(modifier = Modifier.padding(16.dp)) {
                 TituloPantalla(textoRes = R.string.lista_titulo)
                 Spacer(modifier = Modifier.height(12.dp))
-                TextoResumen(textoRes = R.plurals.lista_resumen)
+                TextoResumen(texto = "3 juegos · aprox. $52.44")
             }
 
+            // Llamada al componente puro
             ListaDeseos(
                 juegosEnDeseos = deseosMock,
                 onDeseoClick = {},
                 onBotonComprarClick = {},
                 onEliminarClick = {},
-                modifier = Modifier.weight(1f) // Ocupa el centro
+                modifier = Modifier.weight(1f) // El weight va aquí, en la pantalla que lo contiene
             )
 
             TextoNota(
