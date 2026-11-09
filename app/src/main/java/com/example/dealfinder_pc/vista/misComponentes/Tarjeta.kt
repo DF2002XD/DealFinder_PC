@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -245,7 +246,7 @@ fun TarjetaDeseo(
                         .offset(x = 4.dp, y = 4.dp)
                         .background(shadowColor)
                 )
-                
+
                 // Botón principal
                 Box(
                     modifier = Modifier
@@ -283,6 +284,70 @@ fun TarjetaDeseo(
     }
 }
 
+@Composable
+fun TarjetaPerfil(
+    nombre: String,
+    correo: String
+) {
+    val borderColor = MaterialTheme.colorScheme.onSurface
+    val cardBackground = MaterialTheme.colorScheme.surfaceContainerLowest
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(2.dp, borderColor, RectangleShape)
+            .background(cardBackground)
+            .padding(vertical = 12.dp, horizontal = 16.dp), // Menos padding vertical
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(56.dp) // Avatar un poco más pequeño
+                .border(2.dp, borderColor, RectangleShape)
+                .padding(3.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFFFF4D94))
+            )
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Column(modifier = Modifier.weight(1f)) {
+            // Sombra en el texto del nombre
+            Box {
+                Text(
+                    text = nombre.uppercase(),
+                    fontFamily = displayFontFamily,
+                    color = Color.White, // La sombra parece ser blanca/clara en esta captura
+                    fontSize = 12.sp, // Letra más pequeña
+                    maxLines = 1,
+                    modifier = Modifier.offset(1.dp, 1.dp) // Sombra más sutil
+                )
+                Text(
+                    text = nombre.uppercase(),
+                    fontFamily = displayFontFamily,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = correo,
+                fontFamily = bodyFontFamily,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontSize = 16.sp, // El correo es VT323, necesita ser algo más grande para leerse bien
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 fun TarjetaDeseoPreview() {
@@ -311,6 +376,17 @@ fun TarjetaOfertaPreview() {
             descuento = "-38%",
             inicialesImagen = "SP",
             onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TarjetaPerfilPreview() {
+    DealFinder_PCTheme {
+        TarjetaPerfil(
+            nombre = "JUGADOR_01",
+            correo = "jugador@correo.com"
         )
     }
 }
