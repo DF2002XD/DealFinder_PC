@@ -1,11 +1,15 @@
 package com.example.dealfinder_pc.vista.misComponentes
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.ui.theme.bodyFontFamily
@@ -108,6 +112,24 @@ fun TextoEtiqueta(
     )
 }
 
+@Composable
+fun TextoSombra(textoRes: Int) {
+    Box {
+        Text(
+            text = stringResource(id = textoRes),
+            fontFamily = bodyFontFamily,
+            color = Color.White.copy(alpha = 0.5f), // Sombra fantasma clara
+            fontSize = 18.sp,
+            modifier = Modifier.offset(1.dp, 1.dp)
+        )
+        Text(
+            text = stringResource(id = textoRes),
+            fontFamily = bodyFontFamily,
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 18.sp
+        )
+    }}
+
 @Preview
 @Composable
 fun  TituloPantallaPreview(){
@@ -149,5 +171,13 @@ fun TextoNotaPReview(){
 fun TextoEtiquetaPreview(){
     DealFinder_PCTheme {
         TextoEtiqueta(texto = "Precio máximo (USD)")
+    }
+}
+
+@Preview
+@Composable
+fun TextoSombraPreview(){
+    DealFinder_PCTheme {
+        TextoSombra(textoRes = com.example.dealfinder_pc.R.plurals.lista_resumen)
     }
 }
