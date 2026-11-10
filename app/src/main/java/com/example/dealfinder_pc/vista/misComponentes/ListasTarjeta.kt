@@ -17,8 +17,30 @@ import com.example.dealfinder_pc.R
 import androidx.compose.ui.unit.dp
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.viewmodel.uistate.DeseoUIState
+import com.example.dealfinder_pc.viewmodel.uistate.MonedaUIState
 import com.example.dealfinder_pc.viewmodel.uistate.OfertaUIState
 
+@Composable
+fun ListaMonedas(
+    monedasDisponibles: List<MonedaUIState>,
+    monedaActual: String,
+    onMonedaSeleccionada: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(monedasDisponibles) { moneda ->
+            BotonRadio(
+                textoPrincipal = moneda.nombre,
+                valorVerde = moneda.codigo,
+                seleccionado = monedaActual == moneda.codigo,
+                onClick = { onMonedaSeleccionada(moneda.codigo) }
+            )
+        }
+    }
+}
 
 /**
  * Muestra una lista vertical y desplazable (LazyColumn) de tarjetas de ofertas.

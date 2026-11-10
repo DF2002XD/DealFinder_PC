@@ -20,6 +20,8 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -218,6 +220,50 @@ fun BotonCheckbox(
 }
 
 @Composable
+fun BotonRadio(
+    textoPrincipal: String,
+    valorVerde: String,
+    seleccionado: Boolean,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(
+                selected = seleccionado,
+                onClick = null, // Lo maneja el Row
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedColor = MaterialTheme.colorScheme.onSurface
+                )
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = textoPrincipal,
+                fontFamily = bodyFontFamily,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 16.sp
+            )
+        }
+        Text(
+            text = valorVerde,
+            fontFamily = displayFontFamily,
+            color = MaterialTheme.extraColors.success,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
 fun BotonOpciones(
     textoRes: Int,
     valorVerde: String? = null,
@@ -308,6 +354,7 @@ fun BotonPerfilSalir(
     }
 }
 
+
 @Preview
 @Composable
 fun BotonPreview() {
@@ -364,6 +411,56 @@ fun BotonCheckboxPreview() {
             textoRes = R.string.login_crear_cuenta,
             marcado = false,
             onMarcadoChange = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BotonOpcionesPreview() {
+    DealFinder_PCTheme {
+        BotonOpciones(
+            textoRes = R.string.perfil_moneda,
+            valorVerde = "USD",
+            valorGris = null,
+            mostrarFlecha = true,
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BotonAvisosPreview() {
+    DealFinder_PCTheme {
+        BotonAvisos(
+            textoRes = R.string.perfil_avisos_ofertas,
+            activado = true,
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BotonPerfilSalirPreview() {
+    DealFinder_PCTheme {
+        BotonPerfilSalir(
+            textoRes = R.string.perfil_cerrar_sesion,
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BotonRadioPreview() {
+    DealFinder_PCTheme {
+        BotonRadio(
+            textoPrincipal = "Dólar estadounidense",
+            valorVerde = "USD",
+            seleccionado = true,
+            onClick = {}
         )
     }
 }
