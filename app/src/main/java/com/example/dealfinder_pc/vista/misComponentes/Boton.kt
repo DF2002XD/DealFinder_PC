@@ -346,7 +346,7 @@ fun BotonVolverLimpiarPreview() {
 
 @Preview
 @Composable
-fun BotonOpcionesPreview() {
+fun BotonFiltroPreview() {
     DealFinder_PCTheme {
         BotonFiltro(
             texto = "STEAM",
