@@ -78,7 +78,7 @@ fun PanelFiltros(
         ) {
             opcionesOrden.forEach { idTexto ->
                 val textoOrden = stringResource(idTexto)
-                BotonOpciones(
+                BotonFiltro (
                     texto = textoOrden,
                     seleccionado = ordenSeleccionado == textoOrden,
                     onClick = { onOrdenSeleccionado(textoOrden) }
@@ -96,7 +96,7 @@ fun PanelFiltros(
             modifier = Modifier.fillMaxWidth()
         ) {
             tiendasDisponibles.forEach { tienda ->
-                BotonOpciones(
+                BotonFiltro(
                     texto = tienda,
                     seleccionado = tiendasSeleccionadas.contains(tienda),
                     onClick = { onTiendaToggle(tienda) }
