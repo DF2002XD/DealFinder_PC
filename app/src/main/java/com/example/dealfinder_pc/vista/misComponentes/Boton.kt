@@ -6,14 +6,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -27,6 +30,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +39,6 @@ import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.ui.theme.bodyFontFamily
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
 import com.example.dealfinder_pc.ui.theme.extraColors
-
 
 /**
  * Botón personalizado con un estilo "retro" que incluye un efecto de sombra dura (hard shadow) y bordes rectos.
@@ -138,14 +141,16 @@ fun BotonVolverLimpiar(
 }
 
 @Composable
-fun BotonOpciones(
+fun BotonFiltro(
     texto: String, // Cambiado a String
     seleccionado: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor = if (seleccionado) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceContainerLowest
+    val backgroundColor =
+        if (seleccionado) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceContainerLowest
     val textColor = if (seleccionado) Color.Black else MaterialTheme.colorScheme.onSurface
-    val borderColor = if (seleccionado) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
+    val borderColor =
+        if (seleccionado) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
 
     Box(
         modifier = Modifier
@@ -161,6 +166,25 @@ fun BotonOpciones(
             color = textColor,
             fontSize = 10.sp
         )
+    }
+}
+
+@Composable
+fun BaseOpcionMenu(
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .padding(vertical = 10.dp, horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        content()
     }
 }
 
@@ -193,6 +217,97 @@ fun BotonCheckbox(
     }
 }
 
+@Composable
+fun BotonOpciones(
+    textoRes: Int,
+    valorVerde: String? = null,
+    valorGris: String? = null,
+    mostrarFlecha: Boolean = true,
+    onClick: () -> Unit
+) {
+    val retroGreen = MaterialTheme.extraColors.success
+
+    BaseOpcionMenu(onClick = onClick) {
+        TextoSombra(textoRes)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (valorVerde != null) {
+                Text(
+                    text = valorVerde,
+                    fontFamily = displayFontFamily,
+                    color = retroGreen,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            if (valorGris != null) {
+                Text(
+                    text = valorGris,
+                    fontFamily = bodyFontFamily,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 14.sp
+                )
+            }
+            if (mostrarFlecha) {
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BotonAvisos(
+    textoRes: Int, activado: Boolean, onClick: () -> Unit) {
+    val retroGreen = MaterialTheme.extraColors.success
+
+    BaseOpcionMenu(onClick = onClick) {
+        TextoSombra(textoRes)
+
+        Box(
+            modifier = Modifier
+                .background(if (activado) retroGreen else Color.Gray)
+                .padding(horizontal = 4.dp, vertical = 2.dp)
+        ) {
+            Text(
+                text = if (activado) "ON" else "OFF",
+                fontFamily = displayFontFamily,
+                color = Color.Black,
+                fontSize = 8.sp, // Muy pequeñito, encajado en su caja
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+fun BotonPerfilSalir(
+    textoRes: Int, onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .padding(vertical = 12.dp, horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = stringResource(id = textoRes),
+            fontFamily = displayFontFamily,
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 10.sp, // Mucho más pequeño, como en la imagen
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
 @Preview
 @Composable
 fun BotonPreview() {
@@ -218,7 +333,7 @@ fun BotonPreview1() {
 
 @Preview
 @Composable
-fun BotonVolverLimpiarPreview(){
+fun BotonVolverLimpiarPreview() {
     DealFinder_PCTheme {
         BotonVolverLimpiar(
             texto = "Volver",
@@ -231,9 +346,9 @@ fun BotonVolverLimpiarPreview(){
 
 @Preview
 @Composable
-fun BotonOpcionesPreview(){
+fun BotonOpcionesPreview() {
     DealFinder_PCTheme {
-        BotonOpciones(
+        BotonFiltro(
             texto = "STEAM",
             seleccionado = false,
             onClick = {}
@@ -243,7 +358,7 @@ fun BotonOpcionesPreview(){
 
 @Preview
 @Composable
-fun BotonCheckboxPreview(){
+fun BotonCheckboxPreview() {
     DealFinder_PCTheme {
         BotonCheckbox(
             textoRes = R.string.login_crear_cuenta,
