@@ -14,15 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dealfinder_pc.R
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
+import com.example.dealfinder_pc.viewmodel.uistate.PerfilUIState
 
 @Composable
 fun TarjetaPerfil(
-    nombreUsuario: String,
-    correoUsuario: String,
-    presupuestoTexto: String,
-    monedaActual: String,
-    tiendasTexto: String,
-    avisosActivados: Boolean,
+    perfilData: PerfilUIState,
     onCuentaClick: () -> Unit,
     onPresupuestoClick: () -> Unit,
     onMonedaClick: () -> Unit,
@@ -45,8 +41,8 @@ fun TarjetaPerfil(
         Spacer(modifier = Modifier.height(24.dp))
 
         TarjetaPerfil(
-            nombre = nombreUsuario,
-            correo = correoUsuario
+            nombre = perfilData.nombreUsuario,
+            correo = perfilData.correoUsuario
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -61,7 +57,7 @@ fun TarjetaPerfil(
 
         BotonOpciones(
             textoRes = R.string.perfil_presupuesto_mensual,
-            valorVerde = presupuestoTexto,
+            valorVerde = perfilData.presupuestoTexto,
             mostrarFlecha = false,
             onClick = onPresupuestoClick
         )
@@ -70,7 +66,7 @@ fun TarjetaPerfil(
 
         BotonOpciones(
             textoRes = R.string.perfil_moneda,
-            valorVerde = monedaActual,
+            valorVerde = perfilData.monedaActual,
             mostrarFlecha = true,
             onClick = onMonedaClick
         )
@@ -79,7 +75,7 @@ fun TarjetaPerfil(
 
         BotonOpciones(
             textoRes = R.string.perfil_tiendas_favoritas,
-            valorGris = tiendasTexto,
+            valorGris = perfilData.tiendasTexto,
             mostrarFlecha = true,
             onClick = onTiendasClick
         )
@@ -88,7 +84,7 @@ fun TarjetaPerfil(
 
         BotonAvisos(
             textoRes = R.string.perfil_avisos_ofertas,
-            activado = avisosActivados,
+            activado = perfilData.avisosActivados,
             onClick = onAvisosToggle
         )
 
@@ -110,12 +106,14 @@ fun TarjetaPerfil(
 fun PanelPerfilPreview() {
     DealFinder_PCTheme {
         TarjetaPerfil(
-            nombreUsuario = "JUGADOR_01",
-            correoUsuario = "jugador@correo.com",
-            presupuestoTexto = "$80.00",
-            monedaActual = "USD",
-            tiendasTexto = "Steam, GOG",
-            avisosActivados = true,
+            perfilData = PerfilUIState(
+                nombreUsuario = "JUGADOR_01",
+                correoUsuario = "jugador@correo.com",
+                presupuestoTexto = "$80.00",
+                monedaActual = "USD",
+                tiendasTexto = "Steam, GOG",
+                avisosActivados = true
+            ),
             onCuentaClick = {},
             onPresupuestoClick = {},
             onMonedaClick = {},

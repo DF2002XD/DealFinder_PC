@@ -105,6 +105,7 @@ fun BotonVolverLimpiar(
     texto: String,
     onClick: () -> Unit,
     isPrimary: Boolean,
+    modifier: Modifier = Modifier,
     mostrarIconoVolver: Boolean = false
 ) {
     val containerColor =
@@ -115,7 +116,7 @@ fun BotonVolverLimpiar(
         if (isPrimary) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clickable { onClick() }
             .border(2.dp, borderColor, RectangleShape)
             .background(containerColor)
@@ -144,9 +145,10 @@ fun BotonVolverLimpiar(
 
 @Composable
 fun BotonFiltro(
-    texto: String, // Cambiado a String
+    texto: String,
     seleccionado: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val backgroundColor =
         if (seleccionado) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceContainerLowest
@@ -155,7 +157,7 @@ fun BotonFiltro(
         if (seleccionado) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clickable { onClick() }
             .border(2.dp, borderColor, RectangleShape)
             .background(backgroundColor)
@@ -174,10 +176,11 @@ fun BotonFiltro(
 @Composable
 fun BaseOpcionMenu(
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() }
             .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape)
@@ -194,10 +197,11 @@ fun BaseOpcionMenu(
 fun BotonCheckbox(
     textoRes: Int,
     marcado: Boolean,
-    onMarcadoChange: (Boolean) -> Unit
+    onMarcadoChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onMarcadoChange(!marcado) }
             .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape)
@@ -224,10 +228,11 @@ fun BotonRadio(
     textoPrincipal: String,
     valorVerde: String,
     seleccionado: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() }
             .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape)
@@ -269,11 +274,12 @@ fun BotonOpciones(
     valorVerde: String? = null,
     valorGris: String? = null,
     mostrarFlecha: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val retroGreen = MaterialTheme.extraColors.success
 
-    BaseOpcionMenu(onClick = onClick) {
+    BaseOpcionMenu(onClick = onClick, modifier = modifier) {
         TextoSombra(textoRes)
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (valorVerde != null) {
@@ -308,10 +314,14 @@ fun BotonOpciones(
 
 @Composable
 fun BotonAvisos(
-    textoRes: Int, activado: Boolean, onClick: () -> Unit) {
+    textoRes: Int, 
+    activado: Boolean, 
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val retroGreen = MaterialTheme.extraColors.success
 
-    BaseOpcionMenu(onClick = onClick) {
+    BaseOpcionMenu(onClick = onClick, modifier = modifier) {
         TextoSombra(textoRes)
 
         Box(
@@ -332,10 +342,12 @@ fun BotonAvisos(
 
 @Composable
 fun BotonPerfilSalir(
-    textoRes: Int, onClick: () -> Unit
+    textoRes: Int, 
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() }
             .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape)
