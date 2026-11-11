@@ -40,7 +40,7 @@ fun TituloPantalla(
 fun TextoEncabezado(
     textoRes: Int,
     modifier: Modifier = Modifier
-){
+) {
     Text(
         text = stringResource(id = textoRes),
         fontFamily = displayFontFamily,
@@ -113,26 +113,34 @@ fun TextoEtiqueta(
 }
 
 @Composable
-fun TextoSombra(textoRes: Int) {
-    Box {
+fun TextoSombra(
+    textoRes: Int,
+    modifier: Modifier = Modifier,
+    enMayusculas: Boolean = false
+) {
+    val textoBase = stringResource(id = textoRes)
+    val textoFinal = if (enMayusculas) textoBase.uppercase() else textoBase
+
+    Box(modifier = modifier) {
         Text(
-            text = stringResource(id = textoRes),
+            text = textoFinal,
             fontFamily = bodyFontFamily,
             color = Color.White.copy(alpha = 0.5f), // Sombra fantasma clara
             fontSize = 18.sp,
             modifier = Modifier.offset(1.dp, 1.dp)
         )
         Text(
-            text = stringResource(id = textoRes),
+            text = textoFinal,
             fontFamily = bodyFontFamily,
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 18.sp
         )
-    }}
+    }
+}
 
 @Preview
 @Composable
-fun  TituloPantallaPreview(){
+fun TituloPantallaPreview() {
     DealFinder_PCTheme {
         TituloPantalla(
             textoRes = com.example.dealfinder_pc.R.string.filtros_titulo
@@ -142,7 +150,7 @@ fun  TituloPantallaPreview(){
 
 @Preview
 @Composable
-fun TextoEncabezadoPreview(){
+fun TextoEncabezadoPreview() {
     DealFinder_PCTheme {
         TextoEncabezado(
             textoRes = com.example.dealfinder_pc.R.string.filtros_titulo
@@ -152,7 +160,7 @@ fun TextoEncabezadoPreview(){
 
 @Preview
 @Composable
-fun TextoResumenPreview(){
+fun TextoResumenPreview() {
     DealFinder_PCTheme {
         TextoResumen(texto = "3 juegos · aprox. $52.44")
     }
@@ -160,7 +168,7 @@ fun TextoResumenPreview(){
 
 @Preview
 @Composable
-fun TextoNotaPReview(){
+fun TextoNotaPReview() {
     DealFinder_PCTheme {
         TextoNota(textoRes = com.example.dealfinder_pc.R.plurals.lista_resumen)
     }
@@ -168,7 +176,7 @@ fun TextoNotaPReview(){
 
 @Preview
 @Composable
-fun TextoEtiquetaPreview(){
+fun TextoEtiquetaPreview() {
     DealFinder_PCTheme {
         TextoEtiqueta(texto = "Precio máximo (USD)")
     }
@@ -176,7 +184,7 @@ fun TextoEtiquetaPreview(){
 
 @Preview
 @Composable
-fun TextoSombraPreview(){
+fun TextoSombraPreview() {
     DealFinder_PCTheme {
         TextoSombra(textoRes = com.example.dealfinder_pc.R.plurals.lista_resumen)
     }

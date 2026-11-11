@@ -241,7 +241,7 @@ fun BotonCheckboxTexto(
     ) {
         Checkbox(
             checked = marcado,
-            onCheckedChange = null 
+            onCheckedChange = null
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
@@ -344,8 +344,8 @@ fun BotonOpciones(
 
 @Composable
 fun BotonAvisos(
-    textoRes: Int, 
-    activado: Boolean, 
+    textoRes: Int,
+    activado: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -372,7 +372,7 @@ fun BotonAvisos(
 
 @Composable
 fun BotonPerfilSalir(
-    textoRes: Int, 
+    textoRes: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -397,6 +397,7 @@ fun BotonPerfilSalir(
 }
 
 
+@Suppress("unused")
 @Preview
 @Composable
 fun BotonPreview() {
@@ -411,6 +412,7 @@ fun BotonPreview() {
 
 }
 
+@Suppress("unused")
 @Preview
 @Composable
 fun BotonPreview1() {
@@ -420,6 +422,7 @@ fun BotonPreview1() {
 
 }
 
+@Suppress("unused")
 @Preview
 @Composable
 fun BotonVolverLimpiarPreview() {
@@ -433,6 +436,7 @@ fun BotonVolverLimpiarPreview() {
     }
 }
 
+@Suppress("unused")
 @Preview
 @Composable
 fun BotonFiltroPreview() {
@@ -445,6 +449,7 @@ fun BotonFiltroPreview() {
     }
 }
 
+@Suppress("unused")
 @Preview
 @Composable
 fun BotonCheckboxPreview() {
@@ -457,6 +462,7 @@ fun BotonCheckboxPreview() {
     }
 }
 
+@Suppress("unused")
 @Preview
 @Composable
 fun BotonOpcionesPreview() {
@@ -471,6 +477,7 @@ fun BotonOpcionesPreview() {
     }
 }
 
+@Suppress("unused")
 @Preview
 @Composable
 fun BotonAvisosPreview() {
@@ -483,6 +490,7 @@ fun BotonAvisosPreview() {
     }
 }
 
+@Suppress("unused")
 @Preview
 @Composable
 fun BotonPerfilSalirPreview() {
@@ -494,6 +502,7 @@ fun BotonPerfilSalirPreview() {
     }
 }
 
+@Suppress("unused")
 @Preview
 @Composable
 fun BotonRadioPreview() {
