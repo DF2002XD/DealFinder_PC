@@ -31,7 +31,7 @@ fun TituloPantalla(
         text = stringResource(id = textoRes),
         fontFamily = displayFontFamily,
         color = MaterialTheme.colorScheme.primary,
-        fontSize = 24.sp,
+        fontSize = 22.sp,
         modifier = modifier
     )
 }

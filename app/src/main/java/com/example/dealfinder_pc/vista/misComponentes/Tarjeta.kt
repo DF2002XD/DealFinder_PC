@@ -15,11 +15,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -168,7 +168,7 @@ fun TarjetaDeseo(
     textoBoton: String,
     onClick: () -> Unit,
     onBotonClick: () -> Unit,
-    onEliminarClick: () -> Unit, // NUEVO: Callback para la papelera
+    onEliminarClick: () -> Unit,
     modifier: Modifier = Modifier,
     colorImagen: Color = MaterialTheme.colorScheme.secondary
 ) {
@@ -177,7 +177,6 @@ fun TarjetaDeseo(
     val cardBackground = MaterialTheme.colorScheme.surfaceContainerLowest
     val buttonBackground = MaterialTheme.colorScheme.primary
     val buttonTextColor = MaterialTheme.colorScheme.onPrimary
-    val shadowColor = MaterialTheme.extraColors.hardShadow
 
     Row(
         modifier = modifier
@@ -185,14 +184,14 @@ fun TarjetaDeseo(
             .clickable { onClick() }
             .border(2.dp, borderColor, RectangleShape)
             .background(cardBackground)
-            .padding(16.dp),
+            .padding(8.dp), // Reducido el padding para coincidir con la imagen
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Imagen placeholder
         Box(
             modifier = Modifier
-                .width(90.dp)
-                .height(120.dp)
+                .width(64.dp)
+                .height(85.dp)
                 .border(2.dp, borderColor, RectangleShape)
                 .background(colorImagen),
             contentAlignment = Alignment.Center
@@ -200,71 +199,57 @@ fun TarjetaDeseo(
             Text(
                 text = inicialesImagen,
                 fontFamily = displayFontFamily,
-                color = MaterialTheme.colorScheme.onPrimary,
-                fontSize = 20.sp
+                color = Color.Black,
+                fontSize = 16.sp
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(12.dp))
 
         // Detalles (Título, Precio, Botón)
         Column(
             modifier = Modifier
                 .weight(1f)
-                .height(120.dp) // Misma altura que la imagen para alinear superior e inferiormente
+                .height(85.dp), // Misma altura que la imagen para alinear superior e inferiormente
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = titulo,
-                fontFamily = displayFontFamily,
-                fontSize = 20.sp, // Título principal grande
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            Column {
+                Text(
+                    text = titulo,
+                    fontFamily = displayFontFamily,
+                    fontSize = 16.sp, // Título principal
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
 
-            Spacer(modifier = Modifier.height(14.dp)) // Aumentado bastante la separación con el precio
+                Spacer(modifier = Modifier.height(2.dp))
 
-            Text(
-                text = precio,
-                fontFamily = displayFontFamily,
-                fontSize = 16.sp, // Precio visiblemente más pequeño que el título
-                color = retroGreen
-            )
+                Text(
+                    text = precio,
+                    fontFamily = displayFontFamily,
+                    fontSize = 16.sp, // Precio
+                    color = retroGreen
+                )
+            }
 
-            Spacer(modifier = Modifier.weight(1f)) // Deja un buen hueco pero equilibrado
-
-            // Botón con sombra dura
+            // Botón principal (sin sombra)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 4.dp, bottom = 4.dp) // Espacio para la sombra
+                    .border(2.dp, borderColor, RectangleShape)
+                    .background(buttonBackground)
+                    .clickable { onBotonClick() }
+                    .padding(vertical = 4.dp), // Padding ajustado
+                contentAlignment = Alignment.Center
             ) {
-                // Sombra dura
-                Box(
-                    modifier = Modifier
-                        .matchParentSize()
-                        .offset(x = 4.dp, y = 4.dp)
-                        .background(shadowColor)
+                Text(
+                    text = textoBoton.uppercase(),
+                    fontFamily = displayFontFamily,
+                    color = buttonTextColor,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp
                 )
-
-                // Botón principal
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(2.dp, borderColor, RectangleShape)
-                        .background(buttonBackground)
-                        .clickable { onBotonClick() }
-                        .padding(vertical = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = textoBoton.uppercase(),
-                        fontFamily = displayFontFamily,
-                        color = buttonTextColor,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp
-                    )
-                }
             }
         }
 
@@ -278,7 +263,7 @@ fun TarjetaDeseo(
             Icon(
                 imageVector = Icons.Outlined.Delete,
                 contentDescription = "Eliminar de deseos",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant // Gris sutil
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
