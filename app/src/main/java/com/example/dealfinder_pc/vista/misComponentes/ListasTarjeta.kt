@@ -111,6 +111,27 @@ fun ListaDeseos(
     }
 }
 
+@Composable
+fun ListaTiendas(
+    tiendasDisponibles: List<String>,
+    tiendasSeleccionadas: List<String>,
+    onTiendaToggle: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(tiendasDisponibles) { tienda ->
+            BotonCheckboxTexto(
+                texto = tienda,
+                marcado = tiendasSeleccionadas.contains(tienda),
+                onMarcadoChange = { onTiendaToggle(tienda) }
+            )
+        }
+    }
+}
+
 
 @Preview(showBackground = true, backgroundColor = 0xFF191636)
 @Composable

@@ -224,6 +224,36 @@ fun BotonCheckbox(
 }
 
 @Composable
+fun BotonCheckboxTexto(
+    texto: String, // Variante que acepta String directo
+    marcado: Boolean,
+    onMarcadoChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onMarcadoChange(!marcado) }
+            .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = marcado,
+            onCheckedChange = null 
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = texto,
+            fontFamily = bodyFontFamily,
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 18.sp
+        )
+    }
+}
+
+@Composable
 fun BotonRadio(
     textoPrincipal: String,
     valorVerde: String,
