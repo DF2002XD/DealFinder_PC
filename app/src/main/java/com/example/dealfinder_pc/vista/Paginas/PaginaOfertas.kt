@@ -34,6 +34,16 @@ fun PaginaOfertas(
         OfertaUIState("5", "Bad Cheese", "Epic Games Store · Meta 63", "$12.99", "GRATIS", "-100%", "BC", Color(0xFFB399FF))
     )
 
+    // Simulamos la lógica del ViewModel: Filtramos la lista según lo que el usuario ha escrito
+    val ofertasFiltradas = if (busquedaActual.isBlank()) {
+        ofertasMock // Si no ha escrito nada, mostramos todas
+    } else {
+        ofertasMock.filter { oferta ->
+            // Comprobamos si el título del juego contiene el texto buscado (ignorando mayúsculas/minúsculas)
+            oferta.titulo.contains(busquedaActual, ignoreCase = true)
+        }
+    }
+
     // Contenedor "tonto" para acoplarse al NavHost de la app principal
     Box(
         modifier = modifier
@@ -46,7 +56,7 @@ fun PaginaOfertas(
             onBusquedaChange = { busquedaActual = it }, // Actualiza el texto de búsqueda al teclear
             onFiltrosClick = onNavigateToFiltros,
             textoFiltroActivo = "Todas las ofertas · mejor oferta primero",
-            ofertas = ofertasMock, // Si el usuario escribiera, el ViewModel filtraría esta lista
+            ofertas = ofertasFiltradas, // Le pasamos la lista ya filtrada
             onOfertaClick = { idOferta -> 
                 onNavigateToDetalles(idOferta) 
             }
