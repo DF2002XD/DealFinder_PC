@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.dealfinder_pc.vista.Paginas.PaginaFiltro
 import com.example.dealfinder_pc.vista.Paginas.PaginaLogin
 import com.example.dealfinder_pc.vista.Paginas.PaginaOfertas
 import com.example.dealfinder_pc.vista.Paginas.PaginaRecuContra
@@ -20,6 +21,7 @@ import com.example.dealfinder_pc.vista.Navegacion.Rutas.Login
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.Registro
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.RecuperarContrasenha
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.Ofertas
+import com.example.dealfinder_pc.vista.Navegacion.Rutas.Filtros
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.Deseos
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.Presupuesto
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.Perfil
@@ -122,10 +124,16 @@ fun AppNavigation() {
 
             composable(Ofertas) {
                 PaginaOfertas(
-                    onNavigateToFiltros = { /* Próximamente -> navController.navigate(Filtros) */ },
+                    onNavigateToFiltros = { navController.navigate(Filtros) },
                     onNavigateToDetalles = { idJuego ->
                         // Próximamente -> navController.navigate(Rutas.detallesOferta(idJuego))
                     }
+                )
+            }
+
+            composable(Filtros) {
+                PaginaFiltro(
+                    onNavigateBack = { navController.popBackStack() } // Vuelve a Ofertas
                 )
             }
 
