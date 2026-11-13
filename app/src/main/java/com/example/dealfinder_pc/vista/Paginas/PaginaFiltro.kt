@@ -16,7 +16,7 @@ import com.example.dealfinder_pc.vista.misComponentes.PanelFiltros
 
 @Composable
 fun PaginaFiltro(
-    onNavigateBack: () -> Unit, // Cuando le dé a Aplicar o Limpiar para volver a Ofertas
+    onNavigateBack: () -> Unit, // Para volver a Ofertas al darle a Aplicar
     modifier: Modifier = Modifier
 ) {
     // ---------------------------------------------------------
@@ -55,11 +55,15 @@ fun PaginaFiltro(
             soloEnOferta = soloEnOferta,
             onSoloEnOfertaChange = { soloEnOferta = it },
             onLimpiarClick = {
-                // Borra todos y vuelve
-                onNavigateBack()
+                // Resetea todos los estados a su valor inicial
+                ordenSeleccionado = "Mejor Oferta Primero"
+                tiendasSeleccionadas = emptyList()
+                precioMaximo = ""
+                soloGratis = false
+                soloEnOferta = false
             },
             onAplicarClick = {
-                // Guarda cambios (VM) y vuelve
+                // Guarda cambios (el ViewModel lo haría aquí) y vuelve a la lista
                 onNavigateBack()
             }
         )

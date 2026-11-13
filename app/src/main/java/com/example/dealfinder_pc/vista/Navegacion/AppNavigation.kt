@@ -14,9 +14,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dealfinder_pc.vista.Paginas.PaginaDeseos
 import com.example.dealfinder_pc.vista.Paginas.PaginaFiltro
 import com.example.dealfinder_pc.vista.Paginas.PaginaLogin
+import com.example.dealfinder_pc.vista.Paginas.PaginaCuenta
+import com.example.dealfinder_pc.vista.Paginas.PaginaMoneda
 import com.example.dealfinder_pc.vista.Paginas.PaginaOfertas
 import com.example.dealfinder_pc.vista.Paginas.PaginaPerfil
 import com.example.dealfinder_pc.vista.Paginas.PaginaRecuContra
+import com.example.dealfinder_pc.vista.Paginas.PaginaTienda
 import com.example.dealfinder_pc.vista.Paginas.PaginaRegistro
 import com.example.dealfinder_pc.vista.misComponentes.BottomAppBarNav
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.Login
@@ -37,6 +40,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
+import com.example.dealfinder_pc.vista.misComponentes.TopAppBarNav
 
 @Composable
 fun AppNavigation() {
@@ -50,6 +54,9 @@ fun AppNavigation() {
     val rutasConMenuInferior = listOf(Ofertas, Deseos, Presupuesto, Perfil)
     val mostrarBottomBar = currentRoute in rutasConMenuInferior
 
+    val rutasConTopBar = listOf(Cuenta, Moneda, TiendasFiltro, Filtros)
+    val mostrarTopBar = currentRoute in rutasConTopBar
+
     // Calculamos qué pestaña (0, 1, 2, 3) está activa para pasársela al componente
     val indicePestanha = when (currentRoute) {
         Ofertas -> 0
@@ -61,6 +68,11 @@ fun AppNavigation() {
 
     Scaffold(
         containerColor = Color(0xFF191636), // El fondo global
+        topBar = {
+            if (mostrarTopBar) {
+                TopAppBarNav(onBackClick = { navController.popBackStack() })
+            }
+        },
         bottomBar = {
             if (mostrarBottomBar) {
                 BottomAppBarNav(
@@ -109,11 +121,11 @@ fun AppNavigation() {
 
             composable(Registro) {
                 PaginaRegistro(
-                    onNavigateBack = { navController.popBackStack() }, // Vuelve al Login
+                    onNavigateBack = { navController.popBackStack() }, // Vuelve al Login al darle a "Ya tengo cuenta"
                     onRegisterSuccess = {
-                        navController.navigate(Ofertas) {
-                            popUpTo(0) { inclusive = true }
-                        }
+                        // Al registrarse con éxito, volvemos a la pantalla de Login
+                        // y opcionalmente podrías mostrar un Toast desde el ViewModel
+                        navController.popBackStack()
                     }
                 )
             }
@@ -138,7 +150,7 @@ fun AppNavigation() {
 
             composable(Filtros) {
                 PaginaFiltro(
-                    onNavigateBack = { navController.popBackStack() } // Vuelve a Ofertas
+                    onNavigateBack = { navController.popBackStack() }
                 )
             }
 
@@ -173,13 +185,15 @@ fun AppNavigation() {
             // --- SUBPANTALLAS DEL PERFIL ---
             
             composable(Cuenta) {
-                PlaceholderPantalla("Ajustes de Cuenta (Próximamente)")
+                PaginaCuenta(
+                    onRecuperarContrasenhaClick = { navController.navigate(RecuperarContrasenha) }
+                )
             }
             composable(Moneda) {
-                PlaceholderPantalla("Ajustes de Moneda (Próximamente)")
+                PaginaMoneda()
             }
             composable(TiendasFiltro) {
-                PlaceholderPantalla("Tiendas Favoritas (Próximamente)")
+                PaginaTienda()
             }
         }
     }
