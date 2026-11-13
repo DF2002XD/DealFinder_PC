@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.dealfinder_pc.vista.Paginas.PaginaDeseos
 import com.example.dealfinder_pc.vista.Paginas.PaginaFiltro
 import com.example.dealfinder_pc.vista.Paginas.PaginaLogin
 import com.example.dealfinder_pc.vista.Paginas.PaginaOfertas
@@ -138,8 +139,12 @@ fun AppNavigation() {
             }
 
             composable(Deseos) {
-                // Como PaginaDeseos aún no está ensamblada, ponemos un placeholder chulo
-                PlaceholderPantalla("Pantalla Deseos (Próximamente)")
+                PaginaDeseos(
+                    onDeseoClick = { idJuego ->
+                        //TODO
+                        // Próximamente -> navController.navigate(Rutas.detallesOferta(idJuego))
+                    }
+                )
             }
 
             composable(Presupuesto) {
