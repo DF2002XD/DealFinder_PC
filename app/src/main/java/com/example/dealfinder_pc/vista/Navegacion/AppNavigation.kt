@@ -15,6 +15,7 @@ import com.example.dealfinder_pc.vista.Paginas.PaginaDeseos
 import com.example.dealfinder_pc.vista.Paginas.PaginaFiltro
 import com.example.dealfinder_pc.vista.Paginas.PaginaLogin
 import com.example.dealfinder_pc.vista.Paginas.PaginaOfertas
+import com.example.dealfinder_pc.vista.Paginas.PaginaPerfil
 import com.example.dealfinder_pc.vista.Paginas.PaginaRecuContra
 import com.example.dealfinder_pc.vista.Paginas.PaginaRegistro
 import com.example.dealfinder_pc.vista.misComponentes.BottomAppBarNav
@@ -26,6 +27,9 @@ import com.example.dealfinder_pc.vista.Navegacion.Rutas.Filtros
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.Deseos
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.Presupuesto
 import com.example.dealfinder_pc.vista.Navegacion.Rutas.Perfil
+import com.example.dealfinder_pc.vista.Navegacion.Rutas.Cuenta
+import com.example.dealfinder_pc.vista.Navegacion.Rutas.TiendasFiltro
+import com.example.dealfinder_pc.vista.Navegacion.Rutas.Moneda
 
 // Helpers extra para que devuelva algo rápido por ahora si no existen las pantallas
 import androidx.compose.foundation.layout.Box
@@ -152,7 +156,30 @@ fun AppNavigation() {
             }
 
             composable(Perfil) {
-                PlaceholderPantalla("Pantalla Perfil (Próximamente)")
+                PaginaPerfil(
+                    onNavigateToCuenta = { navController.navigate(Cuenta) },
+                    onNavigateToPresupuesto = { navController.navigate(Presupuesto) },
+                    onNavigateToMoneda = { navController.navigate(Moneda) },
+                    onNavigateToTiendas = { navController.navigate(TiendasFiltro) },
+                    onCerrarSesionClick = {
+                        // Navegamos al Login y borramos el historial para que no pueda darle a "Atrás"
+                        navController.navigate(Login) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
+                )
+            }
+            
+            // --- SUBPANTALLAS DEL PERFIL ---
+            
+            composable(Cuenta) {
+                PlaceholderPantalla("Ajustes de Cuenta (Próximamente)")
+            }
+            composable(Moneda) {
+                PlaceholderPantalla("Ajustes de Moneda (Próximamente)")
+            }
+            composable(TiendasFiltro) {
+                PlaceholderPantalla("Tiendas Favoritas (Próximamente)")
             }
         }
     }
