@@ -1,4 +1,4 @@
-package com.example.dealfinder_pc.vista.Paginas
+package com.example.dealfinder_pc.vista.paginas
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

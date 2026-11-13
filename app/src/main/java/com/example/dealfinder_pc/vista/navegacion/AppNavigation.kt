@@ -1,5 +1,5 @@
 @file:Suppress("unused", "UNUSED_ANONYMOUS_PARAMETER", "PackageName")
-package com.example.dealfinder_pc.vista.Navegacion
+package com.example.dealfinder_pc.vista.navegacion
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -11,28 +11,28 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.dealfinder_pc.vista.Paginas.PaginaDeseos
-import com.example.dealfinder_pc.vista.Paginas.PaginaFiltro
-import com.example.dealfinder_pc.vista.Paginas.PaginaLogin
-import com.example.dealfinder_pc.vista.Paginas.PaginaCuenta
-import com.example.dealfinder_pc.vista.Paginas.PaginaMoneda
-import com.example.dealfinder_pc.vista.Paginas.PaginaOfertas
-import com.example.dealfinder_pc.vista.Paginas.PaginaPerfil
-import com.example.dealfinder_pc.vista.Paginas.PaginaRecuContra
-import com.example.dealfinder_pc.vista.Paginas.PaginaTienda
-import com.example.dealfinder_pc.vista.Paginas.PaginaRegistro
+import com.example.dealfinder_pc.vista.paginas.PaginaDeseos
+import com.example.dealfinder_pc.vista.paginas.PaginaFiltro
+import com.example.dealfinder_pc.vista.paginas.PaginaLogin
+import com.example.dealfinder_pc.vista.paginas.PaginaCuenta
+import com.example.dealfinder_pc.vista.paginas.PaginaMoneda
+import com.example.dealfinder_pc.vista.paginas.PaginaOfertas
+import com.example.dealfinder_pc.vista.paginas.PaginaPerfil
+import com.example.dealfinder_pc.vista.paginas.PaginaRecuContra
+import com.example.dealfinder_pc.vista.paginas.PaginaTienda
+import com.example.dealfinder_pc.vista.paginas.PaginaRegistro
 import com.example.dealfinder_pc.vista.misComponentes.BottomAppBarNav
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.Login
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.Registro
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.RecuperarContrasenha
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.Ofertas
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.Filtros
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.Deseos
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.Presupuesto
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.Perfil
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.Cuenta
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.TiendasFiltro
-import com.example.dealfinder_pc.vista.Navegacion.Rutas.Moneda
+import com.example.dealfinder_pc.vista.navegacion.Rutas.Login
+import com.example.dealfinder_pc.vista.navegacion.Rutas.Registro
+import com.example.dealfinder_pc.vista.navegacion.Rutas.RecuperarContrasenha
+import com.example.dealfinder_pc.vista.navegacion.Rutas.Ofertas
+import com.example.dealfinder_pc.vista.navegacion.Rutas.Filtros
+import com.example.dealfinder_pc.vista.navegacion.Rutas.Deseos
+import com.example.dealfinder_pc.vista.navegacion.Rutas.Presupuesto
+import com.example.dealfinder_pc.vista.navegacion.Rutas.Perfil
+import com.example.dealfinder_pc.vista.navegacion.Rutas.Cuenta
+import com.example.dealfinder_pc.vista.navegacion.Rutas.TiendasFiltro
+import com.example.dealfinder_pc.vista.navegacion.Rutas.Moneda
 
 // Helpers extra para que devuelva algo rápido por ahora si no existen las pantallas
 import androidx.compose.foundation.layout.Box

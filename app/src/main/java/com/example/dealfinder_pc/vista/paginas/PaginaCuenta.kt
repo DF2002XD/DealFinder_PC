@@ -1,4 +1,4 @@
-package com.example.dealfinder_pc.vista.Paginas
+package com.example.dealfinder_pc.vista.paginas
 
 import android.widget.Toast
 import androidx.compose.foundation.background

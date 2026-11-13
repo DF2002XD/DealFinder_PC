@@ -1,5 +1,5 @@
 @file:Suppress("unused", "ConstPropertyName", "PackageName")
-package com.example.dealfinder_pc.vista.Navegacion
+package com.example.dealfinder_pc.vista.navegacion
 
 object Rutas {
     // Rutas sin menú inferior (Onboarding / Autenticación)

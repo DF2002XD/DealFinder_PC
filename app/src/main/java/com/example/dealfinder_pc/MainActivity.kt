@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 
-import com.example.dealfinder_pc.vista.Navegacion.AppNavigation
+import com.example.dealfinder_pc.vista.navegacion.AppNavigation
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
