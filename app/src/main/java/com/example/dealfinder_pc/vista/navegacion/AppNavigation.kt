@@ -15,6 +15,7 @@ import com.example.dealfinder_pc.vista.paginas.PaginaDeseos
 import com.example.dealfinder_pc.vista.paginas.PaginaFiltro
 import com.example.dealfinder_pc.vista.paginas.PaginaLogin
 import com.example.dealfinder_pc.vista.paginas.PaginaCuenta
+import com.example.dealfinder_pc.vista.paginas.PaginaDetalles
 import com.example.dealfinder_pc.vista.paginas.PaginaMoneda
 import com.example.dealfinder_pc.vista.paginas.PaginaOfertas
 import com.example.dealfinder_pc.vista.paginas.PaginaPerfil
@@ -33,6 +34,7 @@ import com.example.dealfinder_pc.vista.navegacion.Rutas.Perfil
 import com.example.dealfinder_pc.vista.navegacion.Rutas.Cuenta
 import com.example.dealfinder_pc.vista.navegacion.Rutas.TiendasFiltro
 import com.example.dealfinder_pc.vista.navegacion.Rutas.Moneda
+import com.example.dealfinder_pc.vista.navegacion.Rutas.DetallesOferta
 
 // Helpers extra para que devuelva algo rápido por ahora si no existen las pantallas
 import androidx.compose.foundation.layout.Box
@@ -51,10 +53,10 @@ fun AppNavigation() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     // Definimos qué pestañas activan el menú inferior
-    val rutasConMenuInferior = listOf(Ofertas, Deseos, Presupuesto, Perfil)
-    val mostrarBottomBar = currentRoute in rutasConMenuInferior
+    val rutasConBottomBar = listOf(Ofertas, Deseos, Presupuesto, Perfil)
+    val mostrarBottomBar = currentRoute in rutasConBottomBar
 
-    val rutasConTopBar = listOf(Cuenta, Moneda, TiendasFiltro, Filtros)
+    val rutasConTopBar = listOf(Cuenta, Moneda, TiendasFiltro, Filtros, DetallesOferta)
     val mostrarTopBar = currentRoute in rutasConTopBar
 
     // Calculamos qué pestaña (0, 1, 2, 3) está activa para pasársela al componente
@@ -143,7 +145,7 @@ fun AppNavigation() {
                 PaginaOfertas(
                     onNavigateToFiltros = { navController.navigate(Filtros) },
                     onNavigateToDetalles = { idJuego ->
-                        // Próximamente -> navController.navigate(Rutas.detallesOferta(idJuego))
+                        navController.navigate(Rutas.detallesOferta(idJuego))
                     }
                 )
             }
@@ -157,9 +159,17 @@ fun AppNavigation() {
             composable(Deseos) {
                 PaginaDeseos(
                     onDeseoClick = { idJuego ->
-                        //TODO
-                        // Próximamente -> navController.navigate(Rutas.detallesOferta(idJuego))
+                        navController.navigate(Rutas.detallesOferta(idJuego))
                     }
+                )
+            }
+
+            composable(DetallesOferta) { backStackEntry ->
+                val idOferta = backStackEntry.arguments?.getString("idOferta") ?: ""
+                PaginaDetalles(
+                    idOferta = idOferta,
+                    onVolver = { navController.popBackStack() },
+                    onTiendaClick = { /* Próximamente: Ir a la tienda */ }
                 )
             }
 

@@ -80,14 +80,14 @@ fun TarjetaOferta(
     ) {
         Box(
             modifier = Modifier
-                .size(72.dp)
+                .size(72.dp) // Volvemos a los 72dp originales
                 .border(2.dp, borderColor, RectangleShape),
             contentAlignment = Alignment.Center
         ) {
             AsyncImage(
                 model = urlImagen,
                 contentDescription = "Portada de $titulo",
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Crop, // Mantenemos Crop aquí para que siga siendo un cuadrado perfecto
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -190,8 +190,8 @@ fun TarjetaDeseo(
         // Imagen
         Box(
             modifier = Modifier
-                .width(64.dp)
-                .height(85.dp)
+                .width(64.dp) // Volvemos a los 64dp originales
+                .height(85.dp) // Volvemos a los 85dp originales
                 .border(2.dp, borderColor, RectangleShape),
             contentAlignment = Alignment.Center
         ) {
@@ -209,7 +209,7 @@ fun TarjetaDeseo(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .height(85.dp), // Misma altura que la imagen para alinear superior e inferiormente
+                .height(85.dp), // Volvemos a los 85dp originales
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column {

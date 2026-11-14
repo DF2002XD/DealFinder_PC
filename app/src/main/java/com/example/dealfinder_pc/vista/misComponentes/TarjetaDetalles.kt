@@ -1,6 +1,7 @@
 package com.example.dealfinder_pc.vista.misComponentes
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -44,19 +46,23 @@ fun PanelDetalles(
             .fillMaxSize()
             .padding(horizontal = 24.dp)
     ) {
-        // --- 1. IMAGEN DE CABECERA GIGANTE ---
+        // --- 1. IMAGEN DE CABECERA ---
+        // Volvemos a un recuadro fijo de ancho completo para que el borde blanco abarque todos
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp) // Imagen muy grande como en la captura
-                .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape),
+                .height(240.dp) // Altura que querías para que destaque
+                .border(2.dp, MaterialTheme.colorScheme.onSurface, RectangleShape) // Borde del contenedor
+                .background(Color(0xFF191636)), // Fondo para que los huecos a los lados se vean bien
             contentAlignment = Alignment.Center
         ) {
             AsyncImage(
-                model = urlImagen, // Aquí cargamos la imagen (puede ser URL de internet o R.drawable...)
+                model = urlImagen,
                 contentDescription = "Portada de $tituloJuego",
-                contentScale = ContentScale.Crop, // Corta la imagen para llenar el contenedor
-                modifier = Modifier.fillMaxSize()
+                contentScale = ContentScale.Fit, // La imagen se encoge para entrar sin deformarse
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(2.dp) // Para no pisar el borde
             )
         }
 
