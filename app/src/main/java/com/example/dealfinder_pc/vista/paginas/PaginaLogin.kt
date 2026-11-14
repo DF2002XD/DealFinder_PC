@@ -5,14 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
-import com.example.dealfinder_pc.viewmodel.uistate.LoginUIState
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dealfinder_pc.viewmodel.vm.LoginViewModel
 import com.example.dealfinder_pc.vista.misComponentes.Login
 
 @Composable
@@ -20,10 +19,11 @@ fun PaginaLogin(
     onNavigateToRegistro: () -> Unit,
     onNavigateToRecuperarContrasenha: () -> Unit,
     onLoginSuccess: () -> Unit, // Cuando el usuario se loguea bien, salta a la app principal
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = viewModel()
 ) {
-    // Estado de prueba usando LoginUIState
-    var uiState by remember { mutableStateOf(LoginUIState()) }
+    // Conectamos con el estado de la UI del ViewModel
+    val uiState by viewModel.uiState.collectAsState()
 
     // En lugar de Scaffold, usamos una Box simple que ocupa el espacio que le asigne el NavHost
     Box(
@@ -33,16 +33,15 @@ fun PaginaLogin(
     ) {
         Login(
             correo = uiState.correo,
-            onCorreoChange = { uiState = uiState.copy(correo = it) },
+            onCorreoChange = { viewModel.actualizarCorreo(it) },
             contrasenha = uiState.contrasenha,
-            onContrasenhaChange = { uiState = uiState.copy(contrasenha = it) },
+            onContrasenhaChange = { viewModel.actualizarContrasenha(it) },
             keepLogged = uiState.keepLogged,
-            onKeepLoggedChange = { uiState = uiState.copy(keepLogged = it) },
+            onKeepLoggedChange = { viewModel.toggleKeepLogged(it) },
             errorMessage = uiState.errorMessage,
             onLoginClicked = {
-                // Aquí el ViewModel haría la autenticación
-                // Por ahora simulamos que fue un éxito
-                onLoginSuccess() 
+                // Delegamos la acción al ViewModel
+                viewModel.iniciarSesion(onSuccess = onLoginSuccess)
             },
             onNavigateToRegister = onNavigateToRegistro,
             onNavigateToResetPassword = onNavigateToRecuperarContrasenha

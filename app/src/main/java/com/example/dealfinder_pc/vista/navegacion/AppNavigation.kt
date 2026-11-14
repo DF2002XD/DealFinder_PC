@@ -42,24 +42,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dealfinder_pc.viewmodel.vm.AppNavigationViewModel
 import com.example.dealfinder_pc.vista.misComponentes.TopAppBarNav
-import com.example.dealfinder_pc.viewmodel.uistate.AppNavigationUIState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    appViewModel: AppNavigationViewModel = viewModel()
+) {
     val navController = rememberNavController()
-
-    // ---------------------------------------------------------
-    // ESTADO DE NAVEGACIÓN SIMULADO (A la espera del ViewModel global)
-    // ---------------------------------------------------------
-    var uiState by remember { mutableStateOf(AppNavigationUIState(
-        isCheckUserSession = false, // Asumimos que ya verificó rápido (simulado)
-        isUserLoggedIn = false,     // Para que arranque en el login por defecto
-        initialRoute = Login        // Ruta de inicio
-    )) }
+    
+    // Conectamos el estado de navegación REAL del ViewModel
+    val uiState by appViewModel.uiState.collectAsState()
 
     // Si aún está comprobando si el usuario tiene sesión guardada, podríamos mostrar un Splash
     if (uiState.isCheckUserSession) {
@@ -108,8 +103,7 @@ fun AppNavigation() {
                             else -> Ofertas
                         }
                         navController.navigate(rutaDestino) {
-                            // popUpTo evita que se apilen 1000 pantallas al navegar por el menú
-                            popUpTo(Ofertas) { saveState = true }
+                            popUpTo(navController.graph.startDestinationId) { saveState = true }
                             launchSingleTop = true
                             restoreState = true
                         }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,18 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
-import com.example.dealfinder_pc.viewmodel.uistate.CuentaUIState
+import com.example.dealfinder_pc.viewmodel.vm.CuentaViewModel
 import com.example.dealfinder_pc.vista.misComponentes.PanelCuenta
 
 @Composable
 fun PaginaCuenta(
     onRecuperarContrasenhaClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CuentaViewModel = viewModel()
 ) {
     val contexto = LocalContext.current 
     
-    var uiState by remember { mutableStateOf(CuentaUIState(correo = "jugador@correo.com")) }
+    val uiState by viewModel.uiState.collectAsState()
     var inputCorreo by remember { mutableStateOf(uiState.correo) }
     var inputContrasenhaActual by remember { mutableStateOf("") }
     var inputContrasenhaNueva by remember { mutableStateOf("") }
@@ -49,17 +52,26 @@ fun PaginaCuenta(
             mensajeErrorCorreo = uiState.errorMessage,
             mensajeErrorContrasenha = null,
             onGuardarCorreoClick = {
-                if (inputCorreo.isBlank()) {
-                    uiState = uiState.copy(errorMessage = "El correo no puede estar vacío")
-                } else if (inputCorreo == uiState.correo) {
-                    uiState = uiState.copy(errorMessage = "Tiene que ser otro correo distinto")
-                } else {
-                    uiState = uiState.copy(errorMessage = null, correo = inputCorreo)
-                    Toast.makeText(contexto, "Correo actualizado con éxito", Toast.LENGTH_SHORT).show()
-                }
+                viewModel.cambiarCorreo(
+                    nuevoCorreo = inputCorreo,
+                    onSuccess = {
+                        Toast.makeText(contexto, "Correo actualizado con éxito", Toast.LENGTH_SHORT).show()
+                    }
+                )
             },
             onCambiarContrasenhaClick = {
-                Toast.makeText(contexto, "Contraseña cambiada", Toast.LENGTH_SHORT).show()
+                viewModel.cambiarContrasenha(
+                    actual = inputContrasenhaActual,
+                    nueva = inputContrasenhaNueva,
+                    repeticion = inputRepeticion,
+                    onSuccess = {
+                        Toast.makeText(contexto, "Contraseña cambiada", Toast.LENGTH_SHORT).show()
+                        // Reseteamos campos
+                        inputContrasenhaActual = ""
+                        inputContrasenhaNueva = ""
+                        inputRepeticion = ""
+                    }
+                )
             },
             onOlvidoContrasenhaClick = onRecuperarContrasenhaClick
         )

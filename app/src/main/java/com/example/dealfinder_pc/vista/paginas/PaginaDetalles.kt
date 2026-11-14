@@ -2,14 +2,14 @@ package com.example.dealfinder_pc.vista.paginas
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.example.dealfinder_pc.viewmodel.uistate.DetallesUIState
+import com.example.dealfinder_pc.viewmodel.vm.DetallesViewModel
 import com.example.dealfinder_pc.viewmodel.uistate.OfertaTiendaUIState
 import com.example.dealfinder_pc.vista.misComponentes.PanelDetalles
 
@@ -26,43 +26,14 @@ fun PaginaDetalles(
     idOferta: String,
     modifier: Modifier = Modifier,
     onVolver: () -> Unit = {},
-    onTiendaClick: (OfertaTiendaUIState) -> Unit = {}
+    onTiendaClick: (OfertaTiendaUIState) -> Unit = {},
+    viewModel: DetallesViewModel = viewModel()
 ) {
-    // ---------------------------------------------------------
-    // ESTADO SIMULADO HASTA QUE SE CONECTE EL VIEWMODEL
-    // ---------------------------------------------------------
-    var uiState by remember { mutableStateOf(
-        DetallesUIState(
-            idOferta = idOferta,
-            tituloJuego = "Prison Tycoon 3: Lockdown",
-            urlImagen = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg",
-            minimoHistoricoInfo = "Mínimo histórico · 10/10/2016",
-            precioMinimoHistorico = "$1.99",
-            precioNormal = "$9.99",
-            ofertasEnTiendas = listOf(
-                OfertaTiendaUIState(
-                    nombreTienda = "Steam", 
-                    precio = "$3.49", 
-                    descuentoTexto = "-65%", 
-                    esLaMejor = true, 
-                    urlLogo = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px-Steam_icon_logo.svg.png"
-                ),
-                OfertaTiendaUIState(
-                    nombreTienda = "Fanatical", 
-                    precio = "$7.48", 
-                    descuentoTexto = "-25%", 
-                    esLaMejor = false
-                ),
-                OfertaTiendaUIState(
-                    nombreTienda = "IndieGala", 
-                    precio = "$9.99", 
-                    descuentoTexto = null, 
-                    esLaMejor = false
-                )
-            )
-        )
-    ) }
-    // ---------------------------------------------------------
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(idOferta) {
+        viewModel.cargarDetalles(idOferta)
+    }
 
     // Llamada al componente visual puro
     PanelDetalles(

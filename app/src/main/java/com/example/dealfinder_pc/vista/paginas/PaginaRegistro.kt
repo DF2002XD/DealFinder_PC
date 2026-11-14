@@ -8,20 +8,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.example.dealfinder_pc.viewmodel.uistate.RegistroUIState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dealfinder_pc.viewmodel.vm.RegistroViewModel
 import com.example.dealfinder_pc.vista.misComponentes.Registro
 
 @Composable
 fun PaginaRegistro(
     onNavigateBack: () -> Unit,
     onRegisterSuccess: () -> Unit, // Cuando se cree la cuenta, salta a la app principal
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: RegistroViewModel = viewModel()
 ) {
-    var uiState by remember { mutableStateOf(RegistroUIState()) }
+    val uiState by viewModel.uiState.collectAsState()
 
     // Sin Scaffold local, lo delegamos a la app principal
     Box(
@@ -31,17 +31,16 @@ fun PaginaRegistro(
     ) {
         Registro(
             usuario = uiState.nombreUsuario,
-            onUsuarioChange = { uiState = uiState.copy(nombreUsuario = it) },
+            onUsuarioChange = { viewModel.actualizarUsuario(it) },
             correo = uiState.correo,
-            onCorreoChange = { uiState = uiState.copy(correo = it) },
+            onCorreoChange = { viewModel.actualizarCorreo(it) },
             contrasenha = uiState.contrasenha,
-            onContrasenhaChange = { uiState = uiState.copy(contrasenha = it) },
+            onContrasenhaChange = { viewModel.actualizarContrasenha(it) },
             repeticion = uiState.confirmarContrasenha,
-            onRepeticionChange = { uiState = uiState.copy(confirmarContrasenha = it) },
+            onRepeticionChange = { viewModel.actualizarRepeticion(it) },
             errorMessage = uiState.errorMessage,
             onRegistroClicked = {
-                // Simulamos que el registro va bien
-                onRegisterSuccess()
+                viewModel.registrarUsuario(onSuccess = onRegisterSuccess)
             },
             onNavigateToLogin = onNavigateBack
         )

@@ -4,15 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
-import com.example.dealfinder_pc.viewmodel.uistate.PerfilUIState
+import com.example.dealfinder_pc.viewmodel.vm.PerfilViewModel
 import com.example.dealfinder_pc.vista.misComponentes.TarjetaPerfil
 
 @Composable
@@ -22,19 +21,10 @@ fun PaginaPerfil(
     onNavigateToMoneda: () -> Unit,
     onNavigateToTiendas: () -> Unit,
     onCerrarSesionClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PerfilViewModel = viewModel()
 ) {
-    // ESTADOS SIMULADOS PARA DEMOSTRACIÓN
-    var avisosActivados by remember { mutableStateOf(true) }
-    
-    val perfilMock = PerfilUIState(
-        nombreUsuario = "JUGADOR_01",
-        correoUsuario = "jugador@correo.com",
-        presupuestoTexto = "$80.00",
-        monedaActual = "USD",
-        tiendasTexto = "Steam, GOG",
-        avisosActivados = avisosActivados
-    )
+    val uiState by viewModel.uiState.collectAsState()
 
     Box(
         modifier = modifier
@@ -42,15 +32,12 @@ fun PaginaPerfil(
             .background(Color(0xFF191636)) // Fondo global retro
     ) {
         TarjetaPerfil(
-            perfilData = perfilMock,
+            perfilData = uiState,
             onCuentaClick = onNavigateToCuenta,
             onPresupuestoClick = onNavigateToPresupuesto,
             onMonedaClick = onNavigateToMoneda,
             onTiendasClick = onNavigateToTiendas,
-            onAvisosToggle = { 
-                avisosActivados = !avisosActivados
-                // Próximamente -> El ViewModel guardaría esta preferencia
-            },
+            onAvisosToggle = { viewModel.toggleAvisos(!uiState.avisosActivados) },
             onCerrarSesionClick = onCerrarSesionClick
         )
     }

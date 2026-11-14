@@ -8,20 +8,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.example.dealfinder_pc.viewmodel.uistate.RecuperarContraUIState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dealfinder_pc.viewmodel.vm.RecuperarContraViewModel
 import com.example.dealfinder_pc.vista.misComponentes.RecuperarContrasenha
 
 @Composable
 fun PaginaRecuContra(
     onNavigateBack: () -> Unit, // Para cuando pulsa "Volver"
     onEmailSent: () -> Unit, // Para cuando el correo se envía correctamente (generalmente vuelve al login)
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: RecuperarContraViewModel = viewModel()
 ) {
-    var uiState by remember { mutableStateOf(RecuperarContraUIState()) }
+    val uiState by viewModel.uiState.collectAsState()
 
     // Usamos el Box global para el fondo como en Login/Registro
     Box(
@@ -31,11 +31,10 @@ fun PaginaRecuContra(
     ) {
         RecuperarContrasenha(
             correo = uiState.correo,
-            onCorreoChange = { uiState = uiState.copy(correo = it) },
+            onCorreoChange = { viewModel.actualizarCorreo(it) },
             errorMessage = uiState.errorMessage,
             onEnviarClicked = { 
-                // Aquí el ViewModel llamará a Firebase auth para enviar el correo
-                onEmailSent()
+                viewModel.enviarCorreoRecuperacion(onSuccess = onEmailSent)
             },
             onNavigateToLogin = onNavigateBack
         )
