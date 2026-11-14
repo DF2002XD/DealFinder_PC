@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
+import com.example.dealfinder_pc.viewmodel.uistate.CuentaUIState
 import com.example.dealfinder_pc.vista.misComponentes.PanelCuenta
 
 @Composable
@@ -23,9 +24,11 @@ fun PaginaCuenta(
 ) {
     val contexto = LocalContext.current 
     
-    // Simulación del estado del ViewModel
-    var correoActual by remember { mutableStateOf("jugador@correo.com") }
-    var mensajeErrorCorreo by remember { mutableStateOf<String?>(null) }
+    var uiState by remember { mutableStateOf(CuentaUIState(correo = "jugador@correo.com")) }
+    var inputCorreo by remember { mutableStateOf(uiState.correo) }
+    var inputContrasenhaActual by remember { mutableStateOf("") }
+    var inputContrasenhaNueva by remember { mutableStateOf("") }
+    var inputRepeticion by remember { mutableStateOf("") }
 
     // Usamos Box porque la barra superior ya la provee el AppNavigation global
     Box(
@@ -35,21 +38,27 @@ fun PaginaCuenta(
     ) {
         // El componente principal que tiene el diseño de la cuenta
         PanelCuenta(
-            correoActual = correoActual, 
-            mensajeErrorCorreo = mensajeErrorCorreo,
+            correo = inputCorreo,
+            onCorreoChange = { inputCorreo = it },
+            contrasenhaActual = inputContrasenhaActual,
+            onContrasenhaActualChange = { inputContrasenhaActual = it },
+            contrasenhaNueva = inputContrasenhaNueva,
+            onContrasenhaNuevaChange = { inputContrasenhaNueva = it },
+            repeticionContrasenha = inputRepeticion,
+            onRepeticionContrasenhaChange = { inputRepeticion = it },
+            mensajeErrorCorreo = uiState.errorMessage,
             mensajeErrorContrasenha = null,
-            onGuardarCorreoClick = { nuevoCorreo ->
-                if (nuevoCorreo.isBlank()) {
-                    mensajeErrorCorreo = "El correo no puede estar vacío"
-                } else if (nuevoCorreo == correoActual) {
-                    mensajeErrorCorreo = "Tiene que ser otro correo distinto"
+            onGuardarCorreoClick = {
+                if (inputCorreo.isBlank()) {
+                    uiState = uiState.copy(errorMessage = "El correo no puede estar vacío")
+                } else if (inputCorreo == uiState.correo) {
+                    uiState = uiState.copy(errorMessage = "Tiene que ser otro correo distinto")
                 } else {
-                    mensajeErrorCorreo = null
-                    correoActual = nuevoCorreo
+                    uiState = uiState.copy(errorMessage = null, correo = inputCorreo)
                     Toast.makeText(contexto, "Correo actualizado con éxito", Toast.LENGTH_SHORT).show()
                 }
             },
-            onCambiarContrasenhaClick = { _, _, _ ->
+            onCambiarContrasenhaClick = {
                 Toast.makeText(contexto, "Contraseña cambiada", Toast.LENGTH_SHORT).show()
             },
             onOlvidoContrasenhaClick = onRecuperarContrasenhaClick

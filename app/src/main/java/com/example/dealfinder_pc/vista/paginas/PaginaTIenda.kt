@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
+import com.example.dealfinder_pc.viewmodel.uistate.FiltrosUIState
 import com.example.dealfinder_pc.vista.misComponentes.PanelTiendasFavoritas
 
 @Composable
@@ -22,12 +23,13 @@ fun PaginaTienda(
 ) {
     val contexto = LocalContext.current 
     
-    // ESTADOS SIMULADOS PARA DEMOSTRACIÓN
-    val tiendasDisponiblesMock = listOf(
-        "Steam", "GOG", "Epic Games Store", "Humble Store", 
-        "Fanatical", "GreenManGaming", "Gamesplanet", "IndieGala"
-    )
-    var tiendasSeleccionadas by remember { mutableStateOf(listOf("Steam", "GOG")) }
+    var uiState by remember { mutableStateOf(FiltrosUIState(
+        tiendasDisponibles = listOf(
+            "Steam", "GOG", "Epic Games Store", "Humble Store", 
+            "Fanatical", "GreenManGaming", "Gamesplanet", "IndieGala"
+        ),
+        tiendasSeleccionadas = listOf("Steam", "GOG")
+    )) }
 
     Column(
         modifier = modifier
@@ -38,15 +40,15 @@ fun PaginaTienda(
 
         // El componente principal que tiene la lista de checkboxes
         PanelTiendasFavoritas(
-            tiendasDisponibles = tiendasDisponiblesMock,
-            tiendasSeleccionadas = tiendasSeleccionadas,
+            tiendasDisponibles = uiState.tiendasDisponibles,
+            tiendasSeleccionadas = uiState.tiendasSeleccionadas,
             onTiendaToggle = { tienda ->
-                // Toggle de selección
-                tiendasSeleccionadas = if (tiendasSeleccionadas.contains(tienda)) {
-                    tiendasSeleccionadas - tienda
+                val nuevasTiendas = if (uiState.tiendasSeleccionadas.contains(tienda)) {
+                    uiState.tiendasSeleccionadas - tienda
                 } else {
-                    tiendasSeleccionadas + tienda
+                    uiState.tiendasSeleccionadas + tienda
                 }
+                uiState = uiState.copy(tiendasSeleccionadas = nuevasTiendas)
             },
             onGuardarClick = {
                 // El ViewModel guardaría la lista de tiendas preferidas

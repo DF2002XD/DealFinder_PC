@@ -15,10 +15,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -46,16 +42,17 @@ import com.example.dealfinder_pc.ui.theme.displayFontFamily
  */
 @Composable
 fun Login(
+    correo: String,
+    onCorreoChange: (String) -> Unit,
+    contrasenha: String,
+    onContrasenhaChange: (String) -> Unit,
     keepLogged: Boolean,
     onKeepLoggedChange: (Boolean) -> Unit,
     errorMessage: String? = null,
-    onLoginClicked: (correo: String, contrasenha: String) -> Unit,
+    onLoginClicked: () -> Unit,
     onNavigateToRegister: () -> Unit,
     onNavigateToResetPassword: () -> Unit
 ) {
-    var correo by remember { mutableStateOf(value = "") }
-    var contrasenha by remember { mutableStateOf(value = "") }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,7 +82,7 @@ fun Login(
 
         CampoCorreo(
             valor = correo,
-            onValorCambiado = { correo = it },
+            onValorCambiado = onCorreoChange,
             placeholder = R.string.campo_correo,
             esError = errorMessage != null
         )
@@ -94,7 +91,7 @@ fun Login(
 
         CampoContrasenha(
             valor = contrasenha,
-            onValorCambiado = { contrasenha = it },
+            onValorCambiado = onContrasenhaChange,
             placeholder = R.string.campo_contrasena,
             esError = errorMessage != null
         )
@@ -149,7 +146,7 @@ fun Login(
 
         Boton(
             nombre = R.string.login_iniciar_sesion,
-            onClick = { onLoginClicked(correo, contrasenha) },
+            onClick = onLoginClicked,
             isPrimary = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -172,9 +169,13 @@ fun Login(
 fun LoginPreview() {
     DealFinder_PCTheme {
         Login(
+            correo = "",
+            onCorreoChange = {},
+            contrasenha = "",
+            onContrasenhaChange = {},
             keepLogged = false,
             onKeepLoggedChange = {},
-            onLoginClicked = { _, _ -> },
+            onLoginClicked = {},
             onNavigateToRegister = {},
             onNavigateToResetPassword = {}
         )

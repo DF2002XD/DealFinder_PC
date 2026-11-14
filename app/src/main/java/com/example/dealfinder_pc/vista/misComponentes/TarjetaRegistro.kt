@@ -11,10 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,15 +25,18 @@ import com.example.dealfinder_pc.ui.theme.displayFontFamily
 
 @Composable
 fun Registro(
+    usuario: String,
+    onUsuarioChange: (String) -> Unit,
+    correo: String,
+    onCorreoChange: (String) -> Unit,
+    contrasenha: String,
+    onContrasenhaChange: (String) -> Unit,
+    repeticion: String,
+    onRepeticionChange: (String) -> Unit,
     errorMessage: String? = null,
-    onRegistroClicked: (usuario: String, correo: String, contrasenha: String, repeticion: String) -> Unit,
+    onRegistroClicked: () -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
-    var usuario by remember { mutableStateOf(value = "") }
-    var correo by remember { mutableStateOf(value = "") }
-    var contrasenha by remember { mutableStateOf(value = "") }
-    var repeticion by remember { mutableStateOf(value = "") }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,7 +66,7 @@ fun Registro(
 
         CampoTexto(
             valor = usuario,
-            onValorCambiado = { usuario = it },
+            onValorCambiado = onUsuarioChange,
             placeholder = R.string.registro_hint_usuario,
             esError = errorMessage != null
         )
@@ -76,7 +75,7 @@ fun Registro(
 
         CampoCorreo(
             valor = correo,
-            onValorCambiado = { correo = it },
+            onValorCambiado = onCorreoChange,
             placeholder = R.string.campo_correo,
             esError = errorMessage != null
         )
@@ -85,7 +84,7 @@ fun Registro(
 
         CampoContrasenhaSiempreVisible(
             valor = contrasenha,
-            onValorCambiado = { contrasenha = it },
+            onValorCambiado = onContrasenhaChange,
             placeholder = R.string.campo_contrasena,
             esError = errorMessage != null
         )
@@ -94,7 +93,7 @@ fun Registro(
 
         CampoContrasenha(
             valor = repeticion,
-            onValorCambiado = { repeticion = it },
+            onValorCambiado = onRepeticionChange,
             placeholder = R.string.registro_hint_repetir_contrasena,
             esError = errorMessage != null
         )
@@ -113,7 +112,7 @@ fun Registro(
 
         Boton(
             nombre = R.string.registro_registrarme,
-            onClick = { onRegistroClicked(usuario, correo, contrasenha, repeticion) },
+            onClick = onRegistroClicked,
             isPrimary = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -136,8 +135,16 @@ fun Registro(
 fun RegistroPreview() {
     DealFinder_PCTheme {
         Registro(
+            usuario = "",
+            onUsuarioChange = {},
+            correo = "",
+            onCorreoChange = {},
+            contrasenha = "",
+            onContrasenhaChange = {},
+            repeticion = "",
+            onRepeticionChange = {},
             errorMessage = null,
-            onRegistroClicked = { _, _, _, _ -> },
+            onRegistroClicked = {},
             onNavigateToLogin = {}
         )
     }

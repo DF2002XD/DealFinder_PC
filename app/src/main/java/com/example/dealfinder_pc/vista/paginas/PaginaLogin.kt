@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
+import com.example.dealfinder_pc.viewmodel.uistate.LoginUIState
 import com.example.dealfinder_pc.vista.misComponentes.Login
 
 @Composable
@@ -21,8 +22,8 @@ fun PaginaLogin(
     onLoginSuccess: () -> Unit, // Cuando el usuario se loguea bien, salta a la app principal
     modifier: Modifier = Modifier
 ) {
-    // Estado de prueba para la UI hasta que conectemos el ViewModel
-    var keepLogged by remember { mutableStateOf(false) }
+    // Estado de prueba usando LoginUIState
+    var uiState by remember { mutableStateOf(LoginUIState()) }
 
     // En lugar de Scaffold, usamos una Box simple que ocupa el espacio que le asigne el NavHost
     Box(
@@ -30,12 +31,17 @@ fun PaginaLogin(
             .fillMaxSize()
             .background(Color(0xFF191636)) // Fondo global retro de tu app
     ) {
-        // Tu pieza de Lego "Login"
         Login(
-            keepLogged = keepLogged,
-            onKeepLoggedChange = { keepLogged = it },
-            errorMessage = null, // De momento sin error
-            onLoginClicked = { _, _ ->
+            correo = uiState.correo,
+            onCorreoChange = { uiState = uiState.copy(correo = it) },
+            contrasenha = uiState.contrasenha,
+            onContrasenhaChange = { uiState = uiState.copy(contrasenha = it) },
+            keepLogged = uiState.keepLogged,
+            onKeepLoggedChange = { uiState = uiState.copy(keepLogged = it) },
+            errorMessage = uiState.errorMessage,
+            onLoginClicked = {
+                // Aquí el ViewModel haría la autenticación
+                // Por ahora simulamos que fue un éxito
                 onLoginSuccess() 
             },
             onNavigateToRegister = onNavigateToRegistro,

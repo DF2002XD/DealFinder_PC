@@ -11,10 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -38,12 +34,12 @@ import com.example.dealfinder_pc.ui.theme.displayFontFamily
  */
 @Composable
 fun RecuperarContrasenha(
+    correo: String,
+    onCorreoChange: (String) -> Unit,
     errorMessage: String? = null,
-    onEnviarClicked: (correo: String) -> Unit,
+    onEnviarClicked: () -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
-    var correo by remember { mutableStateOf(value = "") }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -74,7 +70,7 @@ fun RecuperarContrasenha(
 
         CampoCorreo(
             valor = correo,
-            onValorCambiado = { correo = it },
+            onValorCambiado = onCorreoChange,
             placeholder = R.string.campo_correo,
             esError = errorMessage != null
         )
@@ -93,7 +89,7 @@ fun RecuperarContrasenha(
 
         Boton(
             nombre = R.string.recuperar_enviar,
-            onClick = { onEnviarClicked(correo) },
+            onClick = onEnviarClicked,
             isPrimary = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -116,6 +112,8 @@ fun RecuperarContrasenha(
 fun RecuperarContrasenhaPreview() {
     DealFinder_PCTheme {
         RecuperarContrasenha(
+            correo = "",
+            onCorreoChange = {},
             errorMessage = null,
             onEnviarClicked = {},
             onNavigateToLogin = {}

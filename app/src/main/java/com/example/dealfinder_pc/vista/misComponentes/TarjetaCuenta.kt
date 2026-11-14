@@ -12,10 +12,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -28,20 +24,21 @@ import com.example.dealfinder_pc.ui.theme.bodyFontFamily
 
 @Composable
 fun PanelCuenta(
-    correoActual: String,
+    correo: String,
+    onCorreoChange: (String) -> Unit,
+    contrasenhaActual: String,
+    onContrasenhaActualChange: (String) -> Unit,
+    contrasenhaNueva: String,
+    onContrasenhaNuevaChange: (String) -> Unit,
+    repeticionContrasenha: String,
+    onRepeticionContrasenhaChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     mensajeErrorCorreo: String? = null,
     mensajeErrorContrasenha: String? = null,
-    onGuardarCorreoClick: (nuevoCorreo: String) -> Unit,
-    onCambiarContrasenhaClick: (actual: String, nueva: String, repeticion: String) -> Unit,
-    onOlvidoContrasenhaClick: () -> Unit // NUEVO: Acción para cuando olvida la contraseña
+    onGuardarCorreoClick: () -> Unit,
+    onCambiarContrasenhaClick: () -> Unit,
+    onOlvidoContrasenhaClick: () -> Unit
 ) {
-    // Estados internos para lo que escribe el usuario antes de guardarlo
-    var correo by remember { mutableStateOf(correoActual) }
-    var contrasenhaActual by remember { mutableStateOf("") }
-    var contrasenhaNueva by remember { mutableStateOf("") }
-    var repeticionContrasenha by remember { mutableStateOf("") }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -60,7 +57,7 @@ fun PanelCuenta(
         
         CampoCorreo(
             valor = correo,
-            onValorCambiado = { correo = it },
+            onValorCambiado = onCorreoChange,
             esError = mensajeErrorCorreo != null
         )
         
@@ -79,7 +76,7 @@ fun PanelCuenta(
 
         Boton(
             nombre = R.string.cuenta_guardar_correo,
-            onClick = { onGuardarCorreoClick(correo) },
+            onClick = onGuardarCorreoClick,
             isPrimary = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -92,7 +89,7 @@ fun PanelCuenta(
 
         CampoContrasenha(
             valor = contrasenhaActual,
-            onValorCambiado = { contrasenhaActual = it },
+            onValorCambiado = onContrasenhaActualChange,
             placeholder = R.string.cuenta_hint_actual,
             esError = mensajeErrorContrasenha != null
         )
@@ -101,7 +98,7 @@ fun PanelCuenta(
 
         CampoContrasenha(
             valor = contrasenhaNueva,
-            onValorCambiado = { contrasenhaNueva = it },
+            onValorCambiado = onContrasenhaNuevaChange,
             placeholder = R.string.cuenta_hint_nueva,
             esError = mensajeErrorContrasenha != null
         )
@@ -110,7 +107,7 @@ fun PanelCuenta(
 
         CampoContrasenha(
             valor = repeticionContrasenha,
-            onValorCambiado = { repeticionContrasenha = it },
+            onValorCambiado = onRepeticionContrasenhaChange,
             placeholder = R.string.cuenta_hint_repetir,
             esError = mensajeErrorContrasenha != null
         )
@@ -129,7 +126,7 @@ fun PanelCuenta(
 
         Boton(
             nombre = R.string.cuenta_boton_cambiar_contrasena,
-            onClick = { onCambiarContrasenhaClick(contrasenhaActual, contrasenhaNueva, repeticionContrasenha) },
+            onClick = onCambiarContrasenhaClick,
             isPrimary = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -158,9 +155,16 @@ fun PanelCuenta(
 fun PanelCuentaPreview() {
     DealFinder_PCTheme {
         PanelCuenta(
-            correoActual = "jugador@correo.com",
+            correo = "jugador@correo.com",
+            onCorreoChange = {},
+            contrasenhaActual = "",
+            onContrasenhaActualChange = {},
+            contrasenhaNueva = "",
+            onContrasenhaNuevaChange = {},
+            repeticionContrasenha = "",
+            onRepeticionContrasenhaChange = {},
             onGuardarCorreoClick = {},
-            onCambiarContrasenhaClick = { _, _, _ -> },
+            onCambiarContrasenhaClick = {},
             onOlvidoContrasenhaClick = {}
         )
     }

@@ -5,6 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.example.dealfinder_pc.viewmodel.uistate.DetallesUIState
 import com.example.dealfinder_pc.viewmodel.uistate.OfertaTiendaUIState
 import com.example.dealfinder_pc.vista.misComponentes.PanelDetalles
 
@@ -23,49 +28,50 @@ fun PaginaDetalles(
     onVolver: () -> Unit = {},
     onTiendaClick: (OfertaTiendaUIState) -> Unit = {}
 ) {
-    // TODOs: Aquí eventualmente instanciarás o recibirás tu ViewModel
-    // val uiState = viewModel.obtenerDetallesJuego(idOferta).collectAsState().value
-
     // ---------------------------------------------------------
-    // MOCK DATA: Reemplazar con datos reales del UIState cuando conectes el ViewModel
+    // ESTADO SIMULADO HASTA QUE SE CONECTE EL VIEWMODEL
     // ---------------------------------------------------------
-    val tituloJuego = "Prison Tycoon 3: Lockdown"
-    val urlImagen = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg"
-    val minimoHistoricoInfo = "Mínimo histórico · 10/10/2016"
-    val precioMinimoHistorico = "$1.99"
-    val precioNormal = "$9.99"
-
-    val ofertasEnTiendas = listOf(
-        OfertaTiendaUIState(
-            nombreTienda = "Steam",
-            precio = "$3.49",
-            descuentoTexto = "-65%",
-            esLaMejor = true,
-            urlLogo = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px-Steam_icon_logo.svg.png"
-        ),
-        OfertaTiendaUIState(
-            nombreTienda = "Fanatical",
-            precio = "$7.48",
-            descuentoTexto = "-25%",
-            esLaMejor = false
-        ),
-        OfertaTiendaUIState(
-            nombreTienda = "IndieGala",
-            precio = "$9.99",
-            descuentoTexto = null,
-            esLaMejor = false
+    var uiState by remember { mutableStateOf(
+        DetallesUIState(
+            idOferta = idOferta,
+            tituloJuego = "Prison Tycoon 3: Lockdown",
+            urlImagen = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg",
+            minimoHistoricoInfo = "Mínimo histórico · 10/10/2016",
+            precioMinimoHistorico = "$1.99",
+            precioNormal = "$9.99",
+            ofertasEnTiendas = listOf(
+                OfertaTiendaUIState(
+                    nombreTienda = "Steam", 
+                    precio = "$3.49", 
+                    descuentoTexto = "-65%", 
+                    esLaMejor = true, 
+                    urlLogo = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px-Steam_icon_logo.svg.png"
+                ),
+                OfertaTiendaUIState(
+                    nombreTienda = "Fanatical", 
+                    precio = "$7.48", 
+                    descuentoTexto = "-25%", 
+                    esLaMejor = false
+                ),
+                OfertaTiendaUIState(
+                    nombreTienda = "IndieGala", 
+                    precio = "$9.99", 
+                    descuentoTexto = null, 
+                    esLaMejor = false
+                )
+            )
         )
-    )
+    ) }
     // ---------------------------------------------------------
 
-    // Llamada al componente visual puro que creamos antes
+    // Llamada al componente visual puro
     PanelDetalles(
-        tituloJuego = tituloJuego,
-        urlImagen = urlImagen,
-        minimoHistoricoInfo = minimoHistoricoInfo,
-        precioMinimoHistorico = precioMinimoHistorico,
-        precioNormal = precioNormal,
-        ofertasEnTiendas = ofertasEnTiendas,
+        tituloJuego = uiState.tituloJuego,
+        urlImagen = uiState.urlImagen,
+        minimoHistoricoInfo = uiState.minimoHistoricoInfo,
+        precioMinimoHistorico = uiState.precioMinimoHistorico,
+        precioNormal = uiState.precioNormal,
+        ofertasEnTiendas = uiState.ofertasEnTiendas,
         onTiendaClick = onTiendaClick,
         onAgregarDeseosClick = {
             // TODOs: Lógica para guardar en Base de Datos / ViewModel

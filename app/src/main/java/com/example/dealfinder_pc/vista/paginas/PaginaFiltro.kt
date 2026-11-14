@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
+import com.example.dealfinder_pc.viewmodel.uistate.FiltrosUIState
 import com.example.dealfinder_pc.vista.misComponentes.PanelFiltros
 
 @Composable
@@ -19,15 +20,10 @@ fun PaginaFiltro(
     onNavigateBack: () -> Unit, // Para volver a Ofertas al darle a Aplicar
     modifier: Modifier = Modifier
 ) {
-    // ---------------------------------------------------------
-    // ESTADOS SIMULADOS PARA DEMOSTRACIÓN (Lógica del ViewModel)
-    // ---------------------------------------------------------
-    var ordenSeleccionado by remember { mutableStateOf("Mejor Oferta Primero") }
-    val tiendasMock = listOf("STEAM", "EPIC", "GOG", "HUMBLE", "FANATICAL")
-    var tiendasSeleccionadas by remember { mutableStateOf(listOf("STEAM")) }
-    var precioMaximo by remember { mutableStateOf("") }
-    var soloGratis by remember { mutableStateOf(false) }
-    var soloEnOferta by remember { mutableStateOf(false) }
+    var uiState by remember { mutableStateOf(FiltrosUIState(
+        tiendasDisponibles = listOf("STEAM", "EPIC", "GOG", "HUMBLE", "FANATICAL"),
+        tiendasSeleccionadas = listOf("STEAM")
+    )) }
 
     Box(
         modifier = modifier
@@ -35,32 +31,33 @@ fun PaginaFiltro(
             .background(Color(0xFF191636)) // Tu fondo retro
     ) {
         PanelFiltros(
-            ordenSeleccionado = ordenSeleccionado,
-            onOrdenSeleccionado = { ordenSeleccionado = it },
-            tiendasDisponibles = tiendasMock,
-            tiendasSeleccionadas = tiendasSeleccionadas,
+            ordenSeleccionado = uiState.ordenSeleccionado,
+            onOrdenSeleccionado = { uiState = uiState.copy(ordenSeleccionado = it) },
+            tiendasDisponibles = uiState.tiendasDisponibles,
+            tiendasSeleccionadas = uiState.tiendasSeleccionadas,
             onTiendaToggle = { tienda ->
-                // Lógica de toggle: si está la quita, si no está la añade
-                tiendasSeleccionadas = if (tiendasSeleccionadas.contains(tienda)) {
-                    tiendasSeleccionadas - tienda
+                val nuevasTiendas = if (uiState.tiendasSeleccionadas.contains(tienda)) {
+                    uiState.tiendasSeleccionadas - tienda
                 } else {
-                    tiendasSeleccionadas + tienda
+                    uiState.tiendasSeleccionadas + tienda
                 }
+                uiState = uiState.copy(tiendasSeleccionadas = nuevasTiendas)
             },
-            precioMaximo = precioMaximo,
-            onPrecioMaximoChange = { precioMaximo = it },
+            precioMaximo = uiState.precioMaximo,
+            onPrecioMaximoChange = { uiState = uiState.copy(precioMaximo = it) },
             monedaTexto = "USD",
-            soloGratis = soloGratis,
-            onSoloGratisChange = { soloGratis = it },
-            soloEnOferta = soloEnOferta,
-            onSoloEnOfertaChange = { soloEnOferta = it },
+            soloGratis = uiState.soloGratis,
+            onSoloGratisChange = { uiState = uiState.copy(soloGratis = it) },
+            soloEnOferta = uiState.soloEnOferta,
+            onSoloEnOfertaChange = { uiState = uiState.copy(soloEnOferta = it) },
             onLimpiarClick = {
-                // Resetea todos los estados a su valor inicial
-                ordenSeleccionado = "Mejor Oferta Primero"
-                tiendasSeleccionadas = emptyList()
-                precioMaximo = ""
-                soloGratis = false
-                soloEnOferta = false
+                uiState = uiState.copy(
+                    ordenSeleccionado = "Mejor Oferta Primero",
+                    tiendasSeleccionadas = emptyList(),
+                    precioMaximo = "",
+                    soloGratis = false,
+                    soloEnOferta = false
+                )
             },
             onAplicarClick = {
                 // Guarda cambios (el ViewModel lo haría aquí) y vuelve a la lista
