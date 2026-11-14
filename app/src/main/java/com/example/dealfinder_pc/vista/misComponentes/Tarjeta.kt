@@ -36,6 +36,7 @@ import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.ui.theme.bodyFontFamily
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
 import com.example.dealfinder_pc.ui.theme.extraColors
+import com.example.dealfinder_pc.viewmodel.uistate.OfertaTienda
 
 /**
  * Tarjeta de oferta dispuesta de forma horizontal (ideal para listas), diseñada con un estilo retro (bordes rectos).
@@ -372,6 +373,67 @@ fun TarjetaPerfilPreview() {
         TarjetaPerfil(
             nombre = "JUGADOR_01",
             correo = "jugador@correo.com"
+        )
+    }
+}
+
+
+/**
+ * Componente para dibujar la barra de cada tienda.
+ * Maneja automáticamente los bordes verdes y etiquetas si es la "Mejor Oferta".
+ */
+@Composable
+fun FilaTiendaDetalle(
+    oferta: OfertaTienda,
+    onClick: () -> Unit
+) {
+    val retroGreen = MaterialTheme.extraColors.success
+    val colorBorde = if (oferta.esLaMejor) retroGreen else MaterialTheme.colorScheme.onSurface
+    val colorPrecio = if (oferta.esLaMejor) retroGreen else MaterialTheme.colorScheme.onSurface
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .border(2.dp, colorBorde, RectangleShape)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .padding(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = oferta.nombreTienda,
+                fontFamily = bodyFontFamily,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 18.sp
+            )
+            
+            if (oferta.descuentoTexto != null) {
+                Spacer(modifier = Modifier.width(8.dp))
+                // Etiqueta de descuento verde
+                Box(
+                    modifier = Modifier
+                        .background(retroGreen)
+                        .padding(horizontal = 4.dp, vertical = 2.dp)
+                ) {
+                    val textoEtiqueta = if (oferta.esLaMejor) "${oferta.descuentoTexto} MEJOR" else oferta.descuentoTexto
+                    Text(
+                        text = textoEtiqueta,
+                        fontFamily = bodyFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.background // Letras oscuras
+                    )
+                }
+            }
+        }
+
+        Text(
+            text = oferta.precio,
+            fontFamily = displayFontFamily,
+            color = colorPrecio,
+            fontSize = 14.sp
         )
     }
 }

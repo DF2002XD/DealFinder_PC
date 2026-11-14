@@ -14,7 +14,10 @@ import androidx.compose.ui.unit.sp
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.ui.theme.bodyFontFamily
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
-
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.Alignment
 
 /**
  * Título principal de la pantalla, estilizado con letra pixelada y el color primario del tema.
@@ -134,6 +137,36 @@ fun TextoSombra(
             fontFamily = bodyFontFamily,
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 18.sp
+        )
+    }
+}
+
+/**
+ * Componente para mostrar información de precios de forma simétrica (Etiqueta izquierda gris, Precio derecha colorido).
+ */
+@Composable
+fun FilaInformacionPrecio(
+    etiqueta: String,
+    precio: String,
+    colorPrecio: Color,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = etiqueta,
+            fontFamily = bodyFontFamily,
+            color = MaterialTheme.colorScheme.onSurfaceVariant, // Gris
+            fontSize = 16.sp
+        )
+        Text(
+            text = precio,
+            fontFamily = displayFontFamily, // Pixel font
+            color = colorPrecio,
+            fontSize = 14.sp
         )
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.viewmodel.uistate.DeseoUIState
 import com.example.dealfinder_pc.viewmodel.uistate.MonedaUIState
+import com.example.dealfinder_pc.viewmodel.uistate.OfertaTienda
 import com.example.dealfinder_pc.viewmodel.uistate.OfertaUIState
 
 @Composable
@@ -132,6 +133,34 @@ fun ListaTiendas(
     }
 }
 
+
+@Composable
+fun ListaOfertasTiendas(
+    ofertasEnTiendas: List<OfertaTienda>,
+    onTiendaClick: (OfertaTienda) -> Unit,
+    modifier: Modifier = Modifier,
+    headerContent: @Composable () -> Unit
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
+    ) {
+        item {
+            headerContent()
+        }
+        
+        items(ofertasEnTiendas) { oferta ->
+            FilaTiendaDetalle(
+                oferta = oferta,
+                onClick = { onTiendaClick(oferta) }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+        
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
 
 @Preview(showBackground = true, backgroundColor = 0xFF191636)
 @Composable
