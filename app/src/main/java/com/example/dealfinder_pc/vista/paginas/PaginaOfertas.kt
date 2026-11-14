@@ -27,11 +27,11 @@ fun PaginaOfertas(
     
     // Lista de prueba para que la pantalla no salga vacía
     val ofertasMock = listOf(
-        OfertaUIState("1", "Silver Pines", "Steam · Meta 85", "$35.90", "$22.26", "-38%", "SP", Color(0xFF33FFFF)),
-        OfertaUIState("2", "Suicide Squad: Kill the Justice Le...", "Epic Games Store · Meta 63", "$69.99", "$3.49", "-95%", "SS", Color(0xFFFF4D94)),
-        OfertaUIState("3", "Frosthaven", "GameBillet · Steam 70%", "$39.99", "$23.19", "-42%", "FH", Color(0xFF55FF88)),
-        OfertaUIState("4", "EA SPORTS PGA TOUR", "Epic Games Store · Meta 72", "$69.99", "$6.99", "-90%", "PG", Color(0xFFFFCC33)),
-        OfertaUIState("5", "Bad Cheese", "Epic Games Store · Meta 63", "$12.99", "GRATIS", "-100%", "BC", Color(0xFFB399FF))
+        OfertaUIState("1", "Silver Pines", "Steam · Meta 85", "$35.90", "$22.26", "-38%", "SP"),
+        OfertaUIState("2", "Suicide Squad: Kill the Justice Le...", "Epic Games Store · Meta 63", "$69.99", "$3.49", "-95%", "SS"),
+        OfertaUIState("3", "Frosthaven", "GameBillet · Steam 70%", "$39.99", "$23.19", "-42%", "FH"),
+        OfertaUIState("4", "EA SPORTS PGA TOUR", "Epic Games Store · Meta 72", "$69.99", "$6.99", "-90%", "PG"),
+        OfertaUIState("5", "Bad Cheese", "Epic Games Store · Meta 63", "$12.99", "GRATIS", "-100%", "BC")
     )
 
     // Simulamos la lógica del ViewModel: Filtramos la lista según lo que el usuario ha escrito

@@ -20,9 +20,9 @@ fun PaginaDeseos(
     // ESTADOS SIMULADOS PARA DEMOSTRACIÓN (Lógica del ViewModel)
     // ---------------------------------------------------------
     val deseosMock = listOf(
-        DeseoUIState("1", "Silver Pines", "$22.26", "SP", Color(0xFF33FFFF)),
-        DeseoUIState("3", "Frosthaven", "$23.19", "FH", Color(0xFF55FF88)),
-        DeseoUIState("4", "EA SPORTS PGA TOUR", "$6.99", "PG", Color(0xFFFFCC33))
+        DeseoUIState("1", "Silver Pines", "$22.26", "SP"),
+        DeseoUIState("3", "Frosthaven", "$23.19", "FH"),
+        DeseoUIState("4", "EA SPORTS PGA TOUR", "$6.99", "PG")
     )
     val precioTotalEstimado = "3 juegos · aprox. $52.44"
 

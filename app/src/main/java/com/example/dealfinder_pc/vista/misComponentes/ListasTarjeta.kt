@@ -11,14 +11,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dealfinder_pc.R
 import androidx.compose.ui.unit.dp
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.viewmodel.uistate.DeseoUIState
 import com.example.dealfinder_pc.viewmodel.uistate.MonedaUIState
-import com.example.dealfinder_pc.viewmodel.uistate.OfertaTienda
+import com.example.dealfinder_pc.viewmodel.uistate.OfertaTiendaUIState
 import com.example.dealfinder_pc.viewmodel.uistate.OfertaUIState
 
 @Composable
@@ -68,8 +67,7 @@ fun ListaOfertas(
                 precioOriginal = oferta.precioOriginal,
                 precioRebajado = oferta.precioRebajado,
                 descuento = oferta.descuento,
-                inicialesImagen = oferta.iniciales,
-                colorImagen = oferta.colorEtiqueta,
+                urlImagen = oferta.urlImagen,
                 onClick = { onOfertaClick(oferta.id) }
             )
         }
@@ -101,9 +99,8 @@ fun ListaDeseos(
             TarjetaDeseo(
                 titulo = deseo.titulo,
                 precio = deseo.precioRebajado,
-                inicialesImagen = deseo.iniciales,
+                urlImagen = deseo.urlImagen,
                 textoBoton = deseo.textoBoton,
-                colorImagen = deseo.colorEtiqueta,
                 onClick = { onDeseoClick(deseo.id) },
                 onBotonClick = { onBotonComprarClick(deseo.id) },
                 onEliminarClick = { onEliminarClick(deseo.id) }
@@ -136,8 +133,8 @@ fun ListaTiendas(
 
 @Composable
 fun ListaOfertasTiendas(
-    ofertasEnTiendas: List<OfertaTienda>,
-    onTiendaClick: (OfertaTienda) -> Unit,
+    ofertasEnTiendas: List<OfertaTiendaUIState>,
+    onTiendaClick: (OfertaTiendaUIState) -> Unit,
     modifier: Modifier = Modifier,
     headerContent: @Composable () -> Unit
 ) {
@@ -165,12 +162,13 @@ fun ListaOfertasTiendas(
 @Preview(showBackground = true, backgroundColor = 0xFF191636)
 @Composable
 fun ListaOfertasPreview() {
+    val urlMock = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg"
     val ofertasMock = listOf(
-        OfertaUIState("1", "Silver Pines", "Steam · Meta 85", "$35.90", "$22.26", "-38%", "SP", Color(0xFF33FFFF)),
-        OfertaUIState("2", "Suicide Squad: Kill the Justice Le...", "Epic Games Store · Meta 63", "$69.99", "$3.49", "-95%", "SS", Color(0xFFFF4D94)),
-        OfertaUIState("3", "Frosthaven", "GameBillet · Steam 70%", "$39.99", "$23.19", "-42%", "FH", Color(0xFF55FF88)),
-        OfertaUIState("4", "EA SPORTS PGA TOUR", "Epic Games Store · Meta 72", "$69.99", "$6.99", "-90%", "PG", Color(0xFFFFCC33)),
-        OfertaUIState("5", "Bad Cheese", "Epic Games Store · Meta 63", "$12.99", "GRATIS", "-100%", "BC", Color(0xFFB399FF))
+        OfertaUIState("1", "Silver Pines", "Steam · Meta 85", "$35.90", "$22.26", "-38%", urlMock),
+        OfertaUIState("2", "Suicide Squad: Kill the Justice Le...", "Epic Games Store · Meta 63", "$69.99", "$3.49", "-95%", urlMock),
+        OfertaUIState("3", "Frosthaven", "GameBillet · Steam 70%", "$39.99", "$23.19", "-42%", urlMock),
+        OfertaUIState("4", "EA SPORTS PGA TOUR", "Epic Games Store · Meta 72", "$69.99", "$6.99", "-90%", urlMock),
+        OfertaUIState("5", "Bad Cheese", "Epic Games Store · Meta 63", "$12.99", "GRATIS", "-100%", urlMock)
     )
 
     DealFinder_PCTheme {
@@ -184,10 +182,11 @@ fun ListaOfertasPreview() {
 @Preview(showBackground = true, backgroundColor = 0xFF191636)
 @Composable
 fun ListaDeseosPreview() {
+    val urlMock = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg"
     val deseosMock = listOf(
-        DeseoUIState("1", "Silver Pines", "$22.26", "SP", Color(0xFF33FFFF)),
-        DeseoUIState("3", "Frosthaven", "$23.19", "FH", Color(0xFF55FF88)),
-        DeseoUIState("4", "EA SPORTS PGA TOUR", "$6.99", "PG", Color(0xFFFFCC33))
+        DeseoUIState("1", "Silver Pines", "$22.26", urlMock),
+        DeseoUIState("3", "Frosthaven", "$23.19", urlMock),
+        DeseoUIState("4", "EA SPORTS PGA TOUR", "$6.99", urlMock)
     )
 
     DealFinder_PCTheme {

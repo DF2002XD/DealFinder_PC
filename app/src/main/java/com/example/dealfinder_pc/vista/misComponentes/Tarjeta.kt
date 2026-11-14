@@ -26,17 +26,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.ui.theme.bodyFontFamily
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
 import com.example.dealfinder_pc.ui.theme.extraColors
-import com.example.dealfinder_pc.viewmodel.uistate.OfertaTienda
+import com.example.dealfinder_pc.viewmodel.uistate.OfertaTiendaUIState
 
 /**
  * Tarjeta de oferta dispuesta de forma horizontal (ideal para listas), diseñada con un estilo retro (bordes rectos).
@@ -47,7 +49,7 @@ import com.example.dealfinder_pc.viewmodel.uistate.OfertaTienda
  * @param precioOriginal Precio sin rebaja, mostrado tachado.
  * @param precioRebajado Precio actual de oferta, mostrado en el color de "éxito" (generalmente verde).
  * @param descuento Porcentaje de descuento aplicado, destacado en una caja verde en la esquina inferior derecha.
- * @param inicialesImagen Texto o iniciales que se muestran en el cuadrado de la izquierda (placeholder de la imagen).
+ * @param urlImagen URL o ruta de la portada del juego.
  * @param onClick Callback que se ejecuta cuando el usuario pulsa en cualquier lugar de la tarjeta.
  * @param modifier Modificador opcional para personalizar el diseño del contenedor (como padding exterior o tamaño).
  */
@@ -58,10 +60,9 @@ fun TarjetaOferta(
     precioOriginal: String,
     precioRebajado: String,
     descuento: String,
-    inicialesImagen: String,
+    urlImagen: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    colorImagen: Color = MaterialTheme.colorScheme.secondary
+    modifier: Modifier = Modifier
 ) {
     val retroGreen = MaterialTheme.extraColors.success
     val retroOnGreen = MaterialTheme.extraColors.onSuccess
@@ -80,15 +81,14 @@ fun TarjetaOferta(
         Box(
             modifier = Modifier
                 .size(72.dp)
-                .border(2.dp, borderColor, RectangleShape)
-                .background(colorImagen),
+                .border(2.dp, borderColor, RectangleShape),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = inicialesImagen,
-                fontFamily = displayFontFamily,
-                color = MaterialTheme.colorScheme.onSecondary,
-                fontSize = 14.sp
+            AsyncImage(
+                model = urlImagen,
+                contentDescription = "Portada de $titulo",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -165,13 +165,12 @@ fun TarjetaOferta(
 fun TarjetaDeseo(
     titulo: String,
     precio: String,
-    inicialesImagen: String,
+    urlImagen: String,
     textoBoton: String,
     onClick: () -> Unit,
     onBotonClick: () -> Unit,
     onEliminarClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    colorImagen: Color = MaterialTheme.colorScheme.secondary
+    modifier: Modifier = Modifier
 ) {
     val retroGreen = MaterialTheme.extraColors.success
     val borderColor = MaterialTheme.colorScheme.onSurface
@@ -188,20 +187,19 @@ fun TarjetaDeseo(
             .padding(8.dp), // Reducido el padding para coincidir con la imagen
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Imagen placeholder
+        // Imagen
         Box(
             modifier = Modifier
                 .width(64.dp)
                 .height(85.dp)
-                .border(2.dp, borderColor, RectangleShape)
-                .background(colorImagen),
+                .border(2.dp, borderColor, RectangleShape),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = inicialesImagen,
-                fontFamily = displayFontFamily,
-                color = Color.Black,
-                fontSize = 16.sp
+            AsyncImage(
+                model = urlImagen,
+                contentDescription = "Portada de $titulo",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -341,7 +339,7 @@ fun TarjetaDeseoPreview() {
         TarjetaDeseo(
             titulo = "Silver Pines",
             precio = "$22.26",
-            inicialesImagen = "SP",
+            urlImagen = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg",
             textoBoton = "Comprado",
             onClick = {},
             onBotonClick = {},
@@ -360,7 +358,7 @@ fun TarjetaOfertaPreview() {
             precioOriginal = "$35.90",
             precioRebajado = "$22.26",
             descuento = "-38%",
-            inicialesImagen = "SP",
+            urlImagen = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg",
             onClick = {}
         )
     }
@@ -384,7 +382,7 @@ fun TarjetaPerfilPreview() {
  */
 @Composable
 fun FilaTiendaDetalle(
-    oferta: OfertaTienda,
+    oferta: OfertaTiendaUIState,
     onClick: () -> Unit
 ) {
     val retroGreen = MaterialTheme.extraColors.success
@@ -402,6 +400,14 @@ fun FilaTiendaDetalle(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            if (oferta.urlLogo != null) {
+                AsyncImage(
+                    model = oferta.urlLogo,
+                    contentDescription = "Logo de ${oferta.nombreTienda}",
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+            }
             Text(
                 text = oferta.nombreTienda,
                 fontFamily = bodyFontFamily,

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dealfinder_pc.R
@@ -58,9 +57,9 @@ fun TarjetaDeseos(
 @Composable
 fun TarjetaDeseosPreview() {
     val deseosMock = listOf(
-        DeseoUIState("1", "Silver Pines", "$22.26", "SP", Color(0xFF33FFFF)),
-        DeseoUIState("3", "Frosthaven", "$23.19", "FH", Color(0xFF55FF88)),
-        DeseoUIState("4", "EA SPORTS PGA TOUR", "$6.99", "PG", Color(0xFFFFCC33))
+        DeseoUIState("1", "Silver Pines", "$22.26", "SP"),
+        DeseoUIState("3", "Frosthaven", "$23.19", "FH"),
+        DeseoUIState("4", "EA SPORTS PGA TOUR", "$6.99", "PG")
     )
 
     DealFinder_PCTheme {
