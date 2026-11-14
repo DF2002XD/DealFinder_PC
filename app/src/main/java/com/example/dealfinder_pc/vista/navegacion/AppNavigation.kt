@@ -43,10 +43,29 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import com.example.dealfinder_pc.ui.theme.displayFontFamily
 import com.example.dealfinder_pc.vista.misComponentes.TopAppBarNav
+import com.example.dealfinder_pc.viewmodel.uistate.AppNavigationUIState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+
+    // ---------------------------------------------------------
+    // ESTADO DE NAVEGACIÓN SIMULADO (A la espera del ViewModel global)
+    // ---------------------------------------------------------
+    var uiState by remember { mutableStateOf(AppNavigationUIState(
+        isCheckUserSession = false, // Asumimos que ya verificó rápido (simulado)
+        isUserLoggedIn = false,     // Para que arranque en el login por defecto
+        initialRoute = Login        // Ruta de inicio
+    )) }
+
+    // Si aún está comprobando si el usuario tiene sesión guardada, podríamos mostrar un Splash
+    if (uiState.isCheckUserSession) {
+        // En el futuro: Splash Screen o loader aquí
+        return
+    }
 
     // Observamos en qué ruta estamos en cada momento
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -102,7 +121,7 @@ fun AppNavigation() {
 
         NavHost(
             navController = navController,
-            startDestination = Login, // Empezamos en la pantalla de Login
+            startDestination = uiState.initialRoute, // Toma la ruta inicial del UIState
             modifier = Modifier.padding(innerPadding)
         ) {
 
