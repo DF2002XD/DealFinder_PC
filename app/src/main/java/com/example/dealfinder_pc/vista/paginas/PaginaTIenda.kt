@@ -38,8 +38,11 @@ fun PaginaTienda(
             tiendasSeleccionadas = uiState.tiendasSeleccionadas,
             onTiendaToggle = { viewModel.toggleTienda(it) },
             onGuardarClick = {
-                // El ViewModel guardaría la lista de tiendas preferidas
-                Toast.makeText(contexto, "Tiendas guardadas", Toast.LENGTH_SHORT).show()
+                viewModel.guardarTiendasFavoritas(
+                    onSuccess = {
+                        Toast.makeText(contexto, "Tiendas guardadas", Toast.LENGTH_SHORT).show()
+                    }
+                )
             }
         )
     }

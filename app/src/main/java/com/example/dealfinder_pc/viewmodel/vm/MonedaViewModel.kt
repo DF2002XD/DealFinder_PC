@@ -2,6 +2,7 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.MonedaUIState
 import com.example.dealfinder_pc.viewmodel.uistate.MonedasUIState
 import kotlinx.coroutines.delay
@@ -35,7 +36,14 @@ class MonedaViewModel : ViewModel() {
         _uiState.update { it.copy(isSaving = true) }
         viewModelScope.launch {
             delay(1000.milliseconds)
-            // Se guardaría en la base de datos del usuario
+            
+            // Simulación: Creamos el DTO de actualización que enviaríamos al backend
+            val requestDto = PreferenciaUpdateRequestDTO(
+                userId = "uuid-1234", // Lo sacaríamos del estado de sesión global
+                preferredCurrency = _uiState.value.monedaActual
+            )
+            // Aquí iría: apiService.updatePreferences(requestDto)
+            
             _uiState.update { it.copy(isSaving = false) }
             onSuccess()
         }

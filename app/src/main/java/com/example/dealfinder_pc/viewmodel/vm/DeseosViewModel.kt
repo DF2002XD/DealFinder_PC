@@ -47,10 +47,21 @@ class DeseosViewModel : ViewModel() {
 
     fun eliminarJuego(idJuego: String) {
         val listaActualizada = _uiState.value.juegosEnDeseos.filter { it.id != idJuego }
+        
+        // Calculamos la nueva suma total de los precios
+        val sumaTotal = listaActualizada.sumOf { deseo ->
+            // Quitamos el símbolo '$' para poder sumar los números
+            deseo.precioRebajado.replace("$", "").toDoubleOrNull() ?: 0.0
+        }
+        
+        // Formateamos la suma a dos decimales
+        val sumaTotalFormateada = String.format("%.2f", sumaTotal)
+
         _uiState.update {
             it.copy(
                 juegosEnDeseos = listaActualizada,
-                precioTotalEstimado = "${listaActualizada.size} juegos en lista"
+                // Mantenemos el formato original que tenías en strings.xml
+                precioTotalEstimado = "${listaActualizada.size} juegos · aprox. $$sumaTotalFormateada"
             )
         }
     }

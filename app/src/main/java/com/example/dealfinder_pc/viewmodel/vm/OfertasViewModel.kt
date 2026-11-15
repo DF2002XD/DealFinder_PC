@@ -2,6 +2,7 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dealfinder_pc.modelo.OfertaDTO
 import com.example.dealfinder_pc.viewmodel.uistate.OfertaUIState
 import com.example.dealfinder_pc.viewmodel.uistate.OfertasUIState
 import kotlinx.coroutines.delay
@@ -28,13 +29,29 @@ class OfertasViewModel : ViewModel() {
         viewModelScope.launch {
             delay(1000.milliseconds)
             val urlMock = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg"
-            todasLasOfertas = listOf(
-                OfertaUIState("1", "Silver Pines", "Steam · Meta 85", "$35.90", "$22.26", "-38%", urlMock),
-                OfertaUIState("2", "Suicide Squad: Kill the Justice Le...", "Epic Games Store · Meta 63", "$69.99", "$3.49", "-95%", urlMock),
-                OfertaUIState("3", "Frosthaven", "GameBillet · Steam 70%", "$39.99", "$23.19", "-42%", urlMock),
-                OfertaUIState("4", "EA SPORTS PGA TOUR", "Epic Games Store · Meta 72", "$69.99", "$6.99", "-90%", urlMock),
-                OfertaUIState("5", "Bad Cheese", "Epic Games Store · Meta 63", "$12.99", "GRATIS", "-100%", urlMock)
+            
+            // 1. Simulamos que recibimos una lista de OfertaDTO desde el Repositorio / API
+            val mockDtos = listOf(
+                OfertaDTO("1", "Silver Pines", 22.26, 35.90, 38.0, urlMock, "Steam", 85),
+                OfertaDTO("2", "Suicide Squad: Kill the Justice Le...", 3.49, 69.99, 95.0, urlMock, "Epic Games Store", 63),
+                OfertaDTO("3", "Frosthaven", 23.19, 39.99, 42.0, urlMock, "GameBillet", 70),
+                OfertaDTO("4", "EA SPORTS PGA TOUR", 6.99, 69.99, 90.0, urlMock, "Epic Games Store", 72),
+                OfertaDTO("5", "Bad Cheese", 0.0, 12.99, 100.0, urlMock, "Epic Games Store", 63)
             )
+
+            // 2. Mapeamos los DTOs al UIState que necesita nuestra vista
+            todasLasOfertas = mockDtos.map { dto ->
+                OfertaUIState(
+                    id = dto.gameID,
+                    titulo = dto.title,
+                    tiendaYMeta = "${dto.storeID} · Meta ${dto.metacriticScore ?: "--"}",
+                    precioOriginal = "$${dto.normalPrice}",
+                    precioRebajado = if (dto.salePrice <= 0.0) "GRATIS" else "$${dto.salePrice}",
+                    descuento = "-${dto.savings.toInt()}%",
+                    urlImagen = dto.thumbUrl
+                )
+            }
+            
             _uiState.update { it.copy(ofertas = todasLasOfertas, isLoading = false) }
         }
     }
