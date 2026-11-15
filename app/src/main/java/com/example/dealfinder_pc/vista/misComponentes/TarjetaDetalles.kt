@@ -37,6 +37,7 @@ fun PanelDetalles(
     precioMinimoHistorico: String, // ej: "$1.99"
     precioNormal: String, // ej: "$9.99"
     ofertasEnTiendas: List<OfertaTiendaUIState>,
+    isEnDeseos: Boolean,
     onTiendaClick: (OfertaTiendaUIState) -> Unit,
     onAgregarDeseosClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -104,10 +105,14 @@ fun PanelDetalles(
         }
 
         // --- 5. BOTÓN LISTA DE DESEOS ANCLADO AL FONDO ---
+        val textoBoton = if (isEnDeseos) stringResource(R.string.detalle_eliminar_lista) else stringResource(R.string.detalle_agregar_lista)
+        
         Boton(
-            nombre = R.string.detalle_agregar_lista, 
+            nombre = R.string.detalle_agregar_lista, // Esto es el fallback para Boton()
+            nombreTextoDirecto = textoBoton, // Pasamos el string dinámicamente resuelto
             onClick = onAgregarDeseosClick,
-            isPrimary = true,
+            isPrimary = !isEnDeseos,
+            isErrorAction = isEnDeseos, // NUEVO: Se pintará de rojo si ya está en la lista de deseos
             modifier = Modifier.fillMaxWidth()
         )
         
@@ -132,6 +137,7 @@ fun PanelDetallesPreview() {
             precioMinimoHistorico = "$1.99",
             precioNormal = "$9.99",
             ofertasEnTiendas = ofertasSimuladas,
+            isEnDeseos = false,
             onTiendaClick = {},
             onAgregarDeseosClick = {}
         )

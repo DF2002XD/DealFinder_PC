@@ -51,9 +51,19 @@ class DetallesViewModel : ViewModel() {
                             descuentoTexto = null,
                             esLaMejor = false
                         )
-                    )
+                    ),
+                    isEnDeseos = false // Simulamos que inicialmente NO está en deseos
                 )
             }
+        }
+    }
+
+    fun toggleDeseos() {
+        _uiState.update { 
+            // Invertimos el estado (si estaba en deseos lo quitamos, si no estaba lo añadimos)
+            val nuevoEstado = !it.isEnDeseos 
+            // Aquí el ViewModel haría la llamada a la base de datos o API para guardar este cambio
+            it.copy(isEnDeseos = nuevoEstado) 
         }
     }
 }

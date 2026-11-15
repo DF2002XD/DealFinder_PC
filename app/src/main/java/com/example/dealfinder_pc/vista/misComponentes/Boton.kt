@@ -58,14 +58,24 @@ fun Boton(
     nombre: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    nombreTextoDirecto: String? = null,
     enabled: Boolean = true,
-    isPrimary: Boolean = true
+    isPrimary: Boolean = true,
+    isErrorAction: Boolean = false // NUEVO: Si es true, el botón será rojo con texto blanco
 ) {
-    // isPrimary usa el amarillo retro (primary), de lo contrario el morado retro (primaryContainer)
-    val containerColor =
-        if (isPrimary) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer
-    val contentColor =
-        if (isPrimary) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimaryContainer
+    // isPrimary usa el amarillo retro (primary)
+    // isErrorAction usa el rojo (error)
+    // de lo contrario el morado retro (primaryContainer)
+    val containerColor = when {
+        isErrorAction -> MaterialTheme.colorScheme.error
+        isPrimary -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.primaryContainer
+    }
+    val contentColor = when {
+        isErrorAction -> MaterialTheme.colorScheme.onError
+        isPrimary -> MaterialTheme.colorScheme.onPrimary
+        else -> MaterialTheme.colorScheme.onPrimaryContainer
+    }
 
     // Obtenemos el color de la sombra directamente desde el tema retro
     val shadowColor = MaterialTheme.extraColors.hardShadow
@@ -93,7 +103,7 @@ fun Boton(
         )
     ) {
         Text(
-            text = stringResource(id = nombre),
+            text = nombreTextoDirecto ?: stringResource(id = nombre),
             fontFamily = displayFontFamily,
             fontSize = 12.sp
         )

@@ -43,9 +43,10 @@ fun PaginaDetalles(
         precioMinimoHistorico = uiState.precioMinimoHistorico,
         precioNormal = uiState.precioNormal,
         ofertasEnTiendas = uiState.ofertasEnTiendas,
+        isEnDeseos = uiState.isEnDeseos,
         onTiendaClick = onTiendaClick,
         onAgregarDeseosClick = {
-            // TODOs: Lógica para guardar en Base de Datos / ViewModel
+            viewModel.toggleDeseos()
         },
         modifier = modifier.fillMaxSize()
     )

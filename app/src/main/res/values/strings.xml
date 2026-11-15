@@ -64,6 +64,7 @@
     <string name="detalle_precio_normal">Precio normal</string>
     <string name="detalle_mejor_descuento">-%1$d%% MEJOR</string>
     <string name="detalle_agregar_lista">+ LISTA DE DESEOS</string>
+    <string name="detalle_eliminar_lista">- ELIMINAR DE DESEOS</string>
 
     <!-- Lista de deseos -->
     <string name="lista_titulo">LISTA DE DESEOS</string>
