@@ -2,17 +2,19 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dealfinder_pc.data.repositorio.IDeseosRepo
+import com.example.dealfinder_pc.data.repositorio.DeseosRepoImpl
 import com.example.dealfinder_pc.viewmodel.uistate.DeseoUIState
 import com.example.dealfinder_pc.viewmodel.uistate.DeseosUIState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
 
-class DeseosViewModel : ViewModel() {
+class DeseosViewModel(
+    private val repository: IDeseosRepo = DeseosRepoImpl()
+) : ViewModel() {
     private val _uiState = MutableStateFlow(DeseosUIState())
     val uiState: StateFlow<DeseosUIState> = _uiState.asStateFlow()
 
@@ -23,19 +25,30 @@ class DeseosViewModel : ViewModel() {
     private fun cargarDeseos() {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            delay(800.milliseconds)
-            val urlMock = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg"
-            val lista = listOf(
-                DeseoUIState("1", "Silver Pines", "$22.26", urlMock),
-                DeseoUIState("3", "Frosthaven", "$23.19", urlMock),
-                DeseoUIState("4", "EA SPORTS PGA TOUR", "$6.99", urlMock)
-            )
-            _uiState.update {
-                it.copy(
-                    juegosEnDeseos = lista,
-                    precioTotalEstimado = "${lista.size} juegos · aprox. $52.44",
-                    isLoading = false
-                )
+            val result = repository.obtenerListaDeseos()
+            
+            if (result.isSuccess) {
+                val dtoList = result.getOrDefault(emptyList())
+                
+                // Mapeamos DTO -> UIState
+                val lista = dtoList.map { dto ->
+                    DeseoUIState(
+                        id = dto.gameID, 
+                        titulo = dto.title, 
+                        precioRebajado = "$${dto.currentBestPrice}", 
+                        urlImagen = dto.thumbUrl
+                    )
+                }
+
+                _uiState.update {
+                    it.copy(
+                        juegosEnDeseos = lista,
+                        precioTotalEstimado = "${lista.size} juegos · aprox. $52.44",
+                        isLoading = false
+                    )
+                }
+            } else {
+                _uiState.update { it.copy(isLoading = false, errorMessage = "Error al cargar deseos") }
             }
         }
     }

@@ -2,16 +2,18 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dealfinder_pc.data.repositorio.IAuthRepo
+import com.example.dealfinder_pc.data.repositorio.AuthRepoImpl
 import com.example.dealfinder_pc.viewmodel.uistate.RecuperarContraUIState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
 
-class RecuperarContraViewModel : ViewModel() {
+class RecuperarContraViewModel(
+    private val repository: IAuthRepo = AuthRepoImpl()
+) : ViewModel() {
     private val _uiState = MutableStateFlow(RecuperarContraUIState())
     val uiState: StateFlow<RecuperarContraUIState> = _uiState.asStateFlow()
 
@@ -29,10 +31,14 @@ class RecuperarContraViewModel : ViewModel() {
         _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
         viewModelScope.launch {
-            // Simulamos llamada a la API
-            delay(1500.milliseconds)
-            _uiState.update { it.copy(isLoading = false, isSuccess = true) }
-            onSuccess()
+            val result = repository.recuperarContrasenha(state.correo)
+            
+            if (result.isSuccess) {
+                _uiState.update { it.copy(isLoading = false, isSuccess = true) }
+                onSuccess()
+            } else {
+                _uiState.update { it.copy(isLoading = false, errorMessage = "Error enviando correo") }
+            }
         }
     }
 }

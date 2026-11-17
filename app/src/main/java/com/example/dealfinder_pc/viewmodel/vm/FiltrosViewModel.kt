@@ -2,17 +2,19 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dealfinder_pc.data.repositorio.IUsuarioRepo
+import com.example.dealfinder_pc.data.repositorio.UsuarioRepoImpl
 import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.FiltrosUIState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
 
-class FiltrosViewModel : ViewModel() {
+class FiltrosViewModel(
+    private val repository: IUsuarioRepo = UsuarioRepoImpl()
+) : ViewModel() {
     private val _uiState = MutableStateFlow(
         FiltrosUIState(
             tiendasDisponibles = listOf("Steam", "Epic Games Store", "GOG", "Humble Store", "Fanatical", "IndieGala"),
@@ -63,17 +65,18 @@ class FiltrosViewModel : ViewModel() {
     fun guardarTiendasFavoritas(onSuccess: () -> Unit) {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            delay(1000.milliseconds)
-            
-            // Simulación: DTO que enviaríamos a tu Spring Boot
             val requestDto = PreferenciaUpdateRequestDTO(
                 userId = "uuid-1234",
                 preferredStores = _uiState.value.tiendasSeleccionadas
             )
-            // apiService.updatePreferences(requestDto)
+            val result = repository.actualizarPreferencias(requestDto)
             
-            _uiState.update { it.copy(isLoading = false) }
-            onSuccess()
+            if (result.isSuccess) {
+                _uiState.update { it.copy(isLoading = false) }
+                onSuccess()
+            } else {
+                _uiState.update { it.copy(isLoading = false) } // Opcionalmente mostrar un mensaje de error
+            }
         }
     }
 }

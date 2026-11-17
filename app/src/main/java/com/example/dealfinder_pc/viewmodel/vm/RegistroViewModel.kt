@@ -2,16 +2,19 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dealfinder_pc.data.repositorio.IAuthRepo
+import com.example.dealfinder_pc.data.repositorio.AuthRepoImpl
+import com.example.dealfinder_pc.modelo.RegistroRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.RegistroUIState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
 
-class RegistroViewModel : ViewModel() {
+class RegistroViewModel(
+    private val repository: IAuthRepo = AuthRepoImpl()
+) : ViewModel() {
     private val _uiState = MutableStateFlow(RegistroUIState())
     val uiState: StateFlow<RegistroUIState> = _uiState.asStateFlow()
 
@@ -55,10 +58,19 @@ class RegistroViewModel : ViewModel() {
         _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
         viewModelScope.launch {
-            // Simulamos llamada a la API
-            delay(1500.milliseconds)
-            _uiState.update { it.copy(isLoading = false) }
-            onSuccess()
+            val request = RegistroRequestDTO(
+                username = state.nombreUsuario,
+                email = state.correo,
+                passwordHash = state.contrasenha
+            )
+            val result = repository.registrarUsuario(request)
+            
+            if (result.isSuccess) {
+                _uiState.update { it.copy(isLoading = false) }
+                onSuccess()
+            } else {
+                _uiState.update { it.copy(isLoading = false, errorMessage = "Error en el registro") }
+            }
         }
     }
 }

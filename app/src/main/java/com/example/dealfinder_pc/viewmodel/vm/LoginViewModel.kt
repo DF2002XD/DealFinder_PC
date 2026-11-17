@@ -2,16 +2,19 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dealfinder_pc.data.repositorio.IAuthRepo
+import com.example.dealfinder_pc.data.repositorio.AuthRepoImpl
+import com.example.dealfinder_pc.modelo.LoginRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.LoginUIState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val repository: IAuthRepo = AuthRepoImpl()
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUIState())
     val uiState: StateFlow<LoginUIState> = _uiState.asStateFlow()
@@ -46,15 +49,13 @@ class LoginViewModel : ViewModel() {
         _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
         viewModelScope.launch {
-            // Simulamos petición de red (API/Retrofit)
-            delay(1500.milliseconds)
-
-            // OPCIÓN A (TEMPORAL): Dejamos pasar cualquier cosa mientras esperamos a implementar Retrofit y la API REST.
-            _uiState.update { it.copy(isLoading = false) }
-            onSuccess()
+            val request = LoginRequestDTO(
+                email = actualState.correo,
+                passwordHash = actualState.contrasenha // En un entorno real se enviaría el hash
+            )
+            val result = repository.iniciarSesion(request)
             
-            /* TODO: Lógica de autenticación real (Ejemplo estático comentado)
-            if (actualState.correo == "test@test.com" && actualState.contrasenha == "123456") {
+            if (result.isSuccess) {
                 _uiState.update { it.copy(isLoading = false) }
                 onSuccess()
             } else {
@@ -65,7 +66,6 @@ class LoginViewModel : ViewModel() {
                     )
                 }
             }
-            */
         }
     }
 }
