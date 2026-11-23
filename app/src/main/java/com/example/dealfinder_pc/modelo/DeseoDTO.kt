@@ -1,20 +1,17 @@
 package com.example.dealfinder_pc.modelo
 
-/**
- * DTO para representar un juego guardado en la lista de deseos del usuario.
- */
-data class DeseoDTO(
-    val gameID: String,
-    val title: String,
+data class DeseoRespuestaDTO(
+    val id: Long,
+    val gameId: String,
+    val titulo: String,
     val thumbUrl: String,
-    val currentBestPrice: Double,
-    val dateAdded: Long
+    val precioReferencia: Double,
+    val fechaAlta: String // Viene como cadena ISO desde Spring Boot (LocalDateTime)
 )
 
-/**
- * DTO para enviar una petición de añadir/quitar un juego de la lista de deseos.
- */
-data class AccionDeseoRequestDTO(
-    val gameID: String,
-    val add: Boolean // true para añadir, false para eliminar
+data class DeseoRequestDTO(
+    val gameId: String,
+    val titulo: String,
+    val thumbUrl: String,
+    val precioReferencia: Double
 )

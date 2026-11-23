@@ -50,8 +50,9 @@ class LoginViewModel(
 
         viewModelScope.launch {
             val request = LoginRequestDTO(
-                email = actualState.correo,
-                passwordHash = actualState.contrasenha // En un entorno real se enviaría el hash
+                correo = actualState.correo,
+                contrasena = actualState.contrasenha,
+                mantenerSesion = actualState.keepLogged
             )
             val result = repository.iniciarSesion(request)
             

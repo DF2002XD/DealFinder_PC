@@ -59,9 +59,9 @@ class RegistroViewModel(
 
         viewModelScope.launch {
             val request = RegistroRequestDTO(
-                username = state.nombreUsuario,
-                email = state.correo,
-                passwordHash = state.contrasenha
+                nombreUsuario = state.nombreUsuario,
+                correo = state.correo,
+                contrasena = state.contrasenha
             )
             val result = repository.registrarUsuario(request)
             

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dealfinder_pc.data.repository.IUsuarioRepository
 import com.example.dealfinder_pc.data.repository.UsuarioRepository
-import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
+import com.example.dealfinder_pc.modelo.ActualizarPerfilRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.PerfilUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,9 +49,10 @@ class PerfilViewModel(
     fun toggleAvisos(activo: Boolean) {
         _uiState.update { it.copy(avisosActivados = activo) }
         viewModelScope.launch {
-            val request = PreferenciaUpdateRequestDTO(
-                userId = "uuid-1234", 
-                dealsAlertsEnabled = activo
+            val request = ActualizarPerfilRequestDTO(
+                correo = null,
+                moneda = null,
+                avisosOfertas = activo
             )
             repository.actualizarPreferencias(request)
         }

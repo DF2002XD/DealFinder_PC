@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dealfinder_pc.data.repository.IUsuarioRepository
 import com.example.dealfinder_pc.data.repository.UsuarioRepository
-import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
+import com.example.dealfinder_pc.modelo.ActualizarPerfilRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.MonedaUIState
 import com.example.dealfinder_pc.viewmodel.uistate.MonedasUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,9 +37,10 @@ class MonedaViewModel(
     fun guardarMoneda(onSuccess: () -> Unit) {
         _uiState.update { it.copy(isSaving = true) }
         viewModelScope.launch {
-            val requestDto = PreferenciaUpdateRequestDTO(
-                userId = "uuid-1234",
-                preferredCurrency = _uiState.value.monedaActual
+            val requestDto = ActualizarPerfilRequestDTO(
+                correo = null,
+                moneda = _uiState.value.monedaActual,
+                avisosOfertas = null
             )
             
             val result = repository.actualizarPreferencias(requestDto)

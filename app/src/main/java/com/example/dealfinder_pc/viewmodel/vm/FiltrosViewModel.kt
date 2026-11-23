@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dealfinder_pc.data.repository.IUsuarioRepository
 import com.example.dealfinder_pc.data.repository.UsuarioRepository
-import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
+import com.example.dealfinder_pc.modelo.ActualizarPerfilRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.FiltrosUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -65,9 +65,10 @@ class FiltrosViewModel(
     fun guardarTiendasFavoritas(onSuccess: () -> Unit) {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val requestDto = PreferenciaUpdateRequestDTO(
-                userId = "uuid-1234",
-                preferredStores = _uiState.value.tiendasSeleccionadas
+            val requestDto = ActualizarPerfilRequestDTO(
+                correo = null,
+                moneda = null,
+                avisosOfertas = null
             )
             val result = repository.actualizarPreferencias(requestDto)
             
