@@ -2,8 +2,8 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dealfinder_pc.data.repositorio.IUsuarioRepo
-import com.example.dealfinder_pc.data.repositorio.UsuarioRepoImpl
+import com.example.dealfinder_pc.data.repository.IUsuarioRepository
+import com.example.dealfinder_pc.data.repository.UsuarioRepository
 import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.PerfilUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PerfilViewModel(
-    private val repository: IUsuarioRepo = UsuarioRepoImpl()
+    private val repository: IUsuarioRepository = UsuarioRepository()
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(PerfilUIState())
     val uiState: StateFlow<PerfilUIState> = _uiState.asStateFlow()
@@ -31,12 +31,12 @@ class PerfilViewModel(
                 val dto = result.getOrThrow()
                 _uiState.update {
                     it.copy(
-                        nombreUsuario = dto.username,
-                        correoUsuario = dto.email,
-                        presupuestoTexto = "$45.00 / $${dto.monthlyBudget ?: 0.0} ${dto.preferredCurrency}", 
-                        monedaActual = dto.preferredCurrency,
-                        tiendasTexto = "${dto.preferredStores.size} tiendas",
-                        avisosActivados = dto.dealsAlertsEnabled,
+                        nombreUsuario = dto.nombreUsuario,
+                        correoUsuario = dto.correo,
+                        presupuestoTexto = "$45.00 / $${dto.presupuestoMensual ?: 0.0} ${dto.monedaPreferida}", 
+                        monedaActual = dto.monedaPreferida,
+                        tiendasTexto = "${dto.tiendasPreferidas.size} tiendas",
+                        avisosActivados = dto.alertasActivadas,
                         isLoading = false
                     )
                 }

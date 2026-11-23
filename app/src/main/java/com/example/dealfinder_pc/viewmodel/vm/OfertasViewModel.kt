@@ -2,8 +2,8 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dealfinder_pc.data.repositorio.IOfertasRepo
-import com.example.dealfinder_pc.data.repositorio.OfertasRepoImpl
+import com.example.dealfinder_pc.data.repository.IOfertasRepository
+import com.example.dealfinder_pc.data.repository.OfertasRepository
 import com.example.dealfinder_pc.viewmodel.uistate.OfertaUIState
 import com.example.dealfinder_pc.viewmodel.uistate.OfertasUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class OfertasViewModel(
-    private val repository: IOfertasRepo = OfertasRepoImpl()
+    private val repository: IOfertasRepository = OfertasRepository()
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(OfertasUIState())
     val uiState: StateFlow<OfertasUIState> = _uiState.asStateFlow()
@@ -33,16 +33,16 @@ class OfertasViewModel(
             if (result.isSuccess) {
                 val dtoList = result.getOrDefault(emptyList())
                 
-                // Mapeamos los DTOs al UIState que necesita nuestra vista
-                todasLasOfertas = dtoList.map { dto ->
+                // Mapeamos Modelo de Dominio -> UIState
+                todasLasOfertas = dtoList.map { oferta ->
                     OfertaUIState(
-                        id = dto.gameID,
-                        titulo = dto.title,
-                        tiendaYMeta = "${dto.storeID} · Meta ${dto.metacriticScore ?: "--"}",
-                        precioOriginal = "$${dto.normalPrice}",
-                        precioRebajado = if (dto.salePrice <= 0.0) "GRATIS" else "$${dto.salePrice}",
-                        descuento = "-${dto.savings.toInt()}%",
-                        urlImagen = dto.thumbUrl
+                        id = oferta.id,
+                        titulo = oferta.titulo,
+                        tiendaYMeta = "${oferta.nombreTienda} · Meta ${oferta.puntuacionMetacritic ?: "--"}",
+                        precioOriginal = "$${oferta.precioOriginal}",
+                        precioRebajado = if (oferta.precioRebajado <= 0.0) "GRATIS" else "$${oferta.precioRebajado}",
+                        descuento = "-${oferta.descuentoPorcentaje.toInt()}%",
+                        urlImagen = oferta.urlImagen
                     )
                 }
                 _uiState.update { it.copy(ofertas = todasLasOfertas, isLoading = false) }

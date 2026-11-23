@@ -2,8 +2,8 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dealfinder_pc.data.repositorio.IUsuarioRepo
-import com.example.dealfinder_pc.data.repositorio.UsuarioRepoImpl
+import com.example.dealfinder_pc.data.repository.IUsuarioRepository
+import com.example.dealfinder_pc.data.repository.UsuarioRepository
 import com.example.dealfinder_pc.viewmodel.uistate.CuentaUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CuentaViewModel(
-    private val repository: IUsuarioRepo = UsuarioRepoImpl()
+    private val repository: IUsuarioRepository = UsuarioRepository()
 ) : ViewModel() {
     // Simulamos que el usuario ya está logueado y tiene un correo
     private val _uiState = MutableStateFlow(CuentaUIState(nombreUsuario = "JUGADOR_01", correo = "jugador@correo.com"))

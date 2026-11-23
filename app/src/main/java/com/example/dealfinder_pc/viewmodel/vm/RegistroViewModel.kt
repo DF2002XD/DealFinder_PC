@@ -2,8 +2,8 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dealfinder_pc.data.repositorio.IAuthRepo
-import com.example.dealfinder_pc.data.repositorio.AuthRepoImpl
+import com.example.dealfinder_pc.data.repository.IAuthRepository
+import com.example.dealfinder_pc.data.repository.AuthRepository
 import com.example.dealfinder_pc.modelo.RegistroRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.RegistroUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegistroViewModel(
-    private val repository: IAuthRepo = AuthRepoImpl()
+    private val repository: IAuthRepository = AuthRepository()
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RegistroUIState())
     val uiState: StateFlow<RegistroUIState> = _uiState.asStateFlow()

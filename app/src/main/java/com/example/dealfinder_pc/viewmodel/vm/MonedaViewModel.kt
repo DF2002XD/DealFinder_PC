@@ -2,8 +2,8 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dealfinder_pc.data.repositorio.IUsuarioRepo
-import com.example.dealfinder_pc.data.repositorio.UsuarioRepoImpl
+import com.example.dealfinder_pc.data.repository.IUsuarioRepository
+import com.example.dealfinder_pc.data.repository.UsuarioRepository
 import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.MonedaUIState
 import com.example.dealfinder_pc.viewmodel.uistate.MonedasUIState
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MonedaViewModel(
-    private val repository: IUsuarioRepo = UsuarioRepoImpl()
+    private val repository: IUsuarioRepository = UsuarioRepository()
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         MonedasUIState(

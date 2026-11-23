@@ -2,8 +2,8 @@ package com.example.dealfinder_pc.viewmodel.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dealfinder_pc.data.repositorio.IDeseosRepo
-import com.example.dealfinder_pc.data.repositorio.DeseosRepoImpl
+import com.example.dealfinder_pc.data.repository.IDeseosRepository
+import com.example.dealfinder_pc.data.repository.DeseosRepository
 import com.example.dealfinder_pc.viewmodel.uistate.DeseoUIState
 import com.example.dealfinder_pc.viewmodel.uistate.DeseosUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,9 +11,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class DeseosViewModel(
-    private val repository: IDeseosRepo = DeseosRepoImpl()
+    private val repository: IDeseosRepository = DeseosRepository()
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(DeseosUIState())
     val uiState: StateFlow<DeseosUIState> = _uiState.asStateFlow()
@@ -30,13 +31,13 @@ class DeseosViewModel(
             if (result.isSuccess) {
                 val dtoList = result.getOrDefault(emptyList())
                 
-                // Mapeamos DTO -> UIState
-                val lista = dtoList.map { dto ->
+                // Mapeamos Modelo de Dominio -> UIState
+                val lista = dtoList.map { deseo ->
                     DeseoUIState(
-                        id = dto.gameID, 
-                        titulo = dto.title, 
-                        precioRebajado = "$${dto.currentBestPrice}", 
-                        urlImagen = dto.thumbUrl
+                        id = deseo.id, 
+                        titulo = deseo.titulo, 
+                        precioRebajado = "$${deseo.mejorPrecioActual}", 
+                        urlImagen = deseo.urlImagen
                     )
                 }
 
@@ -68,7 +69,7 @@ class DeseosViewModel(
         }
         
         // Formateamos la suma a dos decimales
-        val sumaTotalFormateada = String.format("%.2f", sumaTotal)
+        val sumaTotalFormateada = String.format(Locale.US, "%.2f", sumaTotal)
 
         _uiState.update {
             it.copy(
