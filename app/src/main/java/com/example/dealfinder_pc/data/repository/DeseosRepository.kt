@@ -3,7 +3,7 @@ package com.example.dealfinder_pc.data.repository
 import com.example.dealfinder_pc.data.Deseo
 import com.example.dealfinder_pc.data.retrofit.repo.DeseosApiRepo
 import com.example.dealfinder_pc.data.retrofit.repo.IDeseosApiRepo
-import com.example.dealfinder_pc.modelo.AccionDeseoRequestDTO
+import com.example.dealfinder_pc.modelo.DeseoRequestDTO
 
 class DeseosRepository(
     private val apiRepo: IDeseosApiRepo = DeseosApiRepo()
@@ -16,11 +16,11 @@ class DeseosRepository(
             Result.success(
                 dtos.map { dto ->
                     Deseo(
-                        id = dto.gameID,
-                        titulo = dto.title,
+                        id = dto.gameId,
+                        titulo = dto.titulo,
                         urlImagen = dto.thumbUrl,
-                        mejorPrecioActual = dto.currentBestPrice,
-                        fechaAgregado = dto.dateAdded
+                        mejorPrecioActual = dto.precioReferencia,
+                        fechaAgregado = 0L // TODO: Parse ISO date if needed
                     )
                 }
             )
@@ -29,7 +29,7 @@ class DeseosRepository(
         }
     }
 
-    override suspend fun modificarDeseo(request: AccionDeseoRequestDTO): Result<Unit> {
+    override suspend fun modificarDeseo(request: DeseoRequestDTO): Result<Unit> {
         return apiRepo.modificarDeseo(request)
     }
 

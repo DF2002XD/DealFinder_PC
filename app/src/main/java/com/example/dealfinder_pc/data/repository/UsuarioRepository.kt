@@ -3,7 +3,7 @@ package com.example.dealfinder_pc.data.repository
 import com.example.dealfinder_pc.data.Usuario
 import com.example.dealfinder_pc.data.retrofit.repo.IUsuarioApiRepo
 import com.example.dealfinder_pc.data.retrofit.repo.UsuarioApiRepo
-import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
+import com.example.dealfinder_pc.modelo.ActualizarPerfilRequestDTO
 
 class UsuarioRepository(
     private val apiRepo: IUsuarioApiRepo = UsuarioApiRepo()
@@ -16,14 +16,14 @@ class UsuarioRepository(
             if (dto != null) {
                 Result.success(
                     Usuario(
-                        id = dto.userId,
-                        nombreUsuario = dto.username,
-                        correo = dto.email,
-                        token = dto.token,
-                        presupuestoMensual = dto.monthlyBudget,
-                        monedaPreferida = dto.preferredCurrency,
-                        tiendasPreferidas = dto.preferredStores,
-                        alertasActivadas = dto.dealsAlertsEnabled
+                        id = dto.id.toString(),
+                        nombreUsuario = dto.nombreUsuario,
+                        correo = dto.correo,
+                        token = "", // Not provided by profile API anymore
+                        presupuestoMensual = null,
+                        monedaPreferida = dto.moneda,
+                        tiendasPreferidas = emptyList(),
+                        alertasActivadas = dto.avisosOfertas
                     )
                 )
             } else {
@@ -34,7 +34,7 @@ class UsuarioRepository(
         }
     }
 
-    override suspend fun actualizarPreferencias(request: PreferenciaUpdateRequestDTO): Result<Unit> {
+    override suspend fun actualizarPreferencias(request: ActualizarPerfilRequestDTO): Result<Unit> {
         return apiRepo.actualizarPreferencias(request)
     }
 

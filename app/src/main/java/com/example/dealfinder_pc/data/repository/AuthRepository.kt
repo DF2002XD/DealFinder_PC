@@ -17,14 +17,14 @@ class AuthRepository(
             if (dto != null) {
                 Result.success(
                     Usuario(
-                        id = dto.userId,
-                        nombreUsuario = dto.username,
-                        correo = dto.email,
-                        token = dto.token,
-                        presupuestoMensual = dto.monthlyBudget,
-                        monedaPreferida = dto.preferredCurrency,
-                        tiendasPreferidas = dto.preferredStores,
-                        alertasActivadas = dto.dealsAlertsEnabled
+                        id = dto.usuario.id.toString(),
+                        nombreUsuario = dto.usuario.nombreUsuario,
+                        correo = dto.usuario.correo,
+                        token = dto.accessToken,
+                        presupuestoMensual = null,
+                        monedaPreferida = dto.usuario.moneda,
+                        tiendasPreferidas = emptyList(),
+                        alertasActivadas = dto.usuario.avisosOfertas
                     )
                 )
             } else {
@@ -42,14 +42,14 @@ class AuthRepository(
             if (dto != null) {
                 Result.success(
                     Usuario(
-                        id = dto.userId,
-                        nombreUsuario = dto.username,
-                        correo = dto.email,
-                        token = dto.token,
-                        presupuestoMensual = dto.monthlyBudget,
-                        monedaPreferida = dto.preferredCurrency,
-                        tiendasPreferidas = dto.preferredStores,
-                        alertasActivadas = dto.dealsAlertsEnabled
+                        id = dto.usuario.id.toString(),
+                        nombreUsuario = dto.usuario.nombreUsuario,
+                        correo = dto.usuario.correo,
+                        token = dto.accessToken,
+                        presupuestoMensual = null,
+                        monedaPreferida = dto.usuario.moneda,
+                        tiendasPreferidas = emptyList(),
+                        alertasActivadas = dto.usuario.avisosOfertas
                     )
                 )
             } else {

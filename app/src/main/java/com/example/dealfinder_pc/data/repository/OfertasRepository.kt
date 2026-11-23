@@ -16,14 +16,14 @@ class OfertasRepository(
             val dtos = result.getOrNull() ?: emptyList()
             val dominio = dtos.map { dto ->
                 Oferta(
-                    id = dto.gameID,
-                    titulo = dto.title,
-                    precioRebajado = dto.salePrice,
-                    precioOriginal = dto.normalPrice,
-                    descuentoPorcentaje = dto.savings,
+                    id = dto.gameId,
+                    titulo = dto.titulo,
+                    precioRebajado = dto.precioOferta,
+                    precioOriginal = dto.precioNormal,
+                    descuentoPorcentaje = dto.descuento,
                     urlImagen = dto.thumbUrl,
-                    nombreTienda = dto.storeID,
-                    puntuacionMetacritic = dto.metacriticScore
+                    nombreTienda = dto.tiendaNombre,
+                    puntuacionMetacritic = dto.metacritic
                 )
             }
             Result.success(dominio)
@@ -38,14 +38,14 @@ class OfertasRepository(
             val dtos = result.getOrNull() ?: emptyList()
             val dominio = dtos.map { dto ->
                 Oferta(
-                    id = dto.gameID,
-                    titulo = dto.title,
-                    precioRebajado = dto.salePrice,
-                    precioOriginal = dto.normalPrice,
-                    descuentoPorcentaje = dto.savings,
+                    id = dto.gameId,
+                    titulo = dto.titulo,
+                    precioRebajado = dto.precioOferta,
+                    precioOriginal = dto.precioNormal,
+                    descuentoPorcentaje = dto.descuento,
                     urlImagen = dto.thumbUrl,
-                    nombreTienda = dto.storeID,
-                    puntuacionMetacritic = dto.metacriticScore
+                    nombreTienda = dto.tiendaNombre,
+                    puntuacionMetacritic = dto.metacritic
                 )
             }
             Result.success(dominio)
@@ -60,20 +60,20 @@ class OfertasRepository(
             val dto = result.getOrNull()
             if (dto != null) {
                 val dominio = DetallesJuego(
-                    id = dto.gameID,
-                    titulo = dto.title,
+                    id = dto.id,
+                    titulo = dto.titulo,
                     urlImagen = dto.thumbUrl,
-                    minimoHistoricoPrecio = dto.historicalLowPrice,
-                    minimoHistoricoFecha = dto.historicalLowDate,
-                    estaEnDeseos = dto.isOnWishlist,
-                    ofertasTiendas = dto.deals.map { dealDto ->
+                    minimoHistoricoPrecio = dto.precioHistoricoMinimo,
+                    minimoHistoricoFecha = dto.fechaHistoricoMinimo,
+                    estaEnDeseos = dto.enDeseos,
+                    ofertasTiendas = dto.ofertas.map { dealDto ->
                         DealTienda(
-                            idOferta = dealDto.dealID,
-                            idTienda = dealDto.storeID,
-                            nombreTienda = dealDto.storeName,
-                            precioActual = dealDto.price,
-                            precioNormal = dealDto.retailPrice,
-                            descuentoPorcentaje = dealDto.savings
+                            idOferta = dealDto.dealId,
+                            idTienda = dealDto.tiendaId,
+                            nombreTienda = dealDto.tiendaNombre,
+                            precioActual = dealDto.precioOferta,
+                            precioNormal = dealDto.precioNormal,
+                            descuentoPorcentaje = dealDto.descuento
                         )
                     }
                 )

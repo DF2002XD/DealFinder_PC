@@ -1,13 +1,14 @@
 package com.example.dealfinder_pc.data.retrofit.network
 
-import com.example.dealfinder_pc.modelo.AccionDeseoRequestDTO
-import com.example.dealfinder_pc.modelo.DeseoDTO
-import com.example.dealfinder_pc.modelo.DetallesJuegoDTO
+import com.example.dealfinder_pc.modelo.ActualizarPerfilRequestDTO
+import com.example.dealfinder_pc.modelo.AuthRespuestaDTO
+import com.example.dealfinder_pc.modelo.DeseoRequestDTO
+import com.example.dealfinder_pc.modelo.DeseoRespuestaDTO
+import com.example.dealfinder_pc.modelo.JuegoRespuestaDTO
 import com.example.dealfinder_pc.modelo.LoginRequestDTO
-import com.example.dealfinder_pc.modelo.OfertaDTO
-import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
+import com.example.dealfinder_pc.modelo.OfertaRespuestaDTO
 import com.example.dealfinder_pc.modelo.RegistroRequestDTO
-import com.example.dealfinder_pc.modelo.UsuarioResponseDTO
+import com.example.dealfinder_pc.modelo.UsuarioRespuestaDTO
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,20 +24,20 @@ interface DealFinderApiService {
 
     // --- AUTH ---
     @POST("api/auth/login")
-    suspend fun login(@Body request: LoginRequestDTO): Response<UsuarioResponseDTO>
+    suspend fun login(@Body request: LoginRequestDTO): Response<AuthRespuestaDTO>
 
     @POST("api/auth/register")
-    suspend fun register(@Body request: RegistroRequestDTO): Response<UsuarioResponseDTO>
+    suspend fun register(@Body request: RegistroRequestDTO): Response<AuthRespuestaDTO>
 
     @POST("api/auth/recover")
     suspend fun recoverPassword(@Query("email") email: String): Response<Unit>
 
     // --- USUARIO ---
     @GET("api/user/profile")
-    suspend fun getUserProfile(): Response<UsuarioResponseDTO>
+    suspend fun getUserProfile(): Response<UsuarioRespuestaDTO>
 
     @PUT("api/user/preferences")
-    suspend fun updatePreferences(@Body request: PreferenciaUpdateRequestDTO): Response<Unit>
+    suspend fun updatePreferences(@Body request: ActualizarPerfilRequestDTO): Response<Unit>
 
     // --- OFERTAS (BFF que saca los datos de CheapShark) ---
     @GET("api/deals")
@@ -44,15 +45,15 @@ interface DealFinderApiService {
         @Query("query") query: String? = null,
         @Query("maxPrice") maxPrice: Double? = null,
         @Query("onSale") onSale: Boolean? = null
-    ): Response<List<OfertaDTO>>
+    ): Response<List<OfertaRespuestaDTO>>
 
     @GET("api/deals/{id}")
-    suspend fun getDetallesJuego(@Path("id") gameId: String): Response<DetallesJuegoDTO>
+    suspend fun getDetallesJuego(@Path("id") gameId: String): Response<JuegoRespuestaDTO>
 
     // --- LISTA DE DESEOS ---
     @GET("api/wishlist")
-    suspend fun getWishlist(): Response<List<DeseoDTO>>
+    suspend fun getWishlist(): Response<List<DeseoRespuestaDTO>>
 
     @POST("api/wishlist/toggle")
-    suspend fun toggleWishlistItem(@Body request: AccionDeseoRequestDTO): Response<Unit>
+    suspend fun toggleWishlistItem(@Body request: DeseoRequestDTO): Response<Unit>
 }

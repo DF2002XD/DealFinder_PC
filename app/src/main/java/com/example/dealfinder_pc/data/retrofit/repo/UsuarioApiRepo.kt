@@ -1,27 +1,24 @@
 package com.example.dealfinder_pc.data.retrofit.repo
 
-import com.example.dealfinder_pc.modelo.PreferenciaUpdateRequestDTO
-import com.example.dealfinder_pc.modelo.UsuarioResponseDTO
+import com.example.dealfinder_pc.modelo.ActualizarPerfilRequestDTO
+import com.example.dealfinder_pc.modelo.UsuarioRespuestaDTO
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
 
 class UsuarioApiRepo : IUsuarioApiRepo {
-    override suspend fun obtenerPerfil(): Result<UsuarioResponseDTO> {
+    override suspend fun obtenerPerfil(): Result<UsuarioRespuestaDTO> {
         delay(500.milliseconds)
-        val dto = UsuarioResponseDTO(
-            userId = "uuid-1234",
-            username = "JUGADOR_01",
-            email = "jugador@correo.com",
-            token = "fake_jwt",
-            monthlyBudget = 100.0,
-            preferredCurrency = "USD",
-            preferredStores = listOf("Steam", "GOG"),
-            dealsAlertsEnabled = true
+        val dto = UsuarioRespuestaDTO(
+            id = 1234L,
+            nombreUsuario = "JUGADOR_01",
+            correo = "jugador@correo.com",
+            moneda = "USD",
+            avisosOfertas = true
         )
         return Result.success(dto)
     }
 
-    override suspend fun actualizarPreferencias(request: PreferenciaUpdateRequestDTO): Result<Unit> {
+    override suspend fun actualizarPreferencias(request: ActualizarPerfilRequestDTO): Result<Unit> {
         delay(1000.milliseconds)
         return Result.success(Unit)
     }
