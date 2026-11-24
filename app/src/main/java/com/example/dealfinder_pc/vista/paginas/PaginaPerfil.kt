@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.LaunchedEffect
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.viewmodel.vm.PerfilViewModel
 import com.example.dealfinder_pc.vista.misComponentes.TarjetaPerfil
@@ -25,6 +26,11 @@ fun PaginaPerfil(
     viewModel: PerfilViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    // Cada vez que la pantalla de perfil entra en composición (nos movemos a ella), recargamos los datos
+    LaunchedEffect(Unit) {
+        viewModel.recargarDatos()
+    }
 
     Box(
         modifier = modifier

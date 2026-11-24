@@ -22,13 +22,19 @@ class PerfilViewModel(
         cargarDatosUsuario()
     }
 
+    fun recargarDatos() {
+        cargarDatosUsuario()
+    }
+
     private fun cargarDatosUsuario() {
+        println("PerfilViewModel: cargarDatosUsuario() INICIADO")
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             val result = repository.obtenerPerfil()
             
             if (result.isSuccess) {
                 val dto = result.getOrThrow()
+                println("PerfilViewModel: Perfil obtenido correctamente -> $dto")
                 _uiState.update {
                     it.copy(
                         nombreUsuario = dto.nombreUsuario,
@@ -40,13 +46,16 @@ class PerfilViewModel(
                         isLoading = false
                     )
                 }
+                println("PerfilViewModel: _uiState actualizado -> ${_uiState.value}")
             } else {
+                println("PerfilViewModel: Error al obtener perfil -> ${result.exceptionOrNull()}")
                 _uiState.update { it.copy(isLoading = false) }
             }
         }
     }
 
     fun toggleAvisos(activo: Boolean) {
+        println("PerfilViewModel: toggleAvisos($activo)")
         _uiState.update { it.copy(avisosActivados = activo) }
         viewModelScope.launch {
             val request = ActualizarPerfilRequestDTO(
@@ -54,7 +63,8 @@ class PerfilViewModel(
                 moneda = null,
                 avisosOfertas = activo
             )
-            repository.actualizarPreferencias(request)
+            val result = repository.actualizarPreferencias(request)
+            println("PerfilViewModel: resultado de actualizarPreferencias -> $result")
         }
     }
 
