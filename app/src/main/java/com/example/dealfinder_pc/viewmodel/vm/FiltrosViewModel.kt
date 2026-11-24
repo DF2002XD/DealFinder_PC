@@ -18,10 +18,26 @@ class FiltrosViewModel(
     private val _uiState = MutableStateFlow(
         FiltrosUIState(
             tiendasDisponibles = listOf("Steam", "Epic Games Store", "GOG", "Humble Store", "Fanatical", "IndieGala"),
-            tiendasSeleccionadas = listOf("Steam", "Epic Games Store")
+            tiendasSeleccionadas = emptyList() // Hacemos que ninguna esté marcada por defecto hasta que cargue
         )
     )
     val uiState: StateFlow<FiltrosUIState> = _uiState.asStateFlow()
+
+    init {
+        cargarTiendasGuardadas()
+    }
+
+    private fun cargarTiendasGuardadas() {
+        viewModelScope.launch {
+            val result = repository.obtenerPerfil()
+            if (result.isSuccess) {
+                val usuario = result.getOrNull()
+                if (usuario != null) {
+                    _uiState.update { it.copy(tiendasSeleccionadas = usuario.tiendasPreferidas) }
+                }
+            }
+        }
+    }
 
     fun actualizarOrden(orden: String) {
         _uiState.update { it.copy(ordenSeleccionado = orden) }
@@ -68,7 +84,8 @@ class FiltrosViewModel(
             val requestDto = ActualizarPerfilRequestDTO(
                 correo = null,
                 moneda = null,
-                avisosOfertas = null
+                avisosOfertas = null,
+                tiendasPreferidas = _uiState.value.tiendasSeleccionadas // Mandamos las que hemos marcado
             )
             val result = repository.actualizarPreferencias(requestDto)
             

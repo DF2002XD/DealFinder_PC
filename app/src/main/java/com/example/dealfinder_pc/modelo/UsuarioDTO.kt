@@ -5,13 +5,15 @@ data class UsuarioRespuestaDTO(
     val nombreUsuario: String,
     val correo: String,
     val moneda: String,
-    val avisosOfertas: Boolean
+    val avisosOfertas: Boolean,
+    val tiendasPreferidas: List<String>? = null
 )
 
 data class ActualizarPerfilRequestDTO(
     val correo: String?,
     val moneda: String?,
-    val avisosOfertas: Boolean?
+    val avisosOfertas: Boolean?,
+    val tiendasPreferidas: List<String>? = null
 )
 
 data class CambiarContrasenaRequestDTO(

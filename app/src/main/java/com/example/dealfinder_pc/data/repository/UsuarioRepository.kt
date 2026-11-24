@@ -22,7 +22,7 @@ class UsuarioRepository(
                         token = "", // Not provided by profile API anymore
                         presupuestoMensual = null,
                         monedaPreferida = dto.moneda,
-                        tiendasPreferidas = emptyList(),
+                        tiendasPreferidas = dto.tiendasPreferidas ?: emptyList(),
                         alertasActivadas = dto.avisosOfertas
                     )
                 )
