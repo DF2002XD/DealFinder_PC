@@ -57,4 +57,10 @@ class PerfilViewModel(
             repository.actualizarPreferencias(request)
         }
     }
+
+    fun cerrarSesionLocal() {
+        // Al cerrar sesión, limpiamos el token de la memoria RAM y de persistencia local
+        com.example.dealfinder_pc.data.retrofit.network.NetworkModule.authToken = null
+        com.example.dealfinder_pc.TokenManager.clearToken()
+    }
 }

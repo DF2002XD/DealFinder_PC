@@ -1,3 +1,5 @@
+import org.apache.commons.logging.LogFactory.release
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -5,7 +7,11 @@ plugins {
 
 android {
     namespace = "com.example.dealfinder_pc"
-    compileSdk = 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
         applicationId = "com.example.dealfinder_pc"
@@ -52,6 +58,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)

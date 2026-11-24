@@ -38,7 +38,10 @@ fun PaginaPerfil(
             onMonedaClick = onNavigateToMoneda,
             onTiendasClick = onNavigateToTiendas,
             onAvisosToggle = { viewModel.toggleAvisos(!uiState.avisosActivados) },
-            onCerrarSesionClick = onCerrarSesionClick
+            onCerrarSesionClick = {
+                viewModel.cerrarSesionLocal()
+                onCerrarSesionClick()
+            }
         )
     }
 }

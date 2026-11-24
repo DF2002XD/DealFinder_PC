@@ -59,8 +59,10 @@ class RegistroViewModel(
 
         viewModelScope.launch {
             val request = RegistroRequestDTO(
-                nombreUsuario = state.nombreUsuario,
-                correo = state.correo,
+                // Limpiamos los espacios extras en el nombre de usuario
+                nombreUsuario = state.nombreUsuario.trim(),
+                // Forzamos que los correos que se envían al backend estén en minúsculas y sin espacios
+                correo = state.correo.trim().lowercase(),
                 contrasena = state.contrasenha
             )
             val result = repository.registrarUsuario(request)

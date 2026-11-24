@@ -50,7 +50,9 @@ class LoginViewModel(
 
         viewModelScope.launch {
             val request = LoginRequestDTO(
-                correo = actualState.correo,
+                // Al iniciar sesión, siempre enviamos el correo en minúsculas 
+                // eliminando posibles espacios extra generados por el teclado del móvil.
+                correo = actualState.correo.trim().lowercase(),
                 contrasena = actualState.contrasenha,
                 mantenerSesion = actualState.keepLogged
             )

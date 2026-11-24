@@ -1,6 +1,7 @@
 package com.example.dealfinder_pc.data.repository
 
 import com.example.dealfinder_pc.data.Usuario
+import com.example.dealfinder_pc.data.retrofit.network.NetworkModule
 import com.example.dealfinder_pc.data.retrofit.repo.AuthApiRepo
 import com.example.dealfinder_pc.data.retrofit.repo.IAuthApiRepo
 import com.example.dealfinder_pc.modelo.LoginRequestDTO
@@ -15,6 +16,17 @@ class AuthRepository(
         return if (result.isSuccess) {
             val dto = result.getOrNull()
             if (dto != null) {
+                // 1. Guardamos SIEMPRE el token en memoria (RAM)
+                NetworkModule.authToken = dto.accessToken
+                
+                // 2. Si el usuario marcó "Mantener sesión", lo guardamos TAMBIÉN en persistencia (XML)
+                if (request.mantenerSesion) {
+                    com.example.dealfinder_pc.TokenManager.saveToken(dto.accessToken)
+                } else {
+                    // Si NO lo marcó, nos aseguramos de borrar cualquier rastro de sesiones pasadas en disco
+                    com.example.dealfinder_pc.TokenManager.clearToken()
+                }
+                
                 Result.success(
                     Usuario(
                         id = dto.usuario.id.toString(),
@@ -40,6 +52,9 @@ class AuthRepository(
         return if (result.isSuccess) {
             val dto = result.getOrNull()
             if (dto != null) {
+                // Guardamos el token en memoria (RAM) para las siguientes peticiones
+                NetworkModule.authToken = dto.accessToken
+                
                 Result.success(
                     Usuario(
                         id = dto.usuario.id.toString(),
@@ -65,6 +80,10 @@ class AuthRepository(
     }
 
     override suspend fun cerrarSesion(): Result<Unit> {
+        // Borramos el token de la memoria local y de SharedPreferences
+        NetworkModule.authToken = null
+        com.example.dealfinder_pc.TokenManager.clearToken()
+        
         return apiRepo.cerrarSesion()
     }
 }

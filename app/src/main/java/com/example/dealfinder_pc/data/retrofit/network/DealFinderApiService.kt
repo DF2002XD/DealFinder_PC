@@ -2,6 +2,7 @@ package com.example.dealfinder_pc.data.retrofit.network
 
 import com.example.dealfinder_pc.modelo.ActualizarPerfilRequestDTO
 import com.example.dealfinder_pc.modelo.AuthRespuestaDTO
+import com.example.dealfinder_pc.modelo.CambiarContrasenaRequestDTO
 import com.example.dealfinder_pc.modelo.DeseoRequestDTO
 import com.example.dealfinder_pc.modelo.DeseoRespuestaDTO
 import com.example.dealfinder_pc.modelo.JuegoRespuestaDTO
@@ -31,6 +32,9 @@ interface DealFinderApiService {
 
     @POST("api/auth/recover")
     suspend fun recoverPassword(@Query("email") email: String): Response<Unit>
+    
+    @POST("api/auth/logout")
+    suspend fun logout(): Response<Unit>
 
     // --- USUARIO ---
     @GET("api/user/profile")
@@ -38,6 +42,12 @@ interface DealFinderApiService {
 
     @PUT("api/user/preferences")
     suspend fun updatePreferences(@Body request: ActualizarPerfilRequestDTO): Response<Unit>
+
+    @PUT("api/user/email")
+    suspend fun updateEmail(@Query("newEmail") email: String): Response<Unit>
+
+    @PUT("api/user/password")
+    suspend fun updatePassword(@Body request: CambiarContrasenaRequestDTO): Response<Unit>
 
     // --- OFERTAS (BFF que saca los datos de CheapShark) ---
     @GET("api/deals")
@@ -56,4 +66,7 @@ interface DealFinderApiService {
 
     @POST("api/wishlist/toggle")
     suspend fun toggleWishlistItem(@Body request: DeseoRequestDTO): Response<Unit>
+
+    @POST("api/wishlist/{id}/purchase")
+    suspend fun markAsPurchased(@Path("id") gameId: String): Response<Unit>
 }

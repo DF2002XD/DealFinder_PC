@@ -1,29 +1,48 @@
 package com.example.dealfinder_pc.data.retrofit.repo
 
+import com.example.dealfinder_pc.data.retrofit.network.NetworkModule
 import com.example.dealfinder_pc.modelo.DeseoRequestDTO
 import com.example.dealfinder_pc.modelo.DeseoRespuestaDTO
-import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.milliseconds
 
 class DeseosApiRepo : IDeseosApiRepo {
+    private val api = NetworkModule.apiService
+
     override suspend fun obtenerListaDeseos(): Result<List<DeseoRespuestaDTO>> {
-        delay(800.milliseconds)
-        val urlMock = "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q3k.jpg"
-        val mockDtos = listOf(
-            DeseoRespuestaDTO(1L, "1", "Silver Pines", urlMock, 22.26, "2024-05-11T12:00:00"),
-            DeseoRespuestaDTO(2L, "3", "Frosthaven", urlMock, 23.19, "2024-05-11T12:00:00"),
-            DeseoRespuestaDTO(3L, "4", "EA SPORTS PGA TOUR", urlMock, 6.99, "2024-05-11T12:00:00")
-        )
-        return Result.success(mockDtos)
+        return try {
+            val response = api.getWishlist()
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("Error HTTP: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun modificarDeseo(request: DeseoRequestDTO): Result<Unit> {
-        delay(500.milliseconds)
-        return Result.success(Unit)
+        return try {
+            val response = api.toggleWishlistItem(request)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Error HTTP: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun marcarComoComprado(gameID: String): Result<Unit> {
-        delay(500.milliseconds)
-        return Result.success(Unit)
+        return try {
+            val response = api.markAsPurchased(gameID)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Error HTTP: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

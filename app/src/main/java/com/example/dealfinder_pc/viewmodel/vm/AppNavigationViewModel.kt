@@ -22,12 +22,15 @@ class AppNavigationViewModel : ViewModel() {
 
     private fun comprobarSesion() {
         viewModelScope.launch {
-            // Simulamos un retraso de comprobación en base de datos o preferencias
             _uiState.update { it.copy(isCheckUserSession = true) }
-            delay(1000.milliseconds)
+            
+            // Un pequeño delay para que dé tiempo a leer el SharedPreferences
+            // y para que no parpadee la pantalla muy bruscamente
+            delay(500.milliseconds)
 
-            // TODO: Aquí leerás si existe un token en DataStore o SharedPreferences
-            val isLoggedIn = false // Cambiar a true para saltar el login
+            // Leemos si hay un token persistente guardado en el archivo
+            val tokenGuardado = com.example.dealfinder_pc.TokenManager.getToken()
+            val isLoggedIn = !tokenGuardado.isNullOrBlank()
 
             _uiState.update {
                 it.copy(
