@@ -22,5 +22,6 @@ data class DealTienda(
     val nombreTienda: String,
     val precioActual: Double,
     val precioNormal: Double,
-    val descuentoPorcentaje: Double
+    val descuentoPorcentaje: Double,
+    val enlace: String? = null
 )

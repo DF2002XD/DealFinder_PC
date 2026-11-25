@@ -38,21 +38,24 @@ class OfertasRepository(
         return if (result.isSuccess) {
             val dto = result.getOrNull()
             if (dto != null) {
+                // El backend puede estar enviando el ID como "id" o como "gameId"
+                val finalId = dto.id ?: dto.gameId ?: gameID
                 val dominio = DetallesJuego(
-                    id = dto.id,
+                    id = finalId,
                     titulo = dto.titulo,
                     urlImagen = dto.thumbUrl,
-                    minimoHistoricoPrecio = dto.precioHistoricoMinimo,
-                    minimoHistoricoFecha = dto.fechaHistoricoMinimo,
+                    minimoHistoricoPrecio = dto.minimoHistorico,
+                    minimoHistoricoFecha = 0L, // Lo ignoramos temporalmente ya que viene en un formato diferente al original
                     estaEnDeseos = dto.enDeseos,
                     ofertasTiendas = dto.ofertas.map { dealDto ->
                         DealTienda(
                             idOferta = dealDto.dealId,
                             idTienda = dealDto.tiendaId,
                             nombreTienda = dealDto.tiendaNombre,
-                            precioActual = dealDto.precioOferta,
+                            precioActual = dealDto.precio,
                             precioNormal = dealDto.precioNormal,
-                            descuentoPorcentaje = dealDto.descuento
+                            descuentoPorcentaje = dealDto.descuento,
+                            enlace = dealDto.enlace
                         )
                     }
                 )

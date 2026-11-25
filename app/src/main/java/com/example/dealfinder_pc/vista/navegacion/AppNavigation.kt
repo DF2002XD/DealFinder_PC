@@ -179,10 +179,19 @@ fun AppNavigation(
 
             composable(DetallesOferta) { backStackEntry ->
                 val idOferta = backStackEntry.arguments?.getString("idOferta") ?: ""
+                val contexto = androidx.compose.ui.platform.LocalContext.current
                 PaginaDetalles(
                     idOferta = idOferta,
                     onVolver = { navController.popBackStack() },
-                    onTiendaClick = { /* Próximamente: Ir a la tienda */ }
+                    onTiendaClick = { ofertaTienda -> 
+                        // Abrir enlace en el navegador
+                        if (!ofertaTienda.urlEnlace.isNullOrBlank()) {
+                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(ofertaTienda.urlEnlace))
+                            contexto.startActivity(intent)
+                        } else {
+                            android.widget.Toast.makeText(contexto, "Enlace no disponible", android.widget.Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 )
             }
 

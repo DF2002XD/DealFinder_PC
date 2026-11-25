@@ -25,11 +25,12 @@ data class PaginaOfertasRespuestaDTO(
 )
 
 data class JuegoRespuestaDTO(
-    val id: String,
+    val id: String?,
+    val gameId: String?,
     val titulo: String,
     val thumbUrl: String,
-    val precioHistoricoMinimo: Double,
-    val fechaHistoricoMinimo: Long,
+    val minimoHistorico: Double, // Cambiado para que coincida con tu JSON
+    val fechaMinimoHistorico: String, // Cambiado para que coincida con tu JSON (Viene como String, no Long)
     val enDeseos: Boolean,
     val moneda: String,
     val ofertas: List<OfertaTiendaRespuestaDTO>
@@ -39,7 +40,7 @@ data class OfertaTiendaRespuestaDTO(
     val dealId: String,
     val tiendaId: String,
     val tiendaNombre: String,
-    val precioOferta: Double,
+    val precio: Double,
     val precioNormal: Double,
     val descuento: Double,
     val enlace: String

@@ -11,5 +11,6 @@ data class OfertaTiendaUIState(
     val precio: String,
     val descuentoTexto: String? = null, // ej: "-65%"
     val esLaMejor: Boolean = false,
-    val urlLogo: String? = null
+    val urlLogo: String? = null,
+    val urlEnlace: String? = null
 )

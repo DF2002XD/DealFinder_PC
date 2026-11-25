@@ -14,8 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class DetallesViewModel(
@@ -35,13 +33,10 @@ class DetallesViewModel(
                 val detalles = result.getOrNull()
                 if (detalles != null) {
                     
-                    // Formateamos la fecha del histórico de milisegundos a fecha corta (Ej: 10/10/2016)
-                    val fechaFormateada = if (detalles.minimoHistoricoFecha > 0L) {
-                        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                        format.format(Date(detalles.minimoHistoricoFecha * 1000L)) // Cheapshark manda segundos
-                    } else {
-                        "--/--/----"
-                    }
+                    // Como el backend ahora nos envía la fecha ya formateada o como queramos, 
+                    // la pillamos directamente del original (aunque sea un 0L en el dominio)
+                    // Para ser más rápidos y evitar crasheos si el backend cambia, pintamos el dato si está, o "--"
+                    val pHistorico = detalles.minimoHistoricoPrecio
                     
                     // Buscamos cuál es el precio normal en la primera oferta (todos tienen el mismo precio normal del juego base)
                     val pNormal = detalles.ofertasTiendas.firstOrNull()?.precioNormal ?: 0.0
@@ -51,18 +46,19 @@ class DetallesViewModel(
                             isLoading = false,
                             tituloJuego = detalles.titulo,
                             urlImagen = detalles.urlImagen,
-                            minimoHistoricoInfo = "Mínimo histórico · $fechaFormateada",
-                            precioMinimoHistorico = "$${detalles.minimoHistoricoPrecio}",
+                            minimoHistoricoInfo = "Mínimo histórico", // Ya no calculamos la fecha a mano aquí
+                            precioMinimoHistorico = "$$pHistorico",
                             precioNormal = "$$pNormal",
                             ofertasEnTiendas = detalles.ofertasTiendas.mapIndexed { index, tienda ->
                                 OfertaTiendaUIState(
                                     nombreTienda = tienda.nombreTienda,
                                     precio = "$${tienda.precioActual}",
-                                    descuentoTexto = if (tienda.descuentoPorcentaje > 0.0) "-${tienda.descuentoPorcentaje.toInt()}%" else null,
+                                    descuentoTexto = if (tienda.descuentoPorcentaje > 0.0) "-${String.format(Locale.US, "%.0f", tienda.descuentoPorcentaje)}%" else null,
                                     // Consideramos la mejor oferta la primera de la lista (Cheapshark suele ordenarlas por precio)
                                     esLaMejor = index == 0,
                                     // URL generica para la tienda
-                                    urlLogo = "https://www.cheapshark.com/img/stores/banners/${tienda.idTienda}.png"
+                                    urlLogo = "https://www.cheapshark.com/img/stores/banners/${tienda.idTienda}.png",
+                                    urlEnlace = tienda.enlace
                                 )
                             },
                             isEnDeseos = detalles.estaEnDeseos 
