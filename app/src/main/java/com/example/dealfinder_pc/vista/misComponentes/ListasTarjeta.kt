@@ -53,9 +53,37 @@ fun ListaMonedas(
 fun ListaOfertas(
     ofertas: List<OfertaUIState>,
     onOfertaClick: (String) -> Unit,
+    onLoadMore: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    val listState = androidx.compose.foundation.lazy.rememberLazyListState()
+
+    // Detectar cuando llegamos al final de la lista
+    val isAtBottom = androidx.compose.runtime.remember {
+        androidx.compose.runtime.derivedStateOf {
+            val layoutInfo = listState.layoutInfo
+            val totalItems = layoutInfo.totalItemsCount
+            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            
+            // Cargamos más cuando falten menos de 20 elementos para llegar al final
+            // Así garantizamos que Android dispare la petición al servidor MUCHO antes 
+            // de que el usuario haya siquiera olido el fondo de la pantalla.
+            if (totalItems > 0) {
+                lastVisibleItem >= totalItems - 20
+            } else {
+                false
+            }
+        }
+    }
+
+    androidx.compose.runtime.LaunchedEffect(isAtBottom.value) {
+        if (isAtBottom.value && ofertas.isNotEmpty()) {
+            onLoadMore()
+        }
+    }
+
     LazyColumn(
+        state = listState,
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)

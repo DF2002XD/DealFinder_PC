@@ -31,6 +31,7 @@ fun PanelOfertas(
     textoFiltroActivo: String, // Ej: "Todas las ofertas · mejor oferta primero"
     ofertas: List<OfertaUIState>,
     onOfertaClick: (String) -> Unit,
+    onLoadMore: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -99,6 +100,7 @@ fun PanelOfertas(
         ListaOfertas(
             ofertas = ofertas,
             onOfertaClick = onOfertaClick,
+            onLoadMore = onLoadMore,
             modifier = Modifier.weight(1f) 
         )
     }

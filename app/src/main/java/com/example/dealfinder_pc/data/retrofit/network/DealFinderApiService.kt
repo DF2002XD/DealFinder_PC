@@ -53,9 +53,11 @@ interface DealFinderApiService {
     @GET("api/deals")
     suspend fun getOfertas(
         @Query("query") query: String? = null,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 40,
         @Query("maxPrice") maxPrice: Double? = null,
         @Query("onSale") onSale: Boolean? = null
-    ): Response<List<OfertaRespuestaDTO>>
+    ): Response<com.example.dealfinder_pc.modelo.PaginaOfertasRespuestaDTO>
 
     @GET("api/deals/{id}")
     suspend fun getDetallesJuego(@Path("id") gameId: String): Response<JuegoRespuestaDTO>

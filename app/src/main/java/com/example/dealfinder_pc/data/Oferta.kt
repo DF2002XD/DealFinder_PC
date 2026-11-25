@@ -13,3 +13,8 @@ data class Oferta(
     val nombreTienda: String,
     val puntuacionMetacritic: Int?
 )
+
+data class PaginaOferta(
+    val ofertas: List<Oferta>,
+    val hayMas: Boolean
+)

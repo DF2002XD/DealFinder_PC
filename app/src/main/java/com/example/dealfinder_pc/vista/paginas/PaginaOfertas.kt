@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.LaunchedEffect
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.viewmodel.vm.OfertasViewModel
 import com.example.dealfinder_pc.vista.misComponentes.PanelOfertas
@@ -22,6 +23,11 @@ fun PaginaOfertas(
     viewModel: OfertasViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    // Recargar ofertas siempre que entremos a la pestaña para no mostrar una pantalla vacía
+    LaunchedEffect(Unit) {
+        viewModel.recargarDatos()
+    }
 
     // Contenedor "tonto" para acoplarse al NavHost de la app principal
     Box(
@@ -38,6 +44,9 @@ fun PaginaOfertas(
             ofertas = uiState.ofertas, // Le pasamos la lista ya gestionada por el ViewModel
             onOfertaClick = { idOferta -> 
                 onNavigateToDetalles(idOferta) 
+            },
+            onLoadMore = {
+                viewModel.cargarMasOfertas()
             }
         )
     }
