@@ -15,6 +15,8 @@ class OfertasApiRepo : IOfertasApiRepo {
             } else {
                 Result.failure(Exception("Error HTTP: ${response.code()}"))
             }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -28,6 +30,8 @@ class OfertasApiRepo : IOfertasApiRepo {
             } else {
                 Result.failure(Exception("Error HTTP: ${response.code()}"))
             }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.failure(e)
         }

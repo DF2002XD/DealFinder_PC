@@ -42,6 +42,8 @@ fun PaginaOfertas(
             onFiltrosClick = onNavigateToFiltros,
             textoFiltroActivo = uiState.textoFiltroActivo,
             ofertas = uiState.ofertas, // Le pasamos la lista ya gestionada por el ViewModel
+            isLoading = uiState.isLoading,
+            errorMessage = uiState.errorMessage,
             onOfertaClick = { idOferta -> 
                 onNavigateToDetalles(idOferta) 
             },

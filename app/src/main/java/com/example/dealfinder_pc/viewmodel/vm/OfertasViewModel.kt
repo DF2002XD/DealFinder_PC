@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dealfinder_pc.data.repository.IOfertasRepository
 import com.example.dealfinder_pc.data.repository.OfertasRepository
+import com.example.dealfinder_pc.data.repository.cargarTodasLasPaginas
 import com.example.dealfinder_pc.viewmodel.uistate.OfertaUIState
 import com.example.dealfinder_pc.viewmodel.uistate.OfertasUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,7 @@ class OfertasViewModel(
     val uiState: StateFlow<OfertasUIState> = _uiState.asStateFlow()
 
     private var todasLasOfertas: MutableList<OfertaUIState> = mutableListOf()
+    private val idsOfertasCargadas = mutableSetOf<String>()
     private var paginaActual = 0
     private var hayMasPaginas = true
     private var queryActual: String? = null
@@ -48,44 +50,43 @@ class OfertasViewModel(
         if (isLoadMore && !hayMasPaginas) return
 
         isCargandoPagina = true
-        _uiState.update { it.copy(isLoading = true) }
+        _uiState.update { it.copy(isLoading = true, errorMessage = null) }
         
-        cargarJob?.cancel()
         cargarJob = viewModelScope.launch {
-            val result = repository.obtenerOfertas(query = queryActual, page = paginaActual)
-            
-            if (result.isSuccess) {
-                val paginaOferta = result.getOrNull()
-                if (paginaOferta != null) {
-                    val nuevasOfertas = paginaOferta.ofertas.map { oferta ->
-                        OfertaUIState(
-                            id = oferta.id,
-                            titulo = oferta.titulo,
-                            tiendaYMeta = "${oferta.nombreTienda} · Meta ${oferta.puntuacionMetacritic ?: "--"}",
-                            precioOriginal = "$${oferta.precioOriginal}",
-                            precioRebajado = if (oferta.precioRebajado <= 0.0) "GRATIS" else "$${oferta.precioRebajado}",
-                            descuento = "-${oferta.descuentoPorcentaje.toInt()}%",
-                            urlImagen = oferta.urlImagen
-                        )
-                    }
+            try {
+                val result = cargarTodasLasPaginas(
+                    paginaInicial = paginaActual,
+                    obtenerPagina = { pagina -> repository.obtenerOfertas(query = queryActual, page = pagina) },
+                    alCargarPagina = { paginaOferta ->
+                        val nuevasOfertas = paginaOferta.ofertas.map { oferta ->
+                            OfertaUIState(
+                                id = oferta.id,
+                                titulo = oferta.titulo,
+                                tiendaYMeta = "${oferta.nombreTienda} · Meta ${oferta.puntuacionMetacritic ?: "--"}",
+                                precioOriginal = "$${oferta.precioOriginal}",
+                                precioRebajado = if (oferta.precioRebajado <= 0.0) "GRATIS" else "$${oferta.precioRebajado}",
+                                descuento = "-${oferta.descuentoPorcentaje.toInt()}%",
+                                urlImagen = oferta.urlImagen
+                            )
+                        }
 
-                    if (isLoadMore) {
-                        todasLasOfertas.addAll(nuevasOfertas)
-                    } else {
-                        todasLasOfertas = nuevasOfertas.toMutableList()
-                    }
-                    
-                    hayMasPaginas = paginaOferta.hayMas
-                    if (hayMasPaginas) {
+                        todasLasOfertas.addAll(nuevasOfertas.filter { idsOfertasCargadas.add(it.id) })
                         paginaActual++
-                    }
+                        hayMasPaginas = paginaOferta.hayMas
 
-                    _uiState.update { it.copy(ofertas = todasLasOfertas.toList(), isLoading = false) }
+                        _uiState.update { it.copy(ofertas = todasLasOfertas.toList()) }
+                    }
+                )
+
+                if (result.isFailure) {
+                    _uiState.update {
+                        it.copy(errorMessage = result.exceptionOrNull()?.message ?: "Error al cargar ofertas")
+                    }
                 }
-            } else {
-                _uiState.update { it.copy(isLoading = false, errorMessage = "Error al cargar ofertas") }
+            } finally {
+                isCargandoPagina = false
+                _uiState.update { it.copy(isLoading = false) }
             }
-            isCargandoPagina = false
         }
     }
 
@@ -93,9 +94,11 @@ class OfertasViewModel(
         _uiState.update { it.copy(busquedaActual = texto) }
 
         searchJob?.cancel()
+        cargarJob?.cancel()
         
         searchJob = viewModelScope.launch {
             kotlinx.coroutines.delay(500)
+            cargarJob?.join()
             queryActual = if (texto.trim().isNotEmpty()) texto.trim() else null
             
             paginaActual = 0
@@ -103,6 +106,7 @@ class OfertasViewModel(
             isCargandoPagina = false
             
             todasLasOfertas.clear()
+            idsOfertasCargadas.clear()
             _uiState.update { it.copy(ofertas = emptyList()) }
             
             cargarOfertas()

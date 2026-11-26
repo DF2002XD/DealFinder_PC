@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +34,8 @@ fun PanelOfertas(
     ofertas: List<OfertaUIState>,
     onOfertaClick: (String) -> Unit,
     onLoadMore: () -> Unit = {},
+    isLoading: Boolean = false,
+    errorMessage: String? = null,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -94,6 +98,38 @@ fun PanelOfertas(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        if (isLoading) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(18.dp),
+                    strokeWidth = 2.dp
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Cargando todas las ofertas...",
+                    fontFamily = bodyFontFamily,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 14.sp
+                )
+            }
+        }
+
+        if (errorMessage != null) {
+            Text(
+                text = "No se pudieron cargar todas las ofertas: $errorMessage",
+                fontFamily = bodyFontFamily,
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+        }
 
         // 4. LISTA DE OFERTAS
         // Al usar weight(1f), la lista tomará todos el espacio restante hasta el fondo
