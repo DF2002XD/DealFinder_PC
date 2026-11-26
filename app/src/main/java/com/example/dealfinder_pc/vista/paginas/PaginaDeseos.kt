@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,6 +22,11 @@ fun PaginaDeseos(
     viewModel: DeseosViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    // Cada vez que entremos a la pestaña "Lista de deseos", le decimos al ViewModel que descargue la lista actualizada de la API
+    LaunchedEffect(Unit) {
+        viewModel.recargarDatos()
+    }
 
     Box(
         modifier = modifier

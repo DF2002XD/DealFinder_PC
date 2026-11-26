@@ -92,8 +92,11 @@ class DetallesViewModel(
             val result = deseosRepo.modificarDeseo(request)
             
             // Si hubo un error en la API, devolvemos el estado visual a como estaba antes
+            // Si funciona correctamente, refrescamos los detalles desde el servidor para asegurarnos de que la base de datos y la pantalla muestran lo mismo
             if (result.isFailure) {
                 _uiState.update { it.copy(isEnDeseos = currentState.isEnDeseos) }
+            } else {
+                cargarDetalles(gameId)
             }
         }
     }

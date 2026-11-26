@@ -182,7 +182,7 @@ fun AppNavigation(
                 val contexto = androidx.compose.ui.platform.LocalContext.current
                 PaginaDetalles(
                     idOferta = idOferta,
-                    onVolver = { navController.popBackStack() },
+                    onVolver = { navController.popBackStack() }, // ESTO ERA LO QUE NO ESTABA BIEN PASADO
                     onTiendaClick = { ofertaTienda -> 
                         // Abrir enlace en el navegador
                         if (!ofertaTienda.urlEnlace.isNullOrBlank()) {
