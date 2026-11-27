@@ -1,6 +1,7 @@
 package com.example.dealfinder_pc.data.repository
 
 import com.example.dealfinder_pc.data.PaginaOferta
+import kotlin.time.Duration.Companion.milliseconds
 
 internal suspend fun cargarTodasLasPaginas(
     paginaInicial: Int,
@@ -28,7 +29,7 @@ internal suspend fun cargarTodasLasPaginas(
         }
         
         // PAUSA de 1 segundo (1000ms) para no saturar la API y evitar el Error HTTP 503
-        kotlinx.coroutines.delay(1000)
+        kotlinx.coroutines.delay(1000.milliseconds)
         
         pagina++
     }

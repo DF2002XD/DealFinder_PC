@@ -50,6 +50,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dealfinder_pc.viewmodel.vm.AppNavigationViewModel
 import com.example.dealfinder_pc.vista.misComponentes.TopAppBarNav
+import androidx.core.net.toUri
 
 @Composable
 fun AppNavigation(
@@ -230,7 +231,8 @@ fun AppNavigation(
                     onTiendaClick = { ofertaTienda -> 
                         // Abrir enlace en el navegador
                         if (!ofertaTienda.urlEnlace.isNullOrBlank()) {
-                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(ofertaTienda.urlEnlace))
+                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW,
+                                ofertaTienda.urlEnlace.toUri())
                             contexto.startActivity(intent)
                         } else {
                             android.widget.Toast.makeText(contexto, "Enlace no disponible", android.widget.Toast.LENGTH_SHORT).show()

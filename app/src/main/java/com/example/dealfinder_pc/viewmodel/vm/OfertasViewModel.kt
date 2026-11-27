@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class OfertasViewModel(
     private val repository: IOfertasRepository = OfertasRepository()
@@ -114,9 +115,9 @@ class OfertasViewModel(
         cargarJob?.cancel()
         
         searchJob = viewModelScope.launch {
-            kotlinx.coroutines.delay(500)
+            kotlinx.coroutines.delay(500.milliseconds)
             cargarJob?.join()
-            queryActual = if (texto.trim().isNotEmpty()) texto.trim() else null
+            queryActual = texto.trim().ifEmpty { null }
             
             reiniciarYCargar()
         }

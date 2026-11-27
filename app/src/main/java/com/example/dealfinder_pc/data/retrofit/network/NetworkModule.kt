@@ -26,7 +26,7 @@ object NetworkModule {
         val token = authToken ?: com.example.dealfinder_pc.TokenManager.getToken()
         
         // Si sigue sin haber token (ni en RAM ni en Disco), no añadimos cabecera de seguridad
-        if (token == null || token.isBlank()) {
+        if (token.isNullOrBlank()) {
             return@Interceptor chain.proceed(originalRequest)
         }
 

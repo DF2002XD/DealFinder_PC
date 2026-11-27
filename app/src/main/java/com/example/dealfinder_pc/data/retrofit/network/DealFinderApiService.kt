@@ -7,7 +7,6 @@ import com.example.dealfinder_pc.modelo.DeseoRequestDTO
 import com.example.dealfinder_pc.modelo.DeseoRespuestaDTO
 import com.example.dealfinder_pc.modelo.JuegoRespuestaDTO
 import com.example.dealfinder_pc.modelo.LoginRequestDTO
-import com.example.dealfinder_pc.modelo.OfertaRespuestaDTO
 import com.example.dealfinder_pc.modelo.RegistroRequestDTO
 import com.example.dealfinder_pc.modelo.UsuarioRespuestaDTO
 import com.example.dealfinder_pc.modelo.TiendaRespuestaDTO
