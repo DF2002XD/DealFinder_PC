@@ -10,6 +10,7 @@ import com.example.dealfinder_pc.modelo.LoginRequestDTO
 import com.example.dealfinder_pc.modelo.OfertaRespuestaDTO
 import com.example.dealfinder_pc.modelo.RegistroRequestDTO
 import com.example.dealfinder_pc.modelo.UsuarioRespuestaDTO
+import com.example.dealfinder_pc.modelo.TiendaRespuestaDTO
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -56,11 +57,16 @@ interface DealFinderApiService {
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 40,
         @Query("maxPrice") maxPrice: Double? = null,
-        @Query("onSale") onSale: Boolean? = null
+        @Query("onSale") onSale: Boolean? = null,
+        @Query("sortBy") sortBy: String? = null,
+        @Query("storeIds") storeIds: String? = null // Comma separated list of store IDs
     ): Response<com.example.dealfinder_pc.modelo.PaginaOfertasRespuestaDTO>
 
     @GET("api/deals/{id}")
     suspend fun getDetallesJuego(@Path("id") gameId: String): Response<JuegoRespuestaDTO>
+
+    @GET("api/stores")
+    suspend fun getTiendas(): Response<List<TiendaRespuestaDTO>>
 
     // --- LISTA DE DESEOS ---
     @GET("api/wishlist")

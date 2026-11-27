@@ -12,7 +12,7 @@ package com.example.dealfinder_pc.viewmodel.uistate
  * @property isLoading Indica si se están cargando o aplicando los filtros al servidor.
  */
 data class FiltrosUIState(
-    val ordenSeleccionado: String = "Mejor Oferta Primero",
+    val ordenSeleccionado: String = "",
     val tiendasDisponibles: List<String> = emptyList(),
     val tiendasSeleccionadas: List<String> = emptyList(),
     val precioMaximo: String = "",

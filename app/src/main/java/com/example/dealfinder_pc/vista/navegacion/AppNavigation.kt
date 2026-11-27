@@ -4,7 +4,9 @@ package com.example.dealfinder_pc.vista.navegacion
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import com.example.dealfinder_pc.viewmodel.vm.OfertasViewModel
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
@@ -154,18 +156,35 @@ fun AppNavigation(
 
             // --- BLOQUE PRINCIPAL (MENÚ INFERIOR) ---
 
-            composable(Ofertas) {
+            composable(Ofertas) { backStackEntry ->
+                val savedStateHandle = backStackEntry.savedStateHandle
+                
                 PaginaOfertas(
                     onNavigateToFiltros = { navController.navigate(Filtros) },
                     onNavigateToDetalles = { idJuego ->
                         navController.navigate(Rutas.detallesOferta(idJuego))
-                    }
+                    },
+                    savedStateHandle = savedStateHandle
                 )
             }
 
-            composable(Filtros) {
+            composable(Filtros) { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry(Ofertas)
+                }
+                val ofertasViewModel: OfertasViewModel = viewModel(parentEntry)
+                val ofertasUiState by ofertasViewModel.uiState.collectAsState()
+                
                 PaginaFiltro(
-                    onNavigateBack = { navController.popBackStack() }
+                    onNavigateBack = { precioMaximo, soloGratis, soloEnOferta, ordenSeleccionado, tiendasSeleccionadas -> 
+                        navController.previousBackStackEntry?.savedStateHandle?.set("precioMaximo", precioMaximo)
+                        navController.previousBackStackEntry?.savedStateHandle?.set("soloGratis", soloGratis)
+                        navController.previousBackStackEntry?.savedStateHandle?.set("soloEnOferta", soloEnOferta)
+                        navController.previousBackStackEntry?.savedStateHandle?.set("ordenSeleccionado", ordenSeleccionado)
+                        navController.previousBackStackEntry?.savedStateHandle?.set("tiendasSeleccionadas", tiendasSeleccionadas)
+                        navController.popBackStack()
+                    },
+                    ofertasUiState = ofertasUiState
                 )
             }
 

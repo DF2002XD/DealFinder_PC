@@ -3,13 +3,14 @@ package com.example.dealfinder_pc.data.retrofit.repo
 import com.example.dealfinder_pc.data.retrofit.network.NetworkModule
 import com.example.dealfinder_pc.modelo.JuegoRespuestaDTO
 import com.example.dealfinder_pc.modelo.PaginaOfertasRespuestaDTO
+import com.example.dealfinder_pc.modelo.TiendaRespuestaDTO
 
 class OfertasApiRepo : IOfertasApiRepo {
     private val api = NetworkModule.apiService
 
-    override suspend fun obtenerOfertas(query: String?, page: Int): Result<PaginaOfertasRespuestaDTO> {
+    override suspend fun obtenerOfertas(query: String?, maxPrice: Double?, onSale: Boolean?, sortBy: String?, storeIds: String?, page: Int): Result<PaginaOfertasRespuestaDTO> {
         return try {
-            val response = api.getOfertas(query = query, page = page, size = 40)
+            val response = api.getOfertas(query = query, page = page, size = 40, maxPrice = maxPrice, onSale = onSale, sortBy = sortBy, storeIds = storeIds)
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!)
             } else {
@@ -25,6 +26,21 @@ class OfertasApiRepo : IOfertasApiRepo {
     override suspend fun obtenerDetallesJuego(gameID: String): Result<JuegoRespuestaDTO> {
         return try {
             val response = api.getDetallesJuego(gameID)
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("Error HTTP: ${response.code()}"))
+            }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun obtenerTiendas(): Result<List<TiendaRespuestaDTO>> {
+        return try {
+            val response = api.getTiendas()
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!)
             } else {

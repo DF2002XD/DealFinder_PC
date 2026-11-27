@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dealfinder_pc.data.repository.IUsuarioRepository
 import com.example.dealfinder_pc.data.repository.UsuarioRepository
+import com.example.dealfinder_pc.data.repository.IOfertasRepository
+import com.example.dealfinder_pc.data.repository.OfertasRepository
 import com.example.dealfinder_pc.modelo.ActualizarPerfilRequestDTO
 import com.example.dealfinder_pc.viewmodel.uistate.FiltrosUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,11 +15,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FiltrosViewModel(
-    private val repository: IUsuarioRepository = UsuarioRepository()
+    private val usuarioRepository: IUsuarioRepository = UsuarioRepository(),
+    private val ofertasRepository: IOfertasRepository = OfertasRepository()
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         FiltrosUIState(
-            tiendasDisponibles = listOf("Steam", "Epic Games Store", "GOG", "Humble Store", "Fanatical", "IndieGala"),
+            tiendasDisponibles = emptyList(),
             tiendasSeleccionadas = emptyList() // Hacemos que ninguna esté marcada por defecto hasta que cargue
         )
     )
@@ -25,11 +28,22 @@ class FiltrosViewModel(
 
     init {
         cargarTiendasGuardadas()
+        cargarTiendasDisponibles()
+    }
+
+    private fun cargarTiendasDisponibles() {
+        viewModelScope.launch {
+            val result = ofertasRepository.obtenerTiendas()
+            if (result.isSuccess) {
+                val tiendas = result.getOrNull() ?: emptyList()
+                _uiState.update { it.copy(tiendasDisponibles = tiendas.map { t -> t.nombre }) }
+            }
+        }
     }
 
     private fun cargarTiendasGuardadas() {
         viewModelScope.launch {
-            val result = repository.obtenerPerfil()
+            val result = usuarioRepository.obtenerPerfil()
             if (result.isSuccess) {
                 val usuario = result.getOrNull()
                 if (usuario != null) {
@@ -54,6 +68,18 @@ class FiltrosViewModel(
         }
     }
 
+    fun inicializarFiltros(precioMaximo: String, soloGratis: Boolean, soloEnOferta: Boolean, ordenSeleccionado: String, tiendasSeleccionadas: List<String>) {
+        _uiState.update {
+            it.copy(
+                precioMaximo = precioMaximo,
+                soloGratis = soloGratis,
+                soloEnOferta = soloEnOferta,
+                ordenSeleccionado = ordenSeleccionado,
+                tiendasSeleccionadas = tiendasSeleccionadas.ifEmpty { it.tiendasSeleccionadas } // Conservar las del repo si vienen vacías
+            )
+        }
+    }
+
     fun actualizarPrecioMaximo(precio: String) {
         _uiState.update { it.copy(precioMaximo = precio) }
     }
@@ -69,7 +95,7 @@ class FiltrosViewModel(
     fun limpiarFiltros() {
         _uiState.update {
             it.copy(
-                ordenSeleccionado = "Mejor Oferta Primero",
+                ordenSeleccionado = "",
                 precioMaximo = "",
                 soloGratis = false,
                 soloEnOferta = false
@@ -87,7 +113,7 @@ class FiltrosViewModel(
                 avisosOfertas = null,
                 tiendasPreferidas = _uiState.value.tiendasSeleccionadas // Mandamos las que hemos marcado
             )
-            val result = repository.actualizarPreferencias(requestDto)
+            val result = usuarioRepository.actualizarPreferencias(requestDto)
             
             if (result.isSuccess) {
                 _uiState.update { it.copy(isLoading = false) }

@@ -16,5 +16,11 @@ data class OfertasUIState(
     val monedaActual: String = "USD",
     val textoFiltroActivo: String = "Todas las ofertas · mejor oferta primero",
     val isLoading: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    // Active filters
+    val precioMaximoActual: String = "",
+    val soloGratisActual: Boolean = false,
+    val soloEnOfertaActual: Boolean = false,
+    val ordenSeleccionadoActual: String = "",
+    val tiendasSeleccionadasActuales: List<String> = emptyList()
 )

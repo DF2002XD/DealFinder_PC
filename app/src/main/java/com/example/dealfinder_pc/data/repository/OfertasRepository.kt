@@ -4,6 +4,7 @@ import com.example.dealfinder_pc.data.DealTienda
 import com.example.dealfinder_pc.data.DetallesJuego
 import com.example.dealfinder_pc.data.Oferta
 import com.example.dealfinder_pc.data.PaginaOferta
+import com.example.dealfinder_pc.data.Tienda
 import com.example.dealfinder_pc.data.retrofit.repo.IOfertasApiRepo
 import com.example.dealfinder_pc.data.retrofit.repo.OfertasApiRepo
 
@@ -11,8 +12,10 @@ class OfertasRepository(
     private val apiRepo: IOfertasApiRepo = OfertasApiRepo()
 ) : IOfertasRepository {
 
-    override suspend fun obtenerOfertas(query: String?, page: Int): Result<PaginaOferta> {
-        val result = apiRepo.obtenerOfertas(query, page)
+    private var tiendasCached: List<Tienda>? = null
+
+    override suspend fun obtenerOfertas(query: String?, maxPrice: Double?, onSale: Boolean?, sortBy: String?, storeIds: String?, page: Int): Result<PaginaOferta> {
+        val result = apiRepo.obtenerOfertas(query, maxPrice, onSale, sortBy, storeIds, page)
         return if (result.isSuccess) {
             val dto = result.getOrThrow()
             val ofertasDominio = dto.ofertas.map { ofertaDto ->
@@ -63,6 +66,26 @@ class OfertasRepository(
             } else {
                 Result.failure(Exception("Juego no encontrado"))
             }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Error desconocido"))
+        }
+    }
+
+    override suspend fun obtenerTiendas(): Result<List<Tienda>> {
+        tiendasCached?.let { return Result.success(it) }
+
+        val result = apiRepo.obtenerTiendas()
+        return if (result.isSuccess) {
+            val dtoList = result.getOrThrow()
+            val tiendasDominio = dtoList.map { dto ->
+                Tienda(
+                    id = dto.id,
+                    nombre = dto.nombre,
+                    iconoUrl = dto.iconoUrl
+                )
+            }
+            tiendasCached = tiendasDominio
+            Result.success(tiendasDominio)
         } else {
             Result.failure(result.exceptionOrNull() ?: Exception("Error desconocido"))
         }

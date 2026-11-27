@@ -18,3 +18,9 @@ data class PaginaOferta(
     val ofertas: List<Oferta>,
     val hayMas: Boolean
 )
+
+data class Tienda(
+    val id: String,
+    val nombre: String,
+    val iconoUrl: String? = null
+)

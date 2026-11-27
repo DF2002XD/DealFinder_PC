@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.SavedStateHandle
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import com.example.dealfinder_pc.viewmodel.vm.OfertasViewModel
 import com.example.dealfinder_pc.vista.misComponentes.PanelOfertas
@@ -20,12 +21,35 @@ fun PaginaOfertas(
     onNavigateToFiltros: () -> Unit, // Cuando el usuario pincha el botón "FILTROS"
     onNavigateToDetalles: (String) -> Unit, // Cuando el usuario pincha en un juego (le pasamos el ID)
     modifier: Modifier = Modifier,
-    viewModel: OfertasViewModel = viewModel()
+    viewModel: OfertasViewModel = viewModel(),
+    savedStateHandle: SavedStateHandle? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Leer filtros de savedStateHandle si existen
+    LaunchedEffect(savedStateHandle) {
+        if (savedStateHandle != null) {
+            val hasUpdates = savedStateHandle.keys().contains("precioMaximo") || savedStateHandle.keys().contains("ordenSeleccionado")
+            if (hasUpdates) {
+                val precioMaximo = savedStateHandle.get<String>("precioMaximo") ?: ""
+                val soloGratis = savedStateHandle.get<Boolean>("soloGratis") ?: false
+                val soloEnOferta = savedStateHandle.get<Boolean>("soloEnOferta") ?: false
+                val ordenSeleccionado = savedStateHandle.get<String>("ordenSeleccionado") ?: ""
+                val tiendasSeleccionadas = savedStateHandle.get<List<String>>("tiendasSeleccionadas") ?: emptyList()
+                
+                viewModel.aplicarFiltros(precioMaximo, soloGratis, soloEnOferta, ordenSeleccionado, tiendasSeleccionadas)
+                
+                savedStateHandle.remove<String>("precioMaximo")
+                savedStateHandle.remove<Boolean>("soloGratis")
+                savedStateHandle.remove<Boolean>("soloEnOferta")
+                savedStateHandle.remove<String>("ordenSeleccionado")
+                savedStateHandle.remove<List<String>>("tiendasSeleccionadas")
+            }
+        }
+    }
+
     // Recargar ofertas siempre que entremos a la pestaña para no mostrar una pantalla vacía
-    LaunchedEffect(Unit) {
+    androidx.compose.runtime.LaunchedEffect(Unit) {
         viewModel.recargarDatos()
     }
 

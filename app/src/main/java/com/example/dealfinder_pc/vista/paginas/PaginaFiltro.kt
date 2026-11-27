@@ -8,6 +8,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.example.dealfinder_pc.viewmodel.uistate.OfertasUIState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
@@ -16,11 +18,24 @@ import com.example.dealfinder_pc.vista.misComponentes.PanelFiltros
 
 @Composable
 fun PaginaFiltro(
-    onNavigateBack: () -> Unit, // Para volver a Ofertas al darle a Aplicar
+    onNavigateBack: (String, Boolean, Boolean, String, List<String>) -> Unit, // Para volver a Ofertas al darle a Aplicar
     modifier: Modifier = Modifier,
-    viewModel: FiltrosViewModel = viewModel()
+    viewModel: FiltrosViewModel = viewModel(),
+    ofertasUiState: OfertasUIState? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        if (ofertasUiState != null) {
+            viewModel.inicializarFiltros(
+                precioMaximo = ofertasUiState.precioMaximoActual,
+                soloGratis = ofertasUiState.soloGratisActual,
+                soloEnOferta = ofertasUiState.soloEnOfertaActual,
+                ordenSeleccionado = ofertasUiState.ordenSeleccionadoActual,
+                tiendasSeleccionadas = ofertasUiState.tiendasSeleccionadasActuales
+            )
+        }
+    }
 
     Box(
         modifier = modifier
@@ -42,8 +57,16 @@ fun PaginaFiltro(
             onSoloEnOfertaChange = { viewModel.toggleSoloEnOferta(it) },
             onLimpiarClick = { viewModel.limpiarFiltros() },
             onAplicarClick = {
-                // Guarda cambios (el ViewModel lo haría aquí) y vuelve a la lista
-                onNavigateBack()
+                // Guarda las tiendas favoritas y luego vuelve
+                viewModel.guardarTiendasFavoritas(onSuccess = {
+                    onNavigateBack(
+                        uiState.precioMaximo,
+                        uiState.soloGratis,
+                        uiState.soloEnOferta,
+                        uiState.ordenSeleccionado,
+                        uiState.tiendasSeleccionadas
+                    )
+                })
             }
         )
     }
@@ -54,7 +77,7 @@ fun PaginaFiltro(
 fun PaginaFiltroPreview() {
     DealFinder_PCTheme {
         PaginaFiltro(
-            onNavigateBack = {}
+            onNavigateBack = { _, _, _, _, _ -> }
         )
     }
 }
