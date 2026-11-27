@@ -18,6 +18,7 @@ import com.example.dealfinder_pc.vista.misComponentes.RecuperarContrasenha
 fun PaginaRecuContra(
     onNavigateBack: () -> Unit, // Para cuando pulsa "Volver"
     onEmailSent: () -> Unit, // Para cuando el correo se envía correctamente (generalmente vuelve al login)
+    desdeCuenta: Boolean = false, // Para saber si viene desde "Mi Cuenta"
     modifier: Modifier = Modifier,
     viewModel: RecuperarContraViewModel = viewModel()
 ) {
@@ -36,7 +37,8 @@ fun PaginaRecuContra(
             onEnviarClicked = { 
                 viewModel.enviarCorreoRecuperacion(onSuccess = onEmailSent)
             },
-            onNavigateToLogin = onNavigateBack
+            onNavigateToLogin = onNavigateBack,
+            desdeCuenta = desdeCuenta
         )
     }
 }

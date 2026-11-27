@@ -34,6 +34,7 @@
     <string name="recuperar_descripcion">Te enviaremos un enlace a tu correo para crear una nueva.</string>
     <string name="recuperar_enviar">ENVIAR ENLACE</string>
     <string name="recuperar_volver_login">VOLVER AL LOGIN</string>
+    <string name="recuperar_volver_cuenta">VOLVER A CUENTA</string>
 
     <!-- Ofertas -->
     <string name="ofertas_titulo">OFERTAS</string>

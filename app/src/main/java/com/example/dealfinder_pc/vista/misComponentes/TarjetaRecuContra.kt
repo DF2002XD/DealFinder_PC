@@ -38,7 +38,8 @@ fun RecuperarContrasenha(
     onCorreoChange: (String) -> Unit,
     errorMessage: String? = null,
     onEnviarClicked: () -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    desdeCuenta: Boolean = false
 ) {
     Column(
         modifier = Modifier
@@ -97,7 +98,7 @@ fun RecuperarContrasenha(
         Spacer(modifier = Modifier.height(20.dp))
 
         Boton(
-            nombre = R.string.recuperar_volver_login,
+            nombre = if (desdeCuenta) R.string.recuperar_volver_cuenta else R.string.recuperar_volver_login,
             onClick = onNavigateToLogin,
             isPrimary = false,
             modifier = Modifier.fillMaxWidth()

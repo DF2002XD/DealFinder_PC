@@ -237,7 +237,15 @@ fun AppNavigation(
             
             composable(Cuenta) {
                 PaginaCuenta(
-                    onRecuperarContrasenhaClick = { navController.navigate(RecuperarContrasenha) }
+                    onRecuperarContrasenhaClick = { navController.navigate("recuperar_contrasena_desde_cuenta") }
+                )
+            }
+
+            composable("recuperar_contrasena_desde_cuenta") {
+                PaginaRecuContra(
+                    onNavigateBack = { navController.popBackStack() },
+                    onEmailSent = { navController.popBackStack() }, // Vuelve a cuenta al enviar
+                    desdeCuenta = true
                 )
             }
             composable(Moneda) {
