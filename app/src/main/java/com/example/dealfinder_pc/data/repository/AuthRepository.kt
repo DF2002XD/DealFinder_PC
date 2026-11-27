@@ -79,6 +79,10 @@ class AuthRepository(
         return apiRepo.recuperarContrasenha(email)
     }
 
+    override suspend fun restablecerContrasenha(request: com.example.dealfinder_pc.modelo.RestablecerRequestDTO): Result<Unit> {
+        return apiRepo.restablecerContrasenha(request)
+    }
+
     override suspend fun cerrarSesion(): Result<Unit> {
         // Borramos el token de la memoria local y de SharedPreferences
         NetworkModule.authToken = null

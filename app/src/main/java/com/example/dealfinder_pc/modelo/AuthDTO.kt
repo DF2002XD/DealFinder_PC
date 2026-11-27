@@ -21,6 +21,7 @@ data class RecuperarRequestDTO(
 )
 
 data class RestablecerRequestDTO(
+    val correo: String,
     val token: String,
     val nuevaContrasena: String
 )

@@ -31,10 +31,17 @@
 
     <!-- Recuperar contraseña -->
     <string name="recuperar_titulo">RECUPERAR CONTRASEÑA</string>
-    <string name="recuperar_descripcion">Te enviaremos un enlace a tu correo para crear una nueva.</string>
-    <string name="recuperar_enviar">ENVIAR ENLACE</string>
+    <string name="recuperar_descripcion">Te enviaremos un código a tu correo para crear una nueva contraseña.</string>
+    <string name="recuperar_enviar">ENVIAR CÓDIGO</string>
     <string name="recuperar_volver_login">VOLVER AL LOGIN</string>
     <string name="recuperar_volver_cuenta">VOLVER A CUENTA</string>
+    <string name="recuperar_exito">Si existe una cuenta asociada a ese correo, recibirás un código con instrucciones para recuperarla.</string>
+
+    <!-- Restablecer contraseña -->
+    <string name="restablecer_titulo">NUEVA CONTRASEÑA</string>
+    <string name="restablecer_descripcion">Introduce el código que hemos enviado a %1$s y tu nueva contraseña.</string>
+    <string name="restablecer_cambiar">CAMBIAR CONTRASEÑA</string>
+    <string name="campo_codigo">Código de recuperación</string>
 
     <!-- Ofertas -->
     <string name="ofertas_titulo">OFERTAS</string>

@@ -11,6 +11,8 @@ import com.example.dealfinder_pc.modelo.OfertaRespuestaDTO
 import com.example.dealfinder_pc.modelo.RegistroRequestDTO
 import com.example.dealfinder_pc.modelo.UsuarioRespuestaDTO
 import com.example.dealfinder_pc.modelo.TiendaRespuestaDTO
+import com.example.dealfinder_pc.modelo.RecuperarRequestDTO
+import com.example.dealfinder_pc.modelo.RestablecerRequestDTO
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,7 +34,10 @@ interface DealFinderApiService {
     suspend fun register(@Body request: RegistroRequestDTO): Response<AuthRespuestaDTO>
 
     @POST("api/auth/recover")
-    suspend fun recoverPassword(@Query("email") email: String): Response<Unit>
+    suspend fun recoverPassword(@Body request: RecuperarRequestDTO): Response<Unit>
+
+    @POST("api/auth/reset")
+    suspend fun resetPassword(@Body request: RestablecerRequestDTO): Response<Unit>
     
     @POST("api/auth/logout")
     suspend fun logout(): Response<Unit>

@@ -23,7 +23,7 @@ class RecuperarContraViewModel(
 
     fun enviarCorreoRecuperacion(onSuccess: () -> Unit) {
         val state = _uiState.value
-        if (state.correo.isBlank()) {
+        if (state.correo.isBlank() || !state.correo.contains("@")) {
             _uiState.update { it.copy(errorMessage = "Introduce un correo electrónico válido") }
             return
         }
@@ -37,7 +37,12 @@ class RecuperarContraViewModel(
                 _uiState.update { it.copy(isLoading = false, isSuccess = true) }
                 onSuccess()
             } else {
-                _uiState.update { it.copy(isLoading = false, errorMessage = "Error enviando correo") }
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false, 
+                        errorMessage = result.exceptionOrNull()?.message ?: "Error enviando correo"
+                    ) 
+                }
             }
         }
     }

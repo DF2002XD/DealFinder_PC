@@ -82,7 +82,8 @@ fun RecuperarContrasenha(
                 text = errorMessage,
                 color = MaterialTheme.colorScheme.error,
                 fontFamily = bodyFontFamily,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center
             )
         }
 

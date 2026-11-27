@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
+import android.widget.Toast
 import com.example.dealfinder_pc.ui.theme.DealFinder_PCTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,6 +25,7 @@ fun PaginaRecuContra(
     viewModel: RecuperarContraViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val contexto = LocalContext.current
 
     // Usamos el Box global para el fondo como en Login/Registro
     Box(
@@ -35,7 +38,14 @@ fun PaginaRecuContra(
             onCorreoChange = { viewModel.actualizarCorreo(it) },
             errorMessage = uiState.errorMessage,
             onEnviarClicked = { 
-                viewModel.enviarCorreoRecuperacion(onSuccess = onEmailSent)
+                viewModel.enviarCorreoRecuperacion(onSuccess = {
+                    Toast.makeText(
+                        contexto, 
+                        "Si el correo es válido, te enviaremos un código.", 
+                        Toast.LENGTH_LONG
+                    ).show()
+                    onEmailSent()
+                })
             },
             onNavigateToLogin = onNavigateBack,
             desdeCuenta = desdeCuenta

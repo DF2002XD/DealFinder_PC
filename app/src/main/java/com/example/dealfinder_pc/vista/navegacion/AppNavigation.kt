@@ -21,9 +21,11 @@ import com.example.dealfinder_pc.vista.paginas.PaginaDetalles
 import com.example.dealfinder_pc.vista.paginas.PaginaMoneda
 import com.example.dealfinder_pc.vista.paginas.PaginaOfertas
 import com.example.dealfinder_pc.vista.paginas.PaginaPerfil
-import com.example.dealfinder_pc.vista.paginas.PaginaRecuContra
-import com.example.dealfinder_pc.vista.paginas.PaginaTienda
 import com.example.dealfinder_pc.vista.paginas.PaginaRegistro
+import com.example.dealfinder_pc.vista.paginas.PaginaRestablecerContra
+import com.example.dealfinder_pc.vista.navegacion.Rutas.RestablecerContrasenha
+import com.example.dealfinder_pc.vista.paginas.PaginaTienda
+import com.example.dealfinder_pc.vista.paginas.PaginaRecuContra
 import com.example.dealfinder_pc.vista.misComponentes.BottomAppBarNav
 import com.example.dealfinder_pc.vista.navegacion.Rutas.Login
 import com.example.dealfinder_pc.vista.navegacion.Rutas.Registro
@@ -148,9 +150,32 @@ fun AppNavigation(
             }
 
             composable(RecuperarContrasenha) {
+                // Instanciamos el viewModel a nivel de ruta para sacar el email y pasarlo
+                val recuperarVm: com.example.dealfinder_pc.viewmodel.vm.RecuperarContraViewModel = viewModel()
+                val recuperarState by recuperarVm.uiState.collectAsState()
+                
                 PaginaRecuContra(
                     onNavigateBack = { navController.popBackStack() },
-                    onEmailSent = { navController.popBackStack() } // Simula vuelta al login al enviar
+                    onEmailSent = { 
+                        navController.navigate(Rutas.restablecerContrasenha(recuperarState.correo)) {
+                            popUpTo(RecuperarContrasenha) { inclusive = true }
+                        }
+                    },
+                    viewModel = recuperarVm
+                )
+            }
+
+            composable(RestablecerContrasenha) { backStackEntry ->
+                val correoEncoded = backStackEntry.arguments?.getString("correo") ?: ""
+                val correoDecoded = android.net.Uri.decode(correoEncoded)
+                
+                PaginaRestablecerContra(
+                    correoAsociado = correoDecoded,
+                    onNavigateToLogin = { 
+                        navController.navigate(Login) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
                 )
             }
 
@@ -242,10 +267,18 @@ fun AppNavigation(
             }
 
             composable("recuperar_contrasena_desde_cuenta") {
+                val recuperarVm: com.example.dealfinder_pc.viewmodel.vm.RecuperarContraViewModel = viewModel()
+                val recuperarState by recuperarVm.uiState.collectAsState()
+                
                 PaginaRecuContra(
                     onNavigateBack = { navController.popBackStack() },
-                    onEmailSent = { navController.popBackStack() }, // Vuelve a cuenta al enviar
-                    desdeCuenta = true
+                    onEmailSent = { 
+                        navController.navigate(Rutas.restablecerContrasenha(recuperarState.correo)) {
+                            popUpTo("recuperar_contrasena_desde_cuenta") { inclusive = true }
+                        }
+                    }, 
+                    desdeCuenta = true,
+                    viewModel = recuperarVm
                 )
             }
             composable(Moneda) {
